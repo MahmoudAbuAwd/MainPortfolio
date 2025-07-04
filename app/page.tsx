@@ -1,0 +1,760 @@
+"use client"
+
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { ArrowRight, Github, Linkedin, Mail, Twitter, ArrowUpRight, Download, Phone } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { ProjectCard } from "@/components/project-card"
+import { SkillBadge } from "@/components/skill-badge"
+import { Timeline } from "@/components/timeline"
+import { ContactForm } from "@/components/contact-form"
+import { CreativeHero } from "@/components/creative-hero"
+import { FloatingNav } from "@/components/floating-nav"
+import { MouseFollower } from "@/components/mouse-follower"
+import { ScrollProgress } from "@/components/scroll-progress"
+import { SectionHeading } from "@/components/section-heading"
+import { GlassmorphicCard } from "@/components/glassmorphic-card"
+
+// Enhanced Skill Badge Component
+const EnhancedSkillBadge = ({ name, level, icon, color = "purple" }) => {
+  const colorClasses = {
+    purple: "from-purple-500 to-pink-500",
+    blue: "from-blue-500 to-cyan-500",
+    green: "from-green-500 to-emerald-500",
+    orange: "from-orange-500 to-red-500",
+    indigo: "from-indigo-500 to-purple-500",
+    yellow: "from-yellow-500 to-orange-500"
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+      whileHover={{ scale: 1.05, y: -5 }}
+      className="group"
+    >
+      <div className="relative overflow-hidden rounded-xl bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700/50 transition-all duration-300 p-6">
+        {/* Animated background gradient */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${colorClasses[color]} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+        
+        {/* Skill icon/name */}
+        <div className="relative z-10 flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors duration-300">
+            {name}
+          </h3>
+          <span className="text-sm font-medium text-zinc-400 group-hover:text-purple-400 transition-colors duration-300">
+            {level}%
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="relative z-10 space-y-2">
+          <div className="w-full bg-zinc-800 rounded-full h-2 overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: `${level}%` }}
+              transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className={`h-full bg-gradient-to-r ${colorClasses[color]} relative overflow-hidden`}
+            >
+              {/* Animated shine effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                animate={{
+                  x: ['-100%', '100%'],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: "linear"
+                }}
+              />
+            </motion.div>
+          </div>
+          
+          {/* Skill level indicators */}
+          <div className="flex justify-between text-xs text-zinc-500">
+            <span>Beginner</span>
+            <span>Expert</span>
+          </div>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+        <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+      </div>
+    </motion.div>
+  )
+}
+
+// Reusable ContactCard component
+const ContactCard = ({ icon, title, value, href, gradient, hoverColor, external = false }) => (
+  <motion.div 
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className="group"
+  >
+    <a 
+      href={href} 
+      target={external ? "_blank" : "_self"}
+      rel={external ? "noopener noreferrer" : ""}
+      className="flex items-center gap-4 p-4 rounded-xl bg-zinc-800/40 hover:bg-zinc-800/60 transition-all duration-300 border border-zinc-800 hover:border-zinc-700/50"
+    >
+      <div className={`w-11 h-11 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center group-hover:rotate-6 transition-transform duration-300 shadow-md`}>
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider">{title}</div>
+        <div className={`font-medium text-white group-hover:text-${hoverColor} transition-colors duration-300 truncate`}>
+          {value}
+        </div>
+      </div>
+      <div className={`ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-${hoverColor}`}>
+        {external ? (
+          <ArrowUpRight className="h-4 w-4" />
+        ) : (
+          <ArrowRight className="h-4 w-4" />
+        )}
+      </div>
+    </a>
+  </motion.div>
+)
+
+// Enhanced About Section Component
+const EnhancedAboutSection = () => {
+  const stats = [
+    { label: "Years Experience", value: "3+", color: "from-purple-500 to-pink-500" },
+    { label: "Projects Completed", value: "50+", color: "from-blue-500 to-cyan-500" },
+    { label: "Happy Clients", value: "30+", color: "from-green-500 to-emerald-500" },
+    { label: "Technologies", value: "15+", color: "from-orange-500 to-red-500" }
+  ]
+
+  const achievements = [
+    "AWS AI Practitioner Certified",
+    "Machine Learning Specialist",
+    "Full-Stack Developer",
+    "Open Source Contributor"
+  ]
+
+  const handleDownloadResume = () => {
+    const link = document.createElement('a')
+    link.href = '/Final_Resume.pdf'
+    link.download = 'Final_Resume.pdf'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  return (
+    <div className="space-y-12">
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Left Column - Story */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <GlassmorphicCard className="h-full">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                  My Story
+                </h3>
+                <div className="space-y-4 text-zinc-300">
+                  <p className="text-lg leading-relaxed">
+                    I'm a passionate AI engineer with experience building intelligent applications using machine learning and deep learning. My journey in tech started with a strong foundation in developing AI and ML models that solve real-world problems.
+                  </p>
+                  <p className="leading-relaxed">
+                    Certified as an AWS AI Practitioner, I specialize in delivering end-to-end AI solutions across web and cloud environments. I've worked with various techniques to create intelligent, efficient, and scalable applications that enhance user experiences.
+                  </p>
+                  <p className="leading-relaxed">
+                    When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, and staying up-to-date with the latest industry trends in AI and machine learning.
+                  </p>
+                </div>
+              </div>
+
+              {/* Achievements */}
+              <div>
+                <h4 className="text-lg font-semibold mb-3 text-white">Key Achievements</h4>
+                <div className="space-y-2">
+                  {achievements.map((achievement, index) => (
+                    <motion.div
+                      key={achievement}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex items-center gap-3 p-2 rounded-lg bg-zinc-800/30 border border-zinc-700/30"
+                    >
+                      <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
+                      <span className="text-sm text-zinc-300">{achievement}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </GlassmorphicCard>
+        </motion.div>
+
+        {/* Right Column - Details */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          <GlassmorphicCard className="h-full">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
+                Quick Facts
+              </h3>
+
+              {/* Personal Info */}
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
+                  <span className="text-sm text-zinc-400">Full Name</span>
+                  <span className="font-medium text-white">Mahmoud AbuAwd</span>
+                </div>
+                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
+                  <span className="text-sm text-zinc-400">Email</span>
+                  <span className="font-medium text-white">mahmoodabuawad08@gmail.com</span>
+                </div>
+                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
+                  <span className="text-sm text-zinc-400">Location</span>
+                  <span className="font-medium text-white">Amman, Jordan</span>
+                </div>
+                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
+                  <span className="text-sm text-zinc-400">Status</span>
+                  <span className="font-medium text-green-400 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                    Available for work
+                  </span>
+                </div>
+              </div>
+
+              {/* Interests */}
+              <div>
+                <h4 className="text-lg font-semibold mb-3 text-white">Interests & Hobbies</h4>
+                <div className="flex flex-wrap gap-2">
+                  {["AI Research", "Open Source", "Cloud Computing", "Data Science", "Tech Innovation"].map((interest) => (
+                    <span key={interest} className="px-3 py-1 text-sm bg-zinc-800/50 text-zinc-300 rounded-full border border-zinc-700/50">
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Download Resume */}
+              <div className="pt-4 border-t border-zinc-800/50">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleDownloadResume}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Resume
+                </motion.button>
+              </div>
+            </div>
+          </GlassmorphicCard>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+export default function Portfolio() {
+  // Smooth scroll function
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden">
+      <MouseFollower />
+      <ScrollProgress />
+      <FloatingNav />
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <div className="inline-block">
+              <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
+                <span className="relative z-10">AI & ML Engineer</span>
+                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
+              </div>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+              <span className="block">Hi, I'm</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+                Mahmoud AbuAwd
+              </span>
+            </h1>
+            <p className="text-xl text-zinc-400 max-w-[600px]">
+              I craft intelligent digital solutions by combining AI, code, and creativity—driven by a passion for innovation and real-world impact.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              {/* Primary Button - View Projects */}
+              <motion.div
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Button 
+                  onClick={() => scrollToSection('projects')}
+                  className="relative overflow-hidden group bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-purple-500/30 transition-all duration-300"
+                >
+                  <span className="relative z-10 flex items-center font-medium tracking-wide">
+                    View Projects 
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:scale-110" />
+                  </span>
+                  <span className="absolute inset-0 bg-gradient-to-br from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="absolute inset-0 rounded-md bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                </Button>
+              </motion.div>
+
+              {/* Secondary Button - Contact Me */}
+              <motion.div
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Button
+                  onClick={() => scrollToSection('contact')}
+                  variant="outline"
+                  className="relative overflow-hidden group border border-zinc-700/80 hover:border-zinc-500 bg-zinc-900/50 hover:bg-zinc-800/50 text-zinc-200 hover:text-white transition-all duration-300"
+                >
+                  <span className="relative z-10 flex items-center font-medium tracking-wide">
+                    Contact Me
+                  </span>
+                  <span className="absolute inset-0 rounded-md bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="absolute -inset-1 rounded-md bg-purple-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                </Button>
+              </motion.div>
+            </div>
+            <div className="flex gap-4 pt-4">
+              <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+                >
+                  <Github className="h-5 w-5" />
+                  <span className="sr-only">GitHub</span>
+                </Button>
+              </Link>
+              <Link href="https://www.linkedin.com/in/mahmoud-abuawd/" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+                >
+                  <Linkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </Button>
+              </Link>
+              <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+                >
+                  <Twitter className="h-5 w-5" />
+                  <span className="sr-only">Twitter</span>
+                </Button>
+              </Link>
+              <Link href="mailto:mahmoodabuawad08@gmail.com">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+                >
+                  <Mail className="h-5 w-5" />
+                  <span className="sr-only">Email</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <CreativeHero />
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center items-start p-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-32 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        </div>
+
+        <div className="container relative z-10">
+          <SectionHeading title="About Me" subtitle="My background and journey" />
+          <div className="mt-16">
+            <EnhancedAboutSection />
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="py-32 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        </div>
+
+        <div className="container relative z-10">
+          <SectionHeading title="My Skills" subtitle="Technologies I work with" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-16">
+            <EnhancedSkillBadge name="PyTorch" level={90} color="orange" />
+            <EnhancedSkillBadge name="TensorFlow" level={95} color="blue" />
+            <EnhancedSkillBadge name="NLP" level={95} color="green" />
+            <EnhancedSkillBadge name="Computer Vision" level={90} color="purple" />
+            <EnhancedSkillBadge name="Generative AI" level={90} color="pink" />
+            <EnhancedSkillBadge name="Data Analysis" level={90} color="indigo" />
+            <EnhancedSkillBadge name="AWS" level={97} color="orange" />
+            <EnhancedSkillBadge name="Git & GitHub" level={95} color="blue" />
+            <EnhancedSkillBadge name="LLMs" level={85} color="purple" />
+            <EnhancedSkillBadge name="Agentic AI" level={80} color="green" />
+            <EnhancedSkillBadge name="Prompt Engineering" level={90} color="blue" />
+            <EnhancedSkillBadge name="MLOps" level={85} color="yellow" />
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-32 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        </div>
+
+        <div className="container relative z-10">
+          <SectionHeading title="Featured Projects" subtitle="Some of my recent work" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+            <ProjectCard
+              title="MedGANs"
+              description="GAN architectures for generating medical images, focusing on brain tumor MRI scans."
+              tags={["Python", "PyTorch", "Generative AI", "Medical"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/MedGANs"
+              demoUrl={null}
+            />
+            <ProjectCard
+              title="PhishGuard"
+              description="ML models for phishing detection comparing Logistic Regression, KNN, and SVC."
+              tags={["Python", "Scikit-learn", "ML", "Cybersecurity"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/PhishGuard-ML-Based-Website-Threat-Detection"
+              demoUrl={null}
+            />
+            <ProjectCard
+              title="FluentWave"
+              description="Web-based speech-to-text system enhanced with Word2Vec semantic vectors."
+              tags={["Python", "Flask", "NLP", "Web App"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/FluentWave-Web-Based-Speech-Transcriber"
+              demoUrl={null}
+            />
+            <ProjectCard
+              title="Price Pilot"
+              description="AI-powered multi-agent system for e-commerce operations."
+              tags={["Python", "AI Agents", "E-commerce", "LLMs"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/price-pilot"
+              demoUrl="https://www.price-pilot.site"
+            />
+            <ProjectCard
+              title="Network Anomaly Detection"
+              description="Isolation Forest and Deep Learning for detecting network traffic anomalies."
+              tags={["Python", "Deep Learning", "AI", "Cybersecurity"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/Anomaly-Detection-in-Network-Traffic-Using-Isolation-Forest-and-Deep-Learning"
+              demoUrl={null}
+            />
+            <ProjectCard
+              title="ML Toolkit"
+              description="Collection of supervised & unsupervised ML models for various tasks."
+              tags={["Python", "Scikit-learn", "ML", "Data Science"]}
+              image="/git.jpg"
+              repoUrl="https://github.com/MahmoudAbuAwd/MLToolkit-A-Collection-of-Supervised-Unsupervised-Models"
+              demoUrl={null}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="py-32 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        </div>
+
+        <div className="container relative z-10">
+          <SectionHeading title="Work Experience" subtitle="My professional journey" />
+
+          <div className="mt-16">
+            <Timeline />
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Contact Section */}
+      <section id="contact" className="py-32 relative overflow-hidden">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 z-0">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+            animate={{
+              x: [-20, 20, -20],
+              y: [-10, 10, -10],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+            animate={{
+              x: [10, -10, 10],
+              y: [20, -20, 20],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2
+            }}
+          />
+          <motion.div
+            className="absolute top-2/3 left-1/3 w-48 h-48 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
+            animate={{
+              x: [0, 15, 0],
+              y: [15, 0, 15],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </div>
+
+        <div className="container relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <SectionHeading 
+              title="Let's Create Something Amazing" 
+              subtitle="Get In Touch" 
+            />
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16">
+            {/* Contact Information - Enhanced */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <GlassmorphicCard className="hover:shadow-purple-500/10 transition-all duration-300">
+                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                  Contact Information
+                </h3>
+                
+                <div className="space-y-4">
+                  {/* Email */}
+                  <ContactCard 
+                    icon={<Mail className="h-5 w-5" />}
+                    title="Email Address"
+                    value="mahmoodabuawad08@gmail.com"
+                    href="mailto:mahmoodabuawad08@gmail.com"
+                    gradient="from-purple-500 to-pink-600"
+                    hoverColor="purple-400"
+                  />
+                  
+                  {/* Phone */}
+                  <ContactCard 
+                    icon={<Phone className="h-5 w-5" />}
+                    title="Phone Number"
+                    value="+962 79 103 4222"
+                    href="tel:+962791034222"
+                    gradient="from-blue-500 to-teal-600"
+                    hoverColor="blue-400"
+                  />
+                  
+                  {/* LinkedIn */}
+                  <ContactCard 
+                    icon={<Linkedin className="h-5 w-5" />}
+                    title="LinkedIn Profile"
+                    value="Mahmoud AbuAwd"
+                    href="https://www.linkedin.com/in/mahmoud-abuawd-247290225/"
+                    gradient="from-blue-600 to-blue-700"
+                    hoverColor="blue-400"
+                    external
+                  />
+                  
+                  {/* GitHub */}
+                  <ContactCard 
+                    icon={<Github className="h-5 w-5" />}
+                    title="GitHub Profile"
+                    value="MahmoudAbuAwd"
+                    href="https://github.com/MahmoudAbuAwd"
+                    gradient="from-gray-700 to-gray-800"
+                    hoverColor="gray-300"
+                    external
+                  />
+                </div>
+
+                {/* Availability Status */}
+                <div className="mt-8 pt-8 border-t border-zinc-800/50">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <h4 className="text-lg font-medium mb-1">Current Availability</h4>
+                      <p className="text-sm text-zinc-400">Open to new opportunities and collaborations</p>
+                    </div>
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.05, 1],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-zinc-800 rounded-full border border-zinc-700/50"
+                    >
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
+                      <span className="text-sm font-medium text-green-400">Available for work</span>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Call-to-action buttons */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                    <motion.a
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      href="#"
+                      className="px-4 py-3 flex items-center justify-center gap-2 rounded-lg bg-zinc-800 hover:bg-zinc-700/80 transition-colors duration-300 text-sm font-medium border border-zinc-700/50 hover:border-purple-500/30"
+                    >
+                      <Phone className="h-4 w-4" />
+                      Schedule Call
+                    </motion.a>
+                    <motion.a
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      href="#"
+                      className="px-4 py-3 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-purple-500/20"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download CV
+                    </motion.a>
+                  </div>
+                </div>
+              </GlassmorphicCard>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <ContactForm />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-800 py-12">
+        <div className="container flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <Link href="/" className="font-bold text-xl">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">Mahmoud</span>
+              <span className="text-white">AbuAwd</span>
+            </Link>
+            <p className="text-sm text-zinc-500 mt-2">
+              © {new Date().getFullYear()} Mahmoud AbuAwd. All rights reserved.
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+              >
+                <Github className="h-5 w-5" />
+                <span className="sr-only">GitHub</span>
+              </Button>
+            </Link>
+            <Link href="https://www.linkedin.com/in/mahmoud-abuawd-247290225/" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+              >
+                <Linkedin className="h-5 w-5" />
+                <span className="sr-only">LinkedIn</span>
+              </Button>
+            </Link>
+            <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+              >
+                <Twitter className="h-5 w-5" />
+                <span className="sr-only">Twitter</span>
+              </Button>
+            </Link>
+            <Link href="mailto:mahmoodabuawad08@gmail.com">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+              >
+                <Mail className="h-5 w-5" />
+                <span className="sr-only">Email</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}
