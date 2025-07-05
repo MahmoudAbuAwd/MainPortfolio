@@ -29,6 +29,7 @@ export function FloatingNav() {
   const navItems = [
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
+    { name: "Certifications", href: "#certifications" },
     { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
     { name: "Contact", href: "#contact" },
@@ -43,9 +44,9 @@ export function FloatingNav() {
   return (
     <>
       <motion.div
-        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        initial={{ y: -100 }}
-        animate={{ y: isVisible ? 0 : -100 }}
+        className={`fixed top-6 left-6 z-50 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        initial={{ x: -100 }}
+        animate={{ x: isVisible ? 0 : -100 }}
         transition={{ duration: 0.3 }}
       >
         <div className="relative px-4 py-3 rounded-full bg-zinc-800/80 backdrop-blur-md border border-zinc-700/50 shadow-lg">

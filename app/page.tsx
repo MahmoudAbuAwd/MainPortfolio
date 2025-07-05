@@ -15,6 +15,8 @@ import { MouseFollower } from "@/components/mouse-follower"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { SectionHeading } from "@/components/section-heading"
 import { GlassmorphicCard } from "@/components/glassmorphic-card"
+import { GitHubActivity } from "@/components/ui/github-activity"
+import Image from 'next/image'
 
 // Enhanced Skill Badge Component
 const EnhancedSkillBadge = ({ name, level, icon, color = "purple" }) => {
@@ -270,6 +272,128 @@ const EnhancedAboutSection = () => {
   )
 }
 
+// Enhanced Certifications Component
+const EnhancedCertifications = () => {
+  const certifications = [
+    {
+      title: "AWS Certified AI Practitioner",
+      issuer: "Amazon Web Services",
+      date: "2025",
+      link: "https://www.credly.com/badges/76fc2476-6790-45c8-90a0-6526068e976a/linked_in_profile",
+      image: "/certs/aws.jpg",
+      color: "from-orange-500 to-yellow-500"
+    },
+    {
+      title: "Deep Learning Specialization",
+      issuer: "DeepLearning.AI",
+      date: "2024",
+      link: "https://coursera.org/share/2d41f0f09d47d4647f704700734fa4eb",
+      image: "/certs/dl.jpg",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      title: "TensorFlow Developer Certificate",
+      issuer: "DeepLearning.AI",
+      date: "2025",
+      link: "https://www.coursera.org/account/accomplishments/specialization/25N87WOKCBL4",
+      image: "/certs/tf.jpg",
+      color: "from-orange-500 to-red-500"
+    },
+    {
+      title: "Machine Learning & Data Science",
+      issuer: "the Hope INT",
+      date: "2023",
+      link: "https://www.credential.net/f38b4114-3c4a-445c-b2a7-4cc7104e5063?record_view=true#gs.72uzz5",
+      image: "/certs/mlp.png",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Embedded System Designing",
+      issuer: "INJO4",
+      date: "2024",
+      link: "https://injo4.org/injo-certificate/?cert_hash=378d773629422772",
+      image: "/certs/injo.jpg",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      title: "Scientific Research Award",
+      issuer: "University Of Jordan",
+      date: "2023",
+      link: "https://ibb.co/jVvh5Qp",
+      image: "/certs/uj.jpg",
+      color: "from-indigo-500 to-blue-500"
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {certifications.map((cert, index) => (
+        <motion.div
+          key={cert.title}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5 }}
+          className="group relative"
+        >
+          <a 
+            href={cert.link} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block h-full"
+          >
+            <div className="h-full rounded-xl bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700/50 transition-all duration-300 p-6 flex flex-col">
+              {/* Animated background gradient */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${cert.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl`} />
+              
+              {/* Certification content */}
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                      {cert.title}
+                    </h3>
+                    <p className="text-sm text-zinc-400">{cert.issuer}</p>
+                  </div>
+                  <span className="text-xs font-medium px-2 py-1 bg-zinc-800/50 text-zinc-300 rounded-full">
+                    {cert.date}
+                  </span>
+                </div>
+                
+                {/* Certificate image */}
+                <div className="aspect-video bg-zinc-800/50 flex items-center justify-center relative overflow-hidden">
+                  <Image 
+                    src={cert.image} 
+                    alt={`${cert.title} certificate`}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-white font-medium">View Certificate</span>
+                  </div>
+                </div>
+                
+                {/* View link */}
+                <div className="mt-4 flex items-center justify-end">
+                  <span className="text-xs font-medium text-zinc-500 group-hover:text-purple-400 transition-colors duration-300 flex items-center">
+                    View credential
+                    <ArrowUpRight className="ml-1 h-3 w-3" />
+                  </span>
+                </div>
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+              <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+            </div>
+          </a>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 export default function Portfolio() {
   // Smooth scroll function
   const scrollToSection = (sectionId) => {
@@ -434,7 +558,7 @@ export default function Portfolio() {
             <EnhancedSkillBadge name="TensorFlow" level={95} color="blue" />
             <EnhancedSkillBadge name="NLP" level={95} color="green" />
             <EnhancedSkillBadge name="Computer Vision" level={90} color="purple" />
-            <EnhancedSkillBadge name="Generative AI" level={90} color="pink" />
+            <EnhancedSkillBadge name="Generative AI" level={90} color="blue" />
             <EnhancedSkillBadge name="Data Analysis" level={90} color="indigo" />
             <EnhancedSkillBadge name="AWS" level={97} color="orange" />
             <EnhancedSkillBadge name="Git & GitHub" level={95} color="blue" />
@@ -442,6 +566,25 @@ export default function Portfolio() {
             <EnhancedSkillBadge name="Agentic AI" level={80} color="green" />
             <EnhancedSkillBadge name="Prompt Engineering" level={90} color="blue" />
             <EnhancedSkillBadge name="MLOps" level={85} color="yellow" />
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section id="certifications" className="py-32 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        </div>
+
+        <div className="container relative z-10">
+          <SectionHeading 
+            title="My Certifications" 
+            subtitle="Validations of my expertise" 
+          />
+
+          <div className="mt-16">
+            <EnhancedCertifications />
           </div>
         </div>
       </section>
@@ -525,6 +668,32 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* GitHub Activity Section */}
+<section id="activity" className="py-24 relative">
+  <div className="absolute inset-0 z-0">
+    <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  </div>
+
+  <div className="container relative z-10">
+    <SectionHeading 
+      title="Development Activity" 
+      subtitle="My recent GitHub contributions" 
+    />
+
+    <div className="mt-12 max-w-3xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-700/50 backdrop-blur-sm"
+      >
+        <GitHubActivity />
+      </motion.div>
+    </div>
+  </div>
+</section>
       {/* Enhanced Contact Section */}
       <section id="contact" className="py-32 relative overflow-hidden">
         {/* Animated gradient background */}
@@ -659,28 +828,6 @@ export default function Portfolio() {
                       <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
                       <span className="text-sm font-medium text-green-400">Available for work</span>
                     </motion.div>
-                  </div>
-                  
-                  {/* Call-to-action buttons */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
-                    <motion.a
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      href="#"
-                      className="px-4 py-3 flex items-center justify-center gap-2 rounded-lg bg-zinc-800 hover:bg-zinc-700/80 transition-colors duration-300 text-sm font-medium border border-zinc-700/50 hover:border-purple-500/30"
-                    >
-                      <Phone className="h-4 w-4" />
-                      Schedule Call
-                    </motion.a>
-                    <motion.a
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      href="#"
-                      className="px-4 py-3 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-purple-500/20"
-                    >
-                      <Download className="h-4 w-4" />
-                      Download CV
-                    </motion.a>
                   </div>
                 </div>
               </GlassmorphicCard>
