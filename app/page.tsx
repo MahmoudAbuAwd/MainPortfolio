@@ -769,7 +769,7 @@ export default function Portfolio() {
                   <ContactCard 
                     icon={<Mail className="h-5 w-5" />}
                     title="Email Address"
-                    value="mahmoodabuawad08@gmail.com"
+                    value="Mahmoodabuawad08@gmail.com"
                     href="mailto:mahmoodabuawad08@gmail.com"
                     gradient="from-purple-500 to-pink-600"
                     hoverColor="purple-400"
