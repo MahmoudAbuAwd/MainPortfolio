@@ -19,6 +19,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        {/* Favicon links */}
+        <link rel="icon" href="/certs/technology.png" type="/certs/technology.png" />
+        {/* For Apple devices */}
+        <link rel="apple-touch-icon" href="/certs/technology.png" />
       </head>
       <body className="font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white">
         {children}
