@@ -224,8 +224,8 @@ const EnhancedAboutSection = () => {
                   <span className="font-medium text-white">Mahmoud AbuAwd</span>
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
-                  <span className="text-sm text-zinc-400">Email</span>
-                  <span className="font-medium text-white">mahmoodabuawad08@gmail.com</span>
+                  <span className="text-sm text-zinc-400">Major</span>
+                  <span className="font-medium text-white">AI & Robotics</span>
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
                   <span className="text-sm text-zinc-400">Location</span>
