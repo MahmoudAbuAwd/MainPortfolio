@@ -1,4 +1,3 @@
-// components/ui/github-activity.tsx
 "use client"
 
 import { useEffect, useState } from 'react'
@@ -15,6 +14,7 @@ interface GitHubEvent {
   payload?: {
     action?: string
     ref?: string
+    ref_type?: string
     commits?: Array<{
       message: string
     }>
@@ -30,13 +30,40 @@ const GitHubActivity = () => {
   useEffect(() => {
     const fetchActivity = async () => {
       try {
-        const response = await fetch('https://api.github.com/users/MahmoudAbuAwd/events')
-        if (!response.ok) {
-          throw new Error('Failed to fetch GitHub activity')
+        // Add your GitHub token here if needed (store in env variables)
+        // const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+        const headers = {
+          // ...(token && { Authorization: `token ${token}` }),
+          Accept: 'application/vnd.github.v3+json'
         }
-        const data = await response.json()
-        setActivity(data.slice(0, 5)) // Get last 5 events
+
+        const response = await fetch('https://api.github.com/users/MahmoudAbuAwd/events', {
+          headers
+        })
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(
+            errorData.message || `Failed to fetch GitHub activity (HTTP ${response.status})`
+          )
+        }
+
+        const data: GitHubEvent[] = await response.json()
+        console.log('Raw GitHub data:', data) // Debugging
+        
+        // Filter and sort events
+        const filteredEvents = data
+          .filter(event => {
+            // Include only relevant event types
+            return ['PushEvent', 'CreateEvent', 'PullRequestEvent', 'WatchEvent'].includes(event.type)
+          })
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0, 5)
+
+        console.log('Filtered events:', filteredEvents) // Debugging
+        setActivity(filteredEvents)
       } catch (err) {
+        console.error('GitHub fetch error:', err)
         setError(err instanceof Error ? err.message : 'Unknown error occurred')
       } finally {
         setLoading(false)
@@ -59,13 +86,15 @@ const GitHubActivity = () => {
       case 'CreateEvent':
         return {
           icon: <GitBranch className="h-4 w-4 text-blue-400" />,
-          text: 'Created branch in',
+          text: event.payload?.ref_type === 'branch' 
+            ? `Created branch ${event.payload.ref} in` 
+            : `Created ${event.payload?.ref_type || 'repository'} in`,
           color: 'bg-blue-500/10 border-blue-500/20'
         }
       case 'PullRequestEvent':
         return {
           icon: <GitPullRequest className="h-4 w-4 text-green-400" />,
-          text: `${event.payload?.action || 'Updated'} pull request in`,
+          text: `${event.payload?.action || 'updated'} pull request in`,
           color: 'bg-green-500/10 border-green-500/20'
         }
       case 'WatchEvent':
@@ -77,7 +106,7 @@ const GitHubActivity = () => {
       default:
         return {
           icon: <Github className="h-4 w-4 text-gray-400" />,
-          text: `Performed ${event.type} on`,
+          text: `Performed ${event.type.replace('Event', '').toLowerCase()} on`,
           color: 'bg-gray-500/10 border-gray-500/20'
         }
     }
@@ -85,18 +114,32 @@ const GitHubActivity = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date)
+    const now = new Date()
+    const diffInHours = Math.abs(now.getTime() - date.getTime()) / (1000 * 60 * 60)
+
+    if (diffInHours < 24) {
+      return new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      }).format(date) + ' today'
+    } else if (diffInHours < 48) {
+      return 'Yesterday'
+    } else {
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric'
+      }).format(date)
+    }
   }
 
   if (error) {
     return (
       <div className="rounded-lg bg-red-900/20 border border-red-800/50 p-4 text-red-300">
         Error loading GitHub activity: {error}
+        <div className="mt-2 text-sm">
+          Note: GitHub API has rate limits. Try refreshing later or adding a token.
+        </div>
       </div>
     )
   }
@@ -121,7 +164,12 @@ const GitHubActivity = () => {
         </div>
       ) : activity.length === 0 ? (
         <div className="text-center py-6 text-zinc-400">
-          No recent activity found
+          No recent activity found. This could be due to:
+          <ul className="text-xs mt-2 space-y-1">
+            <li>• GitHub API rate limits (try refreshing later)</li>
+            <li>• Private repository activity (not visible via public API)</li>
+            <li>• No recent qualifying events (pushes, PRs, etc.)</li>
+          </ul>
         </div>
       ) : (
         <div className="grid gap-3">
