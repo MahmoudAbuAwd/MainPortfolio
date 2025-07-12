@@ -280,7 +280,7 @@ const EnhancedCertifications = () => {
       issuer: "Amazon Web Services",
       date: "2025",
       link: "https://www.credly.com/badges/76fc2476-6790-45c8-90a0-6526068e976a/linked_in_profile",
-      image: "/certs/aws.jpg",
+      image: "/certs/awss.png",
       color: "from-orange-500 to-yellow-500"
     },
     {
@@ -288,7 +288,7 @@ const EnhancedCertifications = () => {
       issuer: "DeepLearning.AI",
       date: "2024",
       link: "https://coursera.org/share/2d41f0f09d47d4647f704700734fa4eb",
-      image: "/certs/dl.jpg",
+      image: "/certs/dl.png",
       color: "from-blue-500 to-cyan-500"
     },
     {
@@ -296,7 +296,7 @@ const EnhancedCertifications = () => {
       issuer: "DeepLearning.AI",
       date: "2025",
       link: "https://www.coursera.org/account/accomplishments/specialization/25N87WOKCBL4",
-      image: "/certs/tf.jpg",
+      image: "/certs/dl.png",
       color: "from-orange-500 to-red-500"
     },
     {
@@ -304,7 +304,7 @@ const EnhancedCertifications = () => {
       issuer: "the Hope INT",
       date: "2023",
       link: "https://www.credential.net/f38b4114-3c4a-445c-b2a7-4cc7104e5063?record_view=true#gs.72uzz5",
-      image: "/certs/mlp.png",
+      image: "/certs/front.png",
       color: "from-green-500 to-emerald-500"
     },
     {
@@ -312,7 +312,7 @@ const EnhancedCertifications = () => {
       issuer: "INJO4",
       date: "2024",
       link: "https://injo4.org/injo-certificate/?cert_hash=378d773629422772",
-      image: "/certs/injo.jpg",
+      image: "/certs/injo4.png",
       color: "from-purple-500 to-pink-500"
     },
     {
@@ -320,7 +320,7 @@ const EnhancedCertifications = () => {
       issuer: "University Of Jordan",
       date: "2023",
       link: "https://ibb.co/jVvh5Qp",
-      image: "/certs/uj.jpg",
+      image: "/certs/uj.png",
       color: "from-indigo-500 to-blue-500"
     }
   ];
