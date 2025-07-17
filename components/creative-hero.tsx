@@ -1,187 +1,148 @@
-"use client"
-
-import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
 export function CreativeHero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    let devicePixelRatio: number
-
-    // Set canvas dimensions
-    const setCanvasDimensions = () => {
-      devicePixelRatio = window.devicePixelRatio || 1
-      const rect = canvas.getBoundingClientRect()
-
-      canvas.width = rect.width * devicePixelRatio
-      canvas.height = rect.height * devicePixelRatio
-
-      ctx.scale(devicePixelRatio, devicePixelRatio)
-    }
-
-    setCanvasDimensions()
-    window.addEventListener("resize", setCanvasDimensions)
-
-    // Mouse position
-    let mouseX = 0
-    let mouseY = 0
-    let targetX = 0
-    let targetY = 0
-
-    window.addEventListener("mousemove", (e) => {
-      const rect = canvas.getBoundingClientRect()
-      targetX = e.clientX - rect.left
-      targetY = e.clientY - rect.top
-    })
-
-    // Particle class
-    class Particle {
-      x: number
-      y: number
-      size: number
-      baseX: number
-      baseY: number
-      density: number
-      color: string
-      distance: number
-
-      constructor(x: number, y: number) {
-        this.x = x
-        this.y = y
-        this.baseX = x
-        this.baseY = y
-        this.size = Math.random() * 5 + 2
-        this.density = Math.random() * 30 + 1
-        this.distance = 0
-
-        // Create a gradient from purple to pink
-        const hue = Math.random() * 60 + 270 // 270-330 range for purples and pinks
-        this.color = `hsl(${hue}, 70%, 60%)`
-      }
-
-      update() {
-        // Calculate distance between mouse and particle
-        const dx = mouseX - this.x
-        const dy = mouseY - this.y
-        this.distance = Math.sqrt(dx * dx + dy * dy)
-
-        const forceDirectionX = dx / this.distance
-        const forceDirectionY = dy / this.distance
-
-        const maxDistance = 100
-        const force = (maxDistance - this.distance) / maxDistance
-
-        if (this.distance < maxDistance) {
-          const directionX = forceDirectionX * force * this.density
-          const directionY = forceDirectionY * force * this.density
-
-          this.x -= directionX
-          this.y -= directionY
-        } else {
-          if (this.x !== this.baseX) {
-            const dx = this.x - this.baseX
-            this.x -= dx / 10
-          }
-          if (this.y !== this.baseY) {
-            const dy = this.y - this.baseY
-            this.y -= dy / 10
-          }
-        }
-      }
-
-      draw() {
-        ctx.fillStyle = this.color
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.closePath()
-        ctx.fill()
-      }
-    }
-
-    // Create particle grid
-    const particlesArray: Particle[] = []
-    const particleCount = 1000
-    const gridSize = 30
-
-    function init() {
-      particlesArray.length = 0
-
-      const canvasWidth = canvas.width / devicePixelRatio
-      const canvasHeight = canvas.height / devicePixelRatio
-
-      const numX = Math.floor(canvasWidth / gridSize)
-      const numY = Math.floor(canvasHeight / gridSize)
-
-      for (let y = 0; y < numY; y++) {
-        for (let x = 0; x < numX; x++) {
-          const posX = x * gridSize + gridSize / 2
-          const posY = y * gridSize + gridSize / 2
-          particlesArray.push(new Particle(posX, posY))
-        }
-      }
-    }
-
-    init()
-
-    // Animation loop
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Smooth mouse following
-      mouseX += (targetX - mouseX) * 0.1
-      mouseY += (targetY - mouseY) * 0.1
-
-      // Draw connections
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update()
-        particlesArray[i].draw()
-
-        // Draw connections
-        for (let j = i; j < particlesArray.length; j++) {
-          const dx = particlesArray[i].x - particlesArray[j].x
-          const dy = particlesArray[i].y - particlesArray[j].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < 30) {
-            ctx.beginPath()
-            ctx.strokeStyle = `rgba(180, 120, 255, ${0.2 - distance / 150})`
-            ctx.lineWidth = 0.5
-            ctx.moveTo(particlesArray[i].x, particlesArray[i].y)
-            ctx.lineTo(particlesArray[j].x, particlesArray[j].y)
-            ctx.stroke()
-          }
-        }
-      }
-
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    // Handle window resize
-    window.addEventListener("resize", init)
-
-    return () => {
-      window.removeEventListener("resize", setCanvasDimensions)
-      window.removeEventListener("resize", init)
-    }
-  }, [])
+  const positions = [
+    "AI Engineer",
+    "ML Engineer",
+    "DL Engineer",
+    "Data Science",
+    "AI Prompt Engineering",
+    "AI Researcher"
+  ]
 
   return (
     <motion.div
-      className="w-full h-[400px] md:h-[500px] relative"
+      className="w-full h-[400px] md:h-[500px] relative flex items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <canvas ref={canvasRef} className="w-full h-full" style={{ display: "block" }} />
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
+        <motion.div
+          className="relative"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          {/* Main title */}
+          <motion.h2 
+            className="text-5xl md:text-7xl font-extrabold text-center mb-12 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-400 bg-clip-text text-transparent leading-tight pb-2"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            Expertise Areas
+          </motion.h2>
+          
+          {/* Hexagonal grid layout */}
+          <div className="flex flex-wrap justify-center gap-5 mb-10">
+            {positions.map((position, index) => (
+              <motion.div
+                key={position}
+                className="group relative"
+                initial={{ rotateY: 90, opacity: 0 }}
+                animate={{ rotateY: 0, opacity: 1 }}
+                transition={{ delay: 0.6 + index * 0.15, duration: 0.7 }}
+                whileHover={{ scale: 1.05, rotateY: 10 }}
+              >
+                <div className="relative w-44 h-20 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-md border border-purple-400/30 rounded-xl p-5 shadow-xl hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:-translate-y-2">
+                  {/* Animated border glow */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 h-full flex items-center justify-center">
+                    <h3 className="text-sm md:text-base font-bold text-center text-white group-hover:text-purple-200 transition-colors duration-300 leading-tight">
+                      {position}
+                    </h3>
+                  </div>
+                  
+                  {/* Floating particles effect */}
+                  <motion.div
+                    className="absolute top-2 right-2 w-1 h-1 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100"
+                    animate={{
+                      y: [0, -10, 0],
+                      opacity: [0.3, 1, 0.3]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: index * 0.2
+                    }}
+                  />
+                  <motion.div
+                    className="absolute bottom-2 left-2 w-1 h-1 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100"
+                    animate={{
+                      y: [0, 10, 0],
+                      opacity: [0.3, 1, 0.3]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: index * 0.3
+                    }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Bottom message with pulsing effect */}
+          <motion.div
+            className="text-center"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+          >
+            <motion.div
+              className="inline-block px-6 py-3 bg-gradient-to-r from-purple-800/20 to-pink-800/20 backdrop-blur-sm border border-purple-400/20 rounded-full"
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(168, 85, 247, 0.1)",
+                  "0 0 40px rgba(168, 85, 247, 0.2)",
+                  "0 0 20px rgba(168, 85, 247, 0.1)"
+                ]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <p className="text-purple-200 text-sm font-medium">
+                🚀 Ready to innovate with next-generation AI solutions
+              </p>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-pink-600/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
     </motion.div>
   )
 }

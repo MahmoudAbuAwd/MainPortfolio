@@ -20,9 +20,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
         {/* Favicon links */}
-        <link rel="icon" href="/certs/technology.png" type="/certs/technology.png" />
+        <link rel="icon" href="/certs/m.png" type="/certs/m.png" />
         {/* For Apple devices */}
-        <link rel="apple-touch-icon" href="/certs/technology.png" />
+        <link rel="apple-touch-icon" href="/certs/m.png" />
       </head>
       <body className="font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white">
         {children}

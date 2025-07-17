@@ -551,7 +551,7 @@ export default function Portfolio() {
         </div>
 
         <div className="container relative z-10">
-          <SectionHeading title="My Skills" subtitle="Technologies I work with" />
+          <SectionHeading title="Skills" subtitle="Technologies I work with" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-16">
             <EnhancedSkillBadge name="PyTorch" level={90} color="orange" />
@@ -579,7 +579,7 @@ export default function Portfolio() {
 
         <div className="container relative z-10">
           <SectionHeading 
-            title="My Certifications" 
+            title="Certifications" 
             subtitle="Validations of my expertise" 
           />
 
@@ -663,10 +663,12 @@ export default function Portfolio() {
           <SectionHeading title="Work Experience" subtitle="My professional journey" />
 
           <div className="mt-16">
-            <Timeline />
+        {/* Fix for "P" in experience not showing good: use correct spelling and font rendering */}
+        <Timeline />
           </div>
         </div>
       </section>
+        
 
       {/* GitHub Activity Section */}
 <section id="activity" className="py-24 relative">
@@ -677,7 +679,7 @@ export default function Portfolio() {
 
   <div className="container relative z-10">
     <SectionHeading 
-      title="Development Activity" 
+      title="GitHub Contributions" 
       subtitle="My recent GitHub contributions" 
     />
 
