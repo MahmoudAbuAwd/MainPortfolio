@@ -44,21 +44,21 @@ export function FloatingNav() {
     <>
       {/* Desktop Navigation */}
       <motion.nav
-        className={`fixed top-6 left-6 z-50 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed top-6 left-6 z-50 hidden md:block ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         initial={{ x: -100 }}
         animate={{ x: isVisible ? 0 : -100 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="relative flex flex-col md:flex-row items-start md:items-center gap-2 px-4 py-3 rounded-xl bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-lg">
-          {/* Name/Logo - Only shown in desktop */}
-          <Link href="/" className="hidden md:flex items-center mr-4">
+        <div className="relative flex items-center gap-2 px-4 py-3 rounded-xl bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-lg">
+          {/* Name/Logo */}
+          <Link href="/" className="flex items-center mr-4">
             <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
               MA
             </span>
           </Link>
 
           {/* Navigation Links */}
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-1">
+          <div className="flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -76,24 +76,34 @@ export function FloatingNav() {
           {/* Resume Button */}
           <Button
             size="sm"
-            className="mt-2 md:mt-0 md:ml-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
+            className="ml-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
             onClick={handleDownloadResume}
           >
             <Download className="h-4 w-4 mr-2" />
             Resume
           </Button>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden absolute top-3 right-3 text-zinc-300 hover:text-white hover:bg-zinc-800/50 rounded-lg"
-            onClick={() => setIsOpen(true)}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
         </div>
       </motion.nav>
+
+      {/* Mobile Menu Button */}
+      <motion.div
+        className={`fixed top-6 right-6 z-50 md:hidden ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ 
+          scale: isVisible ? 1 : 0.8, 
+          opacity: isVisible ? 1 : 0 
+        }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-12 h-12 rounded-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800/50 shadow-lg"
+          onClick={() => setIsOpen(true)}
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
+      </motion.div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
