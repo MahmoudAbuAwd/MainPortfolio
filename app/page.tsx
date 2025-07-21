@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowRight, Github, Linkedin, Mail, Twitter, ArrowUpRight, Download, Phone } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Mail, Twitter, ArrowUpRight, Download, Phone , Star , Code , Award , Globe } from "lucide-react"
+import React from "react"
 
 import { Button } from "@/components/ui/button"
 import { ProjectCard } from "@/components/project-card"
@@ -126,20 +127,13 @@ const ContactCard = ({ icon, title, value, href, gradient, hoverColor, external 
   </motion.div>
 )
 
-// Enhanced About Section Component
+// Enhanced About Section Component with new design
 const EnhancedAboutSection = () => {
-  const stats = [
-    { label: "Years Experience", value: "3+", color: "from-purple-500 to-pink-500" },
-    { label: "Projects Completed", value: "50+", color: "from-blue-500 to-cyan-500" },
-    { label: "Happy Clients", value: "30+", color: "from-green-500 to-emerald-500" },
-    { label: "Technologies", value: "15+", color: "from-orange-500 to-red-500" }
-  ]
-
   const achievements = [
-    "AWS AI Practitioner Certified",
-    "Machine Learning Specialist",
-    "Full-Stack Developer",
-    "Open Source Contributor"
+    { text: "AWS AI Practitioner Certified", icon: Award },
+    { text: "Machine Learning Specialist", icon: Code },
+    { text: "Full-Stack Developer", icon: Globe },
+    { text: "Open Source Contributor", icon: Star }
   ]
 
   const handleDownloadResume = () => {
@@ -152,123 +146,111 @@ const EnhancedAboutSection = () => {
   }
 
   return (
-    <div className="space-y-12">
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Left Column - Story */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <GlassmorphicCard className="h-full">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-                  My Story
-                </h3>
-                <div className="space-y-4 text-zinc-300">
-                  <p className="text-lg leading-relaxed">
-                    I'm a passionate AI engineer with experience building intelligent applications using machine learning and deep learning. My journey in tech started with a strong foundation in developing AI and ML models that solve real-world problems.
-                  </p>
-                  <p className="leading-relaxed">
-                    Certified as an AWS AI Practitioner, I specialize in delivering end-to-end AI solutions across web and cloud environments. I've worked with various techniques to create intelligent, efficient, and scalable applications that enhance user experiences.
-                  </p>
-                  <p className="leading-relaxed">
-                    When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, and staying up-to-date with the latest industry trends in AI and machine learning.
-                  </p>
-                </div>
-              </div>
+    <section className="py-24 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-pink-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      
+      <div className="container mx-auto px-8 max-w-6xl relative z-10">
 
-              {/* Achievements */}
-              <div>
-                <h4 className="text-lg font-semibold mb-3 text-white">Key Achievements</h4>
-                <div className="space-y-2">
-                  {achievements.map((achievement, index) => (
-                    <motion.div
-                      key={achievement}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex items-center gap-3 p-2 rounded-lg bg-zinc-800/30 border border-zinc-700/30"
-                    >
-                      <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
-                      <span className="text-sm text-zinc-300">{achievement}</span>
-                    </motion.div>
-                  ))}
+        {/* Main content in cards */}
+        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+          {/* Story Card */}
+          <div className="lg:col-span-2 bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
+              My Journey
+            </h3>
+            <div className="space-y-6 text-zinc-300 text-lg leading-relaxed">
+              <p>
+                I'm a passionate AI engineer with experience building intelligent applications using machine learning and deep learning. My journey in tech started with a strong foundation in developing AI and ML models that solve real-world problems.
+              </p>
+              <p>
+                Certified as an AWS AI Practitioner, I specialize in delivering end-to-end AI solutions across web and cloud environments. I've worked with various techniques to create intelligent, efficient, and scalable applications that enhance user experiences.
+              </p>
+              <p>
+                When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, and staying up-to-date with the latest industry trends in AI and machine learning.
+              </p>
+            </div>
+          </div>
+
+          {/* Profile Card */}
+          <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-white mb-6">Quick Facts</h3>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Name</span>
+                <span className="text-white font-medium">Mahmoud AbuAwd</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Field</span>
+                <span className="text-white font-medium">AI & Robotics</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Based in</span>
+                <span className="text-white font-medium">Amman, Jordan</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Languages</span>
+                <span className="text-white font-medium">Arabic, English</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Volunteering</span>
+                <span className="text-white font-medium">IEEE & GDG</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Focus Area</span>
+                <span className="text-white font-medium">Machine Learning</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400">Status</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-green-400 font-medium">Available</span>
                 </div>
               </div>
             </div>
-          </GlassmorphicCard>
-        </motion.div>
+          </div>
+        </div>
 
-        {/* Right Column - Details */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <GlassmorphicCard className="h-full">
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
-                Quick Facts
-              </h3>
-
-              {/* Personal Info */}
-              <div className="grid grid-cols-1 gap-4">
-                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
-                  <span className="text-sm text-zinc-400">Full Name</span>
-                  <span className="font-medium text-white">Mahmoud AbuAwd</span>
-                </div>
-                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
-                  <span className="text-sm text-zinc-400">Major</span>
-                  <span className="font-medium text-white">AI & Robotics</span>
-                </div>
-                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
-                  <span className="text-sm text-zinc-400">Location</span>
-                  <span className="font-medium text-white">Amman, Jordan</span>
-                </div>
-                <div className="flex justify-between items-center p-3 rounded-lg bg-zinc-800/30">
-                  <span className="text-sm text-zinc-400">Status</span>
-                  <span className="font-medium text-green-400 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    Available for work
-                  </span>
-                </div>
-              </div>
-
-              {/* Interests */}
-              <div>
-                <h4 className="text-lg font-semibold mb-3 text-white">Interests & Hobbies</h4>
-                <div className="flex flex-wrap gap-2">
-                  {["AI Research", "Open Source", "Cloud Computing", "Data Science", "Tech Innovation"].map((interest) => (
-                    <span key={interest} className="px-3 py-1 text-sm bg-zinc-800/50 text-zinc-300 rounded-full border border-zinc-700/50">
-                      {interest}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Download Resume */}
-              <div className="pt-4 border-t border-zinc-800/50">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleDownloadResume}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+        {/* Achievements */}
+        <div className="mb-12">
+          <h3 className="text-3xl font-bold text-white mb-8 text-center">Key Achievements</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {achievements.map((achievement, index) => {
+              const IconComponent = achievement.icon;
+              return (
+                <div 
+                  key={index}
+                  className="group bg-gradient-to-br from-zinc-800/60 to-zinc-900/60 rounded-2xl p-6 border border-zinc-700/40 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
                 >
-                  <Download className="h-4 w-4" />
-                  Download Resume
-                </motion.button>
-              </div>
-            </div>
-          </GlassmorphicCard>
-        </motion.div>
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300">
+                      <IconComponent className="w-8 h-8 text-purple-400 group-hover:text-purple-300" />
+                    </div>
+                    <p className="text-zinc-300 group-hover:text-white transition-colors font-medium">
+                      {achievement.text}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center">
+          <button
+            onClick={handleDownloadResume}
+            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-purple-500/25"
+          >
+            <Download className="w-5 h-5 group-hover:animate-bounce" />
+            Download My Resume
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -391,6 +373,67 @@ const EnhancedCertifications = () => {
         </motion.div>
       ))}
     </div>
+  );
+};
+
+// Quote Component with trending font style
+const InspirationalQuote = () => {
+  const quotes = [
+    {
+      text: "The future belongs to those who believe in the beauty of their dreams.",
+      author: "Eleanor Roosevelt"
+    },
+    {
+      text: "Innovation distinguishes between a leader and a follower.",
+      author: "Steve Jobs"
+    },
+    {
+      text: "The only way to do great work is to love what you do.",
+      author: "Steve Jobs"
+    }
+  ];
+
+  const [currentQuote, setCurrentQuote] = React.useState(quotes[0]);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      const currentIndex = quotes.findIndex(q => q.text === currentQuote.text);
+      const nextIndex = (currentIndex + 1) % quotes.length;
+      setCurrentQuote(quotes[nextIndex]);
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [currentQuote]);
+
+  return (
+    <section className="py-16 md:py-24 relative overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      </div>
+      
+      <div className="container relative z-10">
+        <motion.div
+          key={currentQuote.text}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          className="text-center max-w-3xl mx-auto"
+        >
+          <div className="text-4xl md:text-5xl font-bold mb-8 text-white font-serif italic">
+            <span className="text-purple-400">"</span>
+            <span className="bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+              {currentQuote.text}
+            </span>
+            <span className="text-pink-400">"</span>
+          </div>
+          <div className="text-lg text-zinc-400 font-medium">
+            — {currentQuote.author}
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 
@@ -528,18 +571,18 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* New Quote Section */}
+      <InspirationalQuote />
+
       {/* About Section */}
       <section id="about" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
-
         <div className="container relative z-10">
-          <SectionHeading title="About Me" subtitle="My background and journey" />
-          <div className="mt-16">
-            <EnhancedAboutSection />
-          </div>
+          <SectionHeading 
+            title="About Me" 
+            subtitle="My background and journey" 
+            className="mb-16"
+          />
+          <EnhancedAboutSection />
         </div>
       </section>
 
@@ -663,39 +706,39 @@ export default function Portfolio() {
           <SectionHeading title="Work Experience" subtitle="My professional journey" />
 
           <div className="mt-16">
-        {/* Fix for "P" in experience not showing good: use correct spelling and font rendering */}
-        <Timeline />
+            <Timeline />
           </div>
         </div>
       </section>
         
 
       {/* GitHub Activity Section */}
-<section id="activity" className="py-24 relative">
-  <div className="absolute inset-0 z-0">
-    <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-    <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-  </div>
+      <section id="activity" className="py-24 relative">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        </div>
 
-  <div className="container relative z-10">
-    <SectionHeading 
-      title="GitHub Contributions" 
-      subtitle="My recent GitHub contributions" 
-    />
+        <div className="container relative z-10">
+          <SectionHeading 
+            title="GitHub Contributions" 
+            subtitle="My recent GitHub contributions" 
+          />
 
-    <div className="mt-12 max-w-3xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-700/50 backdrop-blur-sm"
-      >
-        <GitHubActivity />
-      </motion.div>
-    </div>
-  </div>
-</section>
+          <div className="mt-12 max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-700/50 backdrop-blur-sm"
+            >
+              <GitHubActivity />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Enhanced Contact Section */}
       <section id="contact" className="py-32 relative overflow-hidden">
         {/* Animated gradient background */}
@@ -748,7 +791,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
           >
             <SectionHeading 
-              title="Let's Create Something Amazing" 
+              title="Contact Me" 
               subtitle="Get In Touch" 
             />
           </motion.div>
