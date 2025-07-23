@@ -13,7 +13,6 @@ import { ContactForm } from "@/components/contact-form"
 import { CreativeHero } from "@/components/creative-hero"
 import { FloatingNav } from "@/components/floating-nav"
 import { MouseFollower } from "@/components/mouse-follower"
-import { ScrollProgress } from "@/components/scroll-progress"
 import { SectionHeading } from "@/components/section-heading"
 import { GlassmorphicCard } from "@/components/glassmorphic-card"
 import { GitHubActivity } from "@/components/ui/github-activity"
@@ -244,7 +243,7 @@ const EnhancedAboutSection = () => {
             onClick={handleDownloadResume}
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-purple-500/25"
           >
-            <Download className="w-5 h-5 group-hover:animate-bounce" />
+            <Download className="w-5 w-5 group-hover:animate-bounce" />
             Download My Resume
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
@@ -449,7 +448,6 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden">
       <MouseFollower />
-      <ScrollProgress />
       <FloatingNav />
 
       {/* Hero Section */}
