@@ -130,8 +130,8 @@ const ContactCard = ({ icon, title, value, href, gradient, hoverColor, external 
 const EnhancedAboutSection = () => {
   const achievements = [
     { text: "AWS AI Practitioner Certified", icon: Award },
-    { text: "Machine Learning Specialist", icon: Code },
-    { text: "Full-Stack Developer", icon: Globe },
+    { text: "AI/ML Specialist", icon: Code },
+    { text: "Full-Stack AI Developer", icon: Globe },
     { text: "Open Source Contributor", icon: Star }
   ]
 
@@ -199,7 +199,7 @@ const EnhancedAboutSection = () => {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-zinc-400">Focus Area</span>
-                <span className="text-white font-medium">Machine Learning</span>
+                <span className="text-white font-medium">AI/ML</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-zinc-400">Status</span>
@@ -451,124 +451,124 @@ export default function Portfolio() {
       <FloatingNav />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div className="absolute inset-0 z-0">
+    <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+    <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+    <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+  </div>
+
+  <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div className="space-y-6 text-center md:text-left">
+      <div className="inline-block">
+        <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 mx-auto md:mx-0">
+          <span className="relative z-10">AI & ML Engineer</span>
+          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
         </div>
+      </div>
+      <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+        <span className="block">Hi, I'm</span>
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+          Mahmoud AbuAwd
+        </span>
+      </h1>
+      <p className="text-xl text-zinc-400 max-w-[600px]">
+        I craft intelligent digital solutions by combining AI, code, and creativity—driven by a passion for innovation and real-world impact.
+      </p>
+      <div className="flex flex-wrap gap-4 pt-4 justify-center md:justify-start">
+        {/* Primary Button - View Projects */}
+        <motion.div
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <Button 
+            onClick={() => scrollToSection('projects')}
+            className="relative overflow-hidden group bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-purple-500/30 transition-all duration-300"
+          >
+            <span className="relative z-10 flex items-center font-medium tracking-wide">
+              View Projects 
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:scale-110" />
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-br from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <span className="absolute inset-0 rounded-md bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          </Button>
+        </motion.div>
 
-        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-block">
-              <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
-                <span className="relative z-10">AI & ML Engineer</span>
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
-              </div>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-              <span className="block">Hi, I'm</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-                Mahmoud AbuAwd
-              </span>
-            </h1>
-            <p className="text-xl text-zinc-400 max-w-[600px]">
-              I craft intelligent digital solutions by combining AI, code, and creativity—driven by a passion for innovation and real-world impact.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              {/* Primary Button - View Projects */}
-              <motion.div
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <Button 
-                  onClick={() => scrollToSection('projects')}
-                  className="relative overflow-hidden group bg-gradient-to-br from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 shadow-lg hover:shadow-purple-500/30 transition-all duration-300"
-                >
-                  <span className="relative z-10 flex items-center font-medium tracking-wide">
-                    View Projects 
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:scale-110" />
-                  </span>
-                  <span className="absolute inset-0 bg-gradient-to-br from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="absolute inset-0 rounded-md bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                </Button>
-              </motion.div>
+        {/* Secondary Button - Contact Me */}
+        <motion.div
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <Button
+            onClick={() => scrollToSection('contact')}
+            variant="outline"
+            className="relative overflow-hidden group border border-zinc-700/80 hover:border-zinc-500 bg-zinc-900/50 hover:bg-zinc-800/50 text-zinc-200 hover:text-white transition-all duration-300"
+          >
+            <span className="relative z-10 flex items-center font-medium tracking-wide">
+              Contact Me
+            </span>
+            <span className="absolute inset-0 rounded-md bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <span className="absolute -inset-1 rounded-md bg-purple-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          </Button>
+        </motion.div>
+      </div>
+      <div className="flex gap-4 pt-4 justify-center md:justify-start">
+        <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+          >
+            <Github className="h-5 w-5" />
+            <span className="sr-only">GitHub</span>
+          </Button>
+        </Link>
+        <Link href="https://www.linkedin.com/in/mahmoud-abuawd/" target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+          >
+            <Linkedin className="h-5 w-5" />
+            <span className="sr-only">LinkedIn</span>
+          </Button>
+        </Link>
+        <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+          >
+            <Twitter className="h-5 w-5" />
+            <span className="sr-only">Twitter</span>
+          </Button>
+        </Link>
+        <Link href="mailto:mahmoodabuawad08@gmail.com">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
+          >
+            <Mail className="h-5 w-5" />
+            <span className="sr-only">Email</span>
+          </Button>
+        </Link>
+      </div>
+    </div>
+    <div className="flex justify-center">
+      <CreativeHero />
+    </div>
+  </div>
 
-              {/* Secondary Button - Contact Me */}
-              <motion.div
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <Button
-                  onClick={() => scrollToSection('contact')}
-                  variant="outline"
-                  className="relative overflow-hidden group border border-zinc-700/80 hover:border-zinc-500 bg-zinc-900/50 hover:bg-zinc-800/50 text-zinc-200 hover:text-white transition-all duration-300"
-                >
-                  <span className="relative z-10 flex items-center font-medium tracking-wide">
-                    Contact Me
-                  </span>
-                  <span className="absolute inset-0 rounded-md bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="absolute -inset-1 rounded-md bg-purple-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                </Button>
-              </motion.div>
-            </div>
-            <div className="flex gap-4 pt-4">
-              <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Github className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </Button>
-              </Link>
-              <Link href="https://www.linkedin.com/in/mahmoud-abuawd/" target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Linkedin className="h-5 w-5" />
-                  <span className="sr-only">LinkedIn</span>
-                </Button>
-              </Link>
-              <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Twitter className="h-5 w-5" />
-                  <span className="sr-only">Twitter</span>
-                </Button>
-              </Link>
-              <Link href="mailto:mahmoodabuawad08@gmail.com">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Mail className="h-5 w-5" />
-                  <span className="sr-only">Email</span>
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <CreativeHero />
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center items-start p-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"></div>
-          </div>
-        </div>
-      </section>
-
+  {/* Mouse scroll animation - hidden on mobile, visible at bottom on desktop */}
+  <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
+    <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center items-start p-1">
+      <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"></div>
+    </div>
+  </div>
+</section>
       {/* New Quote Section */}
       <InspirationalQuote />
 
