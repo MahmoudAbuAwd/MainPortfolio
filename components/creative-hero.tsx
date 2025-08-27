@@ -1,125 +1,115 @@
 import { motion } from "framer-motion"
 
 export function CreativeHero() {
-  const positions = [
-    "AI Engineer",
-    "ML Engineer", 
-    "DL Engineer",
-    "Data Science",
-    "AI Prompt Engineering",
-    "AI Researcher"
-  ]
-
   return (
     <motion.div
-      className="w-full h-[350px] sm:h-[400px] md:h-[500px] relative flex items-center justify-center overflow-hidden"
+      className="w-full h-auto relative flex items-center justify-center overflow-hidden py-4 sm:py-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-4 sm:px-6">
         <motion.div
-          className="relative"
+          className="relative bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-md border border-purple-400/30 rounded-xl p-4 sm:p-6 md:p-8 shadow-xl mx-auto"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
+          style={{ 
+            width: '100%', 
+            maxWidth: '600px', // Increased from 500px to 600px
+            minHeight: '300px',
+            height: 'auto'
+          }}
         >
-          {/* Main title */}
+          {/* Core Skills title */}
           <motion.h2 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-center mb-6 sm:mb-8 md:mb-12 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-400 bg-clip-text text-transparent leading-tight pb-2"
+            className="text-2xl sm:text-3xl font-extrabold text-center mb-4 sm:mb-6 md:mb-8 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-400 bg-clip-text text-transparent"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Expertise Areas
+            Core Skills
           </motion.h2>
           
-          {/* Mobile: Compact grid, Desktop: Spacious grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-5 mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto">
-            {positions.map((position, index) => (
-              <motion.div
-                key={position}
-                className="group relative"
-                initial={{ rotateY: 90, opacity: 0 }}
-                animate={{ rotateY: 0, opacity: 1 }}
-                transition={{ delay: 0.6 + index * 0.15, duration: 0.7 }}
-                whileHover={{ scale: 1.05, rotateY: 10 }}
-              >
-                <div className="relative w-full h-12 sm:h-14 md:h-16 lg:h-20 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-md border border-purple-400/30 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 lg:p-5 shadow-xl hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:-translate-y-2">
-                  {/* Animated border glow */}
-                  <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-                  
-                  {/* Content */}
-                  <div className="relative z-10 h-full flex items-center justify-center">
-                    <h3 className="text-xs sm:text-sm md:text-base font-medium text-center text-purple-200 group-hover:text-purple-100 transition-colors duration-300 leading-tight px-1">
-                      {position}
-                    </h3>
-                  </div>
-                  
-                  {/* Floating particles effect - Hidden on mobile for performance */}
-                  <motion.div
-                    className="hidden sm:block absolute top-2 right-2 w-1 h-1 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100"
-                    animate={{
-                      y: [0, -10, 0],
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.2
-                    }}
-                  />
-                  <motion.div
-                    className="hidden sm:block absolute bottom-2 left-2 w-1 h-1 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100"
-                    animate={{
-                      y: [0, 10, 0],
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.3
-                    }}
-                  />
-                </div>
-              </motion.div>
-            ))}
+          {/* Skills list - Stack on mobile, grid on larger screens */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">Machine Learning</h3>
+            </motion.div>
+
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">Computer Vision</h3>
+            </motion.div>
+            
+
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">MLOPs</h3>
+            </motion.div>
+
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">Deep Learning</h3>
+            </motion.div>
+            
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">AI Agents</h3>
+            </motion.div>
+            
+            <motion.div
+              className="w-full h-12 sm:h-14 md:h-16 bg-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-lg flex items-center justify-center"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ delay: 0.9, duration: 0.7 }}
+            >
+              <h3 className="text-purple-200 text-sm sm:text-base md:text-lg font-medium px-1 text-center">LLMs</h3>
+            </motion.div>
           </div>
           
-          {/* Bottom message with pulsing effect */}
+          {/* Honors section at bottom */}
           <motion.div
             className="text-center"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1.4, duration: 0.8 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
           >
-            <motion.div
-              className="inline-block px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-800/20 to-pink-800/20 backdrop-blur-sm border border-purple-400/20 rounded-full mx-4"
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(168, 85, 247, 0.1)",
-                  "0 0 40px rgba(168, 85, 247, 0.2)",
-                  "0 0 20px rgba(168, 85, 247, 0.1)"
-                ]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <p className="text-purple-200 text-xs sm:text-sm font-medium">
-                🚀 Ready to innovate with next-generation AI solutions
+            
+            <div className="inline-block px-3 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 bg-gradient-to-r from-purple-800/20 to-pink-800/20 backdrop-blur-sm border border-purple-400/20 rounded-lg">
+              <p className="text-purple-200 text-sm sm:text-base md:text-lg font-medium">
+                GPA: 3.40/4.0
               </p>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       </div>
       
-      {/* Animated background elements */}
+      {/* Animated background elements - Reduced on mobile for performance */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"
+          className="hidden sm:block absolute top-1/4 left-1/4 w-48 sm:w-64 h-48 sm:h-64 bg-purple-600/10 rounded-full blur-xl sm:blur-2xl md:blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3]
@@ -131,7 +121,7 @@ export function CreativeHero() {
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-pink-600/10 rounded-full blur-3xl"
+          className="hidden sm:block absolute bottom-1/4 right-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-pink-600/10 rounded-full blur-xl sm:blur-2xl md:blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
             opacity: [0.2, 0.4, 0.2]

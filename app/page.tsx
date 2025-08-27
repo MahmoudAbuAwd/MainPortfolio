@@ -449,8 +449,7 @@ export default function Portfolio() {
     <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden">
       <MouseFollower />
       <FloatingNav />
-
-      {/* Hero Section */}
+{/* Hero Section */}
 <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
   <div className="absolute inset-0 z-0">
     <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
@@ -460,7 +459,7 @@ export default function Portfolio() {
 
   <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
     <div className="space-y-6 text-center md:text-left">
-      <div className="inline-block">
+      <div className="inline-block mt-16 md:mt-0"> {/* Added mt-16 for mobile, md:mt-0 for desktop */}
         <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 mx-auto md:mx-0">
           <span className="relative z-10">AI & ML Engineer</span>
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
