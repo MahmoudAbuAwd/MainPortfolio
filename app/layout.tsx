@@ -1,6 +1,14 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import './globals.css'
+import { Plus_Jakarta_Sans } from 'next/font/google'
+
+const fontSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Mahmoud Portfolio',
@@ -18,10 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         {/* Favicon links */}
         <link rel="icon" href="/certs/ai.png" type="/certs/ai.png" />
         {/* For Apple devices */}
@@ -40,9 +44,9 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white">
+      <body className={`${fontSans.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}>
         {children}
       </body>
-    </html>
-  )
-}
+      </html>
+    )
+  }

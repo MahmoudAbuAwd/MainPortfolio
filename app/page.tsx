@@ -93,6 +93,132 @@ const EnhancedSkillBadge = ({ name, level, icon, color = "purple" }) => {
   )
 }
 
+// VS Code-style Skills Card for Hero right side
+const VSCodeSkillsCard = () => {
+  const [activeTab, setActiveTab] = React.useState<'skills' | 'readme'>('skills')
+  const codeLines = [
+    '""" core_skills: Mahmoud AbuAwd (AI Engineer) """',
+    'from dataclasses import dataclass',
+    '',
+    '@dataclass',
+    'class Profile:',
+    '    name: str = "Mahmoud AbuAwd"',
+    '    role: str = "AI Engineer"',
+    '    location: str = "Amman, Jordan"',
+    '',
+    'skills = {',
+    '    "core": ["Python", "ML", "DL", "NLP", "Computer Vision", "Generative AI"],',
+    '    "tools": ["Tensorflow", "Pytorch", "Cloud", "Scikit-learn", "AWS"],',
+    '    "focus": "AI/ML • MLOps • Full‑stack AI",',
+    '    "status": "Available"',
+    '}',
+    '',
+    'def currently_building():',
+    '    return ["AI products", "Open‑source", "Learning daily"]',
+    '',
+    'if __name__ == "__main__":',
+    '    me = Profile()',
+    '    print(f"{me.role} — {me.location}")',
+  ]
+
+  return (
+    <div className="w-full max-w-[780px] rounded-2xl border border-zinc-700/60 bg-[#0b0b0d]/90 shadow-2xl overflow-hidden">
+      {/* Window controls */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-zinc-800 bg-zinc-900/80">
+        <span className="w-3 h-3 rounded-full bg-red-500/80" />
+        <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+        <span className="w-3 h-3 rounded-full bg-green-500/80" />
+        <div className="ml-3 text-xs text-zinc-400">skills.py — VS Code</div>
+      </div>
+
+      {/* Tab bar */}
+      <div className="flex items-center gap-1 px-2 border-b border-zinc-800 bg-zinc-900/60">
+        <button
+          type="button"
+          onClick={() => setActiveTab('skills')}
+          className={`px-3 py-1.5 text-xs rounded-t-md border ${
+            activeTab === 'skills'
+              ? 'bg-zinc-800 text-zinc-200 border-zinc-700 border-b-0'
+              : 'text-zinc-500 border-transparent hover:text-zinc-300'
+          }`}
+          aria-selected={activeTab === 'skills'}
+        >
+          skills.py
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('readme')}
+          className={`px-3 py-1.5 text-xs rounded-t-md border ${
+            activeTab === 'readme'
+              ? 'bg-zinc-800 text-zinc-200 border-zinc-700 border-b-0'
+              : 'text-zinc-500 border-transparent hover:text-zinc-300'
+          }`}
+          aria-selected={activeTab === 'readme'}
+        >
+          README.md
+        </button>
+      </div>
+
+      {/* Editor area */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.15),transparent_60%)]" />
+        {activeTab === 'skills' ? (
+          <pre className="relative m-0 p-4 font-mono text-[12px] leading-5 text-zinc-200 overflow-x-hidden overflow-y-hidden">
+            {codeLines.map((line, idx) => (
+              <div key={idx} className="whitespace-pre-wrap break-words">
+                <span className="select-none text-zinc-600 w-8 inline-block text-right pr-4">{idx + 1}</span>
+                <span>{line}</span>
+              </div>
+            ))}
+          </pre>
+        ) : (
+          <div className="relative m-0 p-5 text-[13px] leading-6 text-zinc-200">
+            <div className="font-semibold text-white text-sm">Core Skills</div>
+            <ul className="mt-2 grid grid-cols-2 gap-y-1 gap-x-6 text-zinc-300 text-sm">
+              <li>Python</li>
+              <li>Machine Learning</li>
+              <li>Deep Learning</li>
+              <li>NLP</li>
+              <li>Computer Vision</li>
+              <li>Generative AI</li>
+            </ul>
+
+            <div className="mt-4 font-semibold text-white text-sm">Tools</div>
+            <ul className="mt-2 grid grid-cols-2 gap-y-1 gap-x-6 text-zinc-300 text-sm">
+              <li>Tensorflow</li>
+              <li>Pytorch</li>
+              <li>Scikit-learn</li>
+              <li>Langchain</li>
+              <li>Cloud</li>
+              <li>AWS</li>
+            </ul>
+
+            <div className="mt-4 font-semibold text-white text-sm">Focus</div>
+            <p className="mt-1 text-zinc-300 text-sm">AI/ML • MLOps • Full‑stack AI</p>
+
+            <div className="mt-4 font-semibold text-white text-sm">Currently Building</div>
+            <ul className="mt-2 list-disc pl-5 text-zinc-300 text-sm">
+              <li>AI products</li>
+              <li>Open‑source</li>
+              <li>Learning daily</li>
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Status bar */}
+      <div className="flex items-center justify-between px-4 py-1.5 text-[11px] border-t border-zinc-800 bg-zinc-900/80 text-zinc-400">
+        <div className="flex items-center gap-4">
+          <span>{activeTab === 'skills' ? 'Python' : 'Markdown'}</span>
+          <span>UTF‑8</span>
+          <span>LF</span>
+        </div>
+        <div>{activeTab === 'skills' ? `Ln ${codeLines.length}, Col 1` : 'README'}</div>
+      </div>
+    </div>
+  )
+}
+
 // Reusable ContactCard component
 const ContactCard = ({ icon, title, value, href, gradient, hoverColor, external = false }) => (
   <motion.div 
@@ -135,6 +261,13 @@ const EnhancedAboutSection = () => {
     { text: "Open Source Contributor", icon: Star }
   ]
 
+  const stats = [
+    { label: "Projects", value: "15+", icon: Code },
+    { label: "Certifications", value: "25+", icon: Award },
+    { label: "Open Source PRs", value: "30+", icon: Star },
+    { label: "Domains", value: "AI • ML • Cloud", icon: Globe },
+  ]
+
   const handleDownloadResume = () => {
     const link = document.createElement('a')
     link.href = '/CV.pdf'
@@ -147,17 +280,20 @@ const EnhancedAboutSection = () => {
   return (
     <section className="py-24 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-      <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-pink-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-      
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-pink-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.05),transparent_60%)]"></div>
+      </div>
+
       <div className="container mx-auto px-8 max-w-6xl relative z-10">
 
         {/* Main content in cards */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {/* Story Card */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm">
+          <div className="lg:col-span-2 rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm bg-gradient-to-br from-zinc-800/80 to-zinc-900/80">
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
+              <span className="inline-block w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
               My Journey
             </h3>
             <div className="space-y-6 text-zinc-300 text-lg leading-relaxed">
@@ -171,20 +307,29 @@ const EnhancedAboutSection = () => {
                 When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, and staying up-to-date with the latest industry trends in AI and machine learning.
               </p>
             </div>
+
+           
           </div>
 
           {/* Profile Card */}
-          <div className="bg-gradient-to-br from-zinc-800/80 to-zinc-900/80 rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm">
-            <h3 className="text-2xl font-bold text-white mb-6">Quick Facts</h3>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Name</span>
-                <span className="text-white font-medium">Mahmoud AbuAwd</span>
+          <div className="rounded-3xl p-8 border border-zinc-700/50 backdrop-blur-sm bg-gradient-to-br from-zinc-800/80 to-zinc-900/80">
+            {/* Avatar */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 p-[2px]">
+                  <div className="w-full h-full rounded-full bg-zinc-900 flex items-center justify-center text-white font-bold">
+                    MA
+                  </div>
+                </div>
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 ring-2 ring-zinc-900" />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-zinc-400">Field</span>
-                <span className="text-white font-medium">AI & Robotics</span>
+              <div>
+                <p className="text-sm text-zinc-400">AI Engineer</p>
+                <h4 className="text-xl font-semibold text-white">Mahmoud AbuAwd</h4>
               </div>
+            </div>
+
+            <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <span className="text-zinc-400">Based in</span>
                 <span className="text-white font-medium">Amman, Jordan</span>
@@ -204,12 +349,66 @@ const EnhancedAboutSection = () => {
               <div className="flex items-center justify-between">
                 <span className="text-zinc-400">Status</span>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
                   <span className="text-green-400 font-medium">Available</span>
                 </div>
               </div>
             </div>
+
+            {/* Socials */}
+            <div className="mt-6 grid grid-cols-4 gap-3">
+              <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center rounded-xl border border-zinc-700/60 bg-zinc-800/50 py-2 hover:border-purple-500/50 transition-colors">
+                <Github className="w-5 h-5 text-zinc-300 group-hover:text-white" />
+              </Link>
+              <Link href="https://www.linkedin.com/in/mahmoud-abuawd-247290225/" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center rounded-xl border border-zinc-700/60 bg-zinc-800/50 py-2 hover:border-purple-500/50 transition-colors">
+                <Linkedin className="w-5 h-5 text-zinc-300 group-hover:text-white" />
+              </Link>
+              <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center rounded-xl border border-zinc-700/60 bg-zinc-800/50 py-2 hover:border-purple-500/50 transition-colors">
+                <Twitter className="w-5 h-5 text-zinc-300 group-hover:text-white" />
+              </Link>
+              <Link href="mailto:mahmoodabuawad08@gmail.com" className="group flex items-center justify-center rounded-xl border border-zinc-700/60 bg-zinc-800/50 py-2 hover:border-purple-500/50 transition-colors">
+                <Mail className="w-5 h-5 text-zinc-300 group-hover:text-white" />
+              </Link>
+            </div>
+
+            {/* Profile actions */}
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handleDownloadResume}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Resume
+              </button>
+              <Link
+                href="tel:+962791034222"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm text-zinc-200 border border-zinc-700/60 bg-zinc-800/50 hover:border-purple-500/50 hover:text-white transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                Call
+              </Link>
+            </div>
           </div>
+        </div>
+
+        {/* Quick stats */}
+        <div className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((item, idx) => {
+            const Icon = item.icon
+            return (
+              <div key={idx} className="group rounded-2xl border border-zinc-700/50 bg-zinc-900/60 p-5 hover:border-purple-500/50 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/15 to-pink-500/15">
+                    <Icon className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <div className="text-white font-semibold leading-tight">{item.value}</div>
+                    <div className="text-xs text-zinc-400">{item.label}</div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
 
         {/* Achievements */}
@@ -446,7 +645,7 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden pt-16">
       <MouseFollower />
       <FloatingNav />
 {/* Hero Section */}
@@ -459,7 +658,7 @@ export default function Portfolio() {
 
   <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
     <div className="space-y-6 text-center md:text-left">
-      <div className="inline-block mt-16 md:mt-0"> {/* Added mt-16 for mobile, md:mt-0 for desktop */}
+      <div className="inline-block mt-6 md:mt-0"> {/* Reduced top margin on mobile to tighten spacing */}
         <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 mx-auto md:mx-0">
           <span className="relative z-10">AI & ML Engineer</span>
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
@@ -557,7 +756,7 @@ export default function Portfolio() {
       </div>
     </div>
     <div className="flex justify-center">
-      <CreativeHero />
+      <VSCodeSkillsCard />
     </div>
   </div>
 
@@ -600,7 +799,7 @@ export default function Portfolio() {
             <EnhancedSkillBadge name="Computer Vision" level={90} color="purple" />
             <EnhancedSkillBadge name="Generative AI" level={90} color="blue" />
             <EnhancedSkillBadge name="Data Analysis" level={90} color="indigo" />
-            <EnhancedSkillBadge name="AWS" level={97} color="orange" />
+            <EnhancedSkillBadge name="AWS" level={90} color="orange" />
             <EnhancedSkillBadge name="Git & GitHub" level={95} color="blue" />
             <EnhancedSkillBadge name="LLMs" level={85} color="purple" />
             <EnhancedSkillBadge name="Agentic AI" level={80} color="green" />

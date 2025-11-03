@@ -5,6 +5,13 @@ import { useMobile } from "@/hooks/use-mobile"
 
 const experiences = [
   {
+    title: "AI Engineer",
+    company: "Kawkab AI",
+    period: "Sep 2025 - Present",
+    description:
+      "At Kawkab AI, I work as an AI Engineer designing and developing intelligent, scalable solutions such as chatbots, agentic AI systems, and RAG-based applications using LangChain and various LLM frameworks to enable data-driven, automated, and context-aware experiences.",
+  },
+  {
     title: "Founder",
     company: "MedGAN AI",
     period: "Fep 2025 - Present",

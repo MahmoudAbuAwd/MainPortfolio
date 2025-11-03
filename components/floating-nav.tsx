@@ -9,17 +9,8 @@ import { Button } from "@/components/ui/button"
 import { useMobile } from "@/hooks/use-mobile"
 
 export function FloatingNav() {
-  const [isVisible, setIsVisible] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useMobile()
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 100)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   const navItems = [
     { name: "About", href: "#about", icon: <User className="h-4 w-4" /> },
@@ -42,68 +33,58 @@ export function FloatingNav() {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <motion.nav
-        className={`fixed top-6 left-6 z-50 hidden md:block ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        initial={{ x: -100 }}
-        animate={{ x: isVisible ? 0 : -100 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="relative flex items-center gap-2 px-4 py-3 rounded-xl bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-lg">
-          {/* Name/Logo */}
-          <Link href="/" className="flex items-center mr-4">
-            <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-              MA
-            </span>
-          </Link>
+      {/* Top Navigation (always visible) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/60 bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/60">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <div className="h-16 flex items-center gap-4">
+            {/* Logo / Name */}
+            <Link href="/" className="flex items-center">
+              <span className="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                Mahmoud
+              </span>
+            </Link>
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="px-3.5 py-1.5 text-sm font-medium flex items-center gap-2 text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-zinc-800/50"
+            {/* Desktop nav */}
+            <div className="hidden md:flex items-center gap-1 ml-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="px-3.5 py-2 text-sm font-medium flex items-center gap-2 text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-zinc-800/50"
+                >
+                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">
+                    {item.icon}
+                  </span>
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+
+            <div className="ml-auto flex items-center gap-2">
+              {/* Resume CTA */}
+              <Button
+                size="sm"
+                className="hidden md:inline-flex rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
+                onClick={handleDownloadResume}
               >
-                <span className="opacity-70 hover:opacity-100 transition-opacity">
-                  {item.icon}
-                </span>
-                {item.name}
-              </Link>
-            ))}
+                <Download className="h-4 w-4 mr-2" />
+                Resume
+              </Button>
+
+              {/* Mobile menu button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden w-10 h-10 rounded-lg bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800/50"
+                onClick={() => setIsOpen(true)}
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
-
-          {/* Resume Button */}
-          <Button
-            size="sm"
-            className="ml-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] hover:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
-            onClick={handleDownloadResume}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Resume
-          </Button>
         </div>
-      </motion.nav>
-
-      {/* Mobile Menu Button */}
-      <motion.div
-        className={`fixed top-6 right-6 z-50 md:hidden ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ 
-          scale: isVisible ? 1 : 0.8, 
-          opacity: isVisible ? 1 : 0 
-        }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-12 h-12 rounded-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800/50 shadow-lg"
-          onClick={() => setIsOpen(true)}
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
-      </motion.div>
+      </nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -159,7 +140,8 @@ export function FloatingNav() {
                   ))}
                 </nav>
 
-                {/* Resume Button */}
+                {/* Resume Button */
+                }
                 <Button
                   className="mt-6 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)]"
                   onClick={handleDownloadResume}
