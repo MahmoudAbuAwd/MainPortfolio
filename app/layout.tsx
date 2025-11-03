@@ -5,8 +5,10 @@ export const metadata: Metadata = {
   title: 'Mahmoud Portfolio',
   description: 'AI & ML Engineer Portfolio',
   generator: 'Mahmoud Portfolio',
+  other: {
+    'google-site-verification': 'wfNe4dC0_Gs0uv9mZErxak0e7SskKE1cCqMWudvcSC8',
 }
-
+}
 export default function RootLayout({
   children,
 }: Readonly<{
