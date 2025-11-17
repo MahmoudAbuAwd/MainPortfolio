@@ -100,7 +100,7 @@ export const metadata: Metadata = {
     apple: '/certs/ai.png',
   },
   verification: {
-    google: 'wfNe4dC0_Gs0uv9mZErxak0e7SskKE1cCqMWudvcSC8',
+    google: ['wfNe4dC0_Gs0uv9mZErxak0e7SskKE1cCqMWudvcSC8', 'aq5RbQYjIu5R-p4Uejgu53IYhfiJKCkpJCR_TKh3n8M'],
   },
   robots: {
     index: true,
