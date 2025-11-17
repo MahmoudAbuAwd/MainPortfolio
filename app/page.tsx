@@ -645,11 +645,18 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden pt-16">
+    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white">
+      <a
+        href="#main-content"
+        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-zinc-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg focus-visible:clip-auto focus-visible:h-auto focus-visible:w-auto focus-visible:overflow-visible focus-visible:whitespace-normal focus-visible:m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+      >
+        Skip to main content
+      </a>
       <MouseFollower />
       <FloatingNav />
+      <main id="main-content" className="overflow-hidden pt-16">
 {/* Hero Section */}
-<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+<header id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
   <div className="absolute inset-0 z-0">
     <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
     <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -760,13 +767,7 @@ export default function Portfolio() {
     </div>
   </div>
 
-  {/* Mouse scroll animation - hidden on mobile, visible at bottom on desktop */}
-  <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
-    <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center items-start p-1">
-      <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"></div>
-    </div>
-  </div>
-</section>
+</header>
       {/* New Quote Section */}
       <InspirationalQuote />
 
@@ -1086,6 +1087,8 @@ export default function Portfolio() {
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-zinc-800 py-12">
