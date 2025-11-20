@@ -1,0 +1,101 @@
+{
+  "slug": "prompt-engineering",
+  "title": "Prompt Engineering Systems: From Templates to Test Suites",
+  "description": "Design prompt libraries that behave deterministically, self-heal, and deliver measurable business impact.",
+  "excerpt": "Version prompts like code, score them for delight, and run regression suites so creativity never drifts off-brand.",
+  "publishedAt": "2025-11-05",
+  "readTime": "12 min read",
+  "tags": ["Prompt Engineering", "LLMs", "Evaluation"],
+  "heroStat": {
+    "value": "41%",
+    "label": "Quality lift",
+    "sublabel": "after adding prompt regression testing"
+  },
+  "sections": [
+    {
+      "title": "Canonical templates with behavioral guarantees",
+      "slug": "prompt-engineering-templates",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "A prompt is not a string—it is a versioned artifact with owners, tests, and rollout plans. We maintain canonical templates for every user intent, annotated with tone, creativity allowance, and fallback responses."
+        },
+        {
+          "type": "paragraph",
+          "text": "Templates live alongside application code, so engineers can track migrations like API updates. This discipline keeps routing consistent with the {{link:/blog/large-language-models|LLM orchestration playbook}} that sits on top."
+        },
+        {
+          "type": "paragraph",
+          "text": "We tag every template with persona, compliance notes, and telemetry hooks. When a model regression pops up, dashboards reveal exactly which template variant fired, what guardrails triggered, and how the response scored."
+        },
+        {
+          "type": "paragraph",
+          "text": "Governance review boards meet monthly to prune stale prompts, approve new intents, and align storyboards with product marketing. The ritual keeps creativity aligned with brand voice while maintaining a single source of truth."
+        }
+      ]
+    },
+    {
+      "title": "Evaluation that sparks delight",
+      "slug": "prompt-engineering-evaluation",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "We built a delight index scoring rubric that rewards responses which surprise users without breaking factual accuracy. Judges review anonymized transcripts, and any conversation above 4.5/5 unlocks an in-product badge."
+        },
+        {
+          "type": "paragraph",
+          "text": "The rubric incorporates sentiment analysis, coverage of user goals, and policy adherence. Each criterion emits a structured score so product analysts can slice outcomes by segment, channel, or time of day."
+        },
+        {
+          "type": "paragraph",
+          "text": "Evaluation cycles now include semi-automated AB tests where alternative prompt phrasings compete on engagement, retention, and deflection metrics. Winners auto-merge into the template registry with rollback hooks primed."
+        }
+      ]
+    },
+    {
+      "title": "Regression suites that keep creativity in check",
+      "slug": "prompt-engineering-regression",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "CI runs a 300-sample regression suite every Friday with deterministic prompts and exploratory stress tests. If a change introduces hallucinations or tone drift, the pipeline auto-reverts and assigns a ticket."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pair regression suites with warm-start vectors from the {{link:/blog/machine-learning-foundations|classical ML feature store}} so personalization stays sharp without breaking compliance policy."
+        },
+        {
+          "type": "paragraph",
+          "text": "We maintain a library of adversarial probes—prompt injections, jailbreak attempts, and cultural edge cases—that run before every release. Failing probes file annotated tickets with reproduction scripts and recommended mitigations."
+        },
+        {
+          "type": "paragraph",
+          "text": "Observability hooks stream prompt-level metrics into a centralized console. Teams inspect perplexity drift, reference citation rates, and sentiment polarity to catch creative decay before customers notice."
+        }
+      ]
+    },
+    {
+      "title": "References",
+      "slug": "prompt-engineering-references",
+      "body": [
+        {
+          "type": "list",
+          "items": [
+            "OpenAI. (2024). Prompt engineering best practices. https://platform.openai.com/docs/guides/prompt-engineering",
+            "Anthropic. (2024). Evaluating language models for safety. https://www.anthropic.com/research/evaluating-safety",
+            "Humanloop. (2023). Prompt testing workflows for product teams. https://humanloop.com/blog/prompt-testing-workflows"
+          ]
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Version prompts like code and attach behavioral guarantees.",
+    "Human-in-the-loop delight scoring surfaces magical responses worth scaling.",
+    "Automated regression suites keep creativity safe and on-brand."
+  ],
+  "cta": {
+    "label": "Explore the Prompt Evaluation Checklist",
+    "href": "/resources"
+  }
+}

@@ -1,25 +1,25 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
+import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Download, ChevronRight, User, Code, Briefcase, Rocket, Award, GitCommit, Mail } from "lucide-react"
+import { Menu, X, Download, ChevronRight, Mail, BookOpen, PenSquare, Home } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { useMobile } from "@/hooks/use-mobile"
+
+const brandFontClass = "font-sans"
 
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useMobile()
 
   const navItems = [
-    { name: "About", href: "#about", icon: <User className="h-4 w-4" /> },
-    { name: "Skills", href: "#skills", icon: <Code className="h-4 w-4" /> },
-    { name: "Certifications", href: "#certifications", icon: <Award className="h-4 w-4" /> },
-    { name: "Projects", href: "#projects", icon: <Rocket className="h-4 w-4" /> },
-    { name: "Work", href: "#experience", icon: <Briefcase className="h-4 w-4" /> },
-    { name: "Activity", href: "#activity", icon: <GitCommit className="h-4 w-4" /> },
-    { name: "Contact", href: "#contact", icon: <Mail className="h-4 w-4" /> },
+    { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
+    { name: "Blog", href: "/blog", icon: <PenSquare className="h-4 w-4" /> },
+    { name: "Resources", href: "/resources", icon: <BookOpen className="h-4 w-4" /> },
+    { name: "Contact", href: "/#contact", icon: <Mail className="h-4 w-4" /> },
   ]
 
   const handleDownloadResume = () => {
@@ -39,13 +39,18 @@ export function FloatingNav() {
           <div className="h-16 flex items-center gap-4">
             {/* Logo / Name */}
             <Link href="/" className="flex items-center">
-              <span className="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              <span
+                className={clsx(
+                  brandFontClass,
+                  "text-2xl font-semibold tracking-tight uppercase text-white drop-shadow-[0_3px_20px_rgba(168,85,247,0.35)]"
+                )}
+              >
                 Mahmoud
               </span>
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex items-center gap-1 ml-4">
+            <div className="hidden md:flex items-center gap-1 ml-auto">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
@@ -60,7 +65,7 @@ export function FloatingNav() {
               ))}
             </div>
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-auto md:ml-4">
               {/* Resume CTA */}
               <Button
                 size="sm"
@@ -109,7 +114,13 @@ export function FloatingNav() {
               <div className="flex flex-col h-full p-6">
                 {/* Header with Close Button */}
                 <div className="flex justify-between items-center mb-8">
-                  <Link href="/" className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                  <Link
+                    href="/"
+                    className={clsx(
+                      brandFontClass,
+                      "text-2xl font-semibold tracking-tight uppercase text-white"
+                    )}
+                  >
                     Mahmoud AbuAwd
                   </Link>
                   <button

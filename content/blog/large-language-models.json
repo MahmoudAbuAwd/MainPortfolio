@@ -1,0 +1,97 @@
+{
+  "slug": "large-language-models",
+  "title": "Large Language Models in Production: Orchestration Playbooks",
+  "description": "Balance latency, grounding, and cost by orchestrating LLM chains with retrieval, evaluation, and fallback policies.",
+  "excerpt": "Deploy LLM experiences that stay fast, factual, and affordable through tiered routing, learning retrieval systems, and automated evaluation harnesses.",
+  "publishedAt": "2025-11-12",
+  "readTime": "14 min read",
+  "tags": ["LLMs", "Retrieval", "Systems"],
+  "heroStat": {
+    "value": "22%",
+    "label": "Latency reduction",
+    "sublabel": "after introducing tiered routing policies"
+  },
+  "sections": [
+    {
+      "title": "Tiered routing keeps latency predictable",
+      "slug": "large-language-models-routing",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "We route 70% of requests to a distilled 8B model and escalate to a larger expert only when a confidence classifier signals uncertainty. The classifier itself runs on embeddings from the same model family, keeping inference cheap and latency stable."
+        },
+        {
+          "type": "paragraph",
+          "text": "Confidence features include retrieval overlap, token entropy, and signals emitted by the {{link:/blog/prompt-engineering|prompt engineering templates}} in use. Every decision is logged so we can replay conversations and fine-tune routing policies."
+        },
+        {
+          "type": "paragraph",
+          "text": "We layer cost-aware routing rules on top of the confidence classifier, so low-risk requests stay on quantized inference endpoints while power users can opt into premium, higher-context responses. A weekly policy review reconciles latency goals with budget envelopes and ensures customer support has a documented override path."
+        },
+        {
+          "type": "paragraph",
+          "text": "Chaos drills run synthetic dialogue storms that spike concurrency 5× above peak traffic. Observability dashboards capture p95 and p99 latency, guardrail trigger rates, and escalation spend, then surface recommended threshold changes straight into configuration files instead of last-minute code patches."
+        }
+      ]
+    },
+    {
+      "title": "Grounding LLMs with retrieval that learns",
+      "slug": "large-language-models-grounding",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Retrieval is not a one-off integration. Capture every failed answer, index the supporting evidence that would have helped, and feed those snippets into a nightly RAG training cycle. The retriever becomes an always-on librarian that grows smarter with each interaction."
+        },
+        {
+          "type": "paragraph",
+          "text": "A rubric scores grounding quality across factual accuracy, citation coverage, and tone. Any miss loops back into the feedback pipeline described in the {{link:/blog/machine-learning-foundations|ML foundations article}}."
+        },
+        {
+          "type": "paragraph",
+          "text": "Retriever freshness is tracked via click-through rates on suggested citations and by auditing the age distribution of the underlying corpus. When the median source age drifts past 45 days, an automated pipeline triggers targeted crawls, re-embeds new passages, and fine-tunes dense retrievers with contrastive loss to regain semantic recall."
+        },
+        {
+          "type": "paragraph",
+          "text": "We also maintain a governance playbook that pairs quantitative metrics with qualitative annotations from legal, compliance, and product stakeholders. Quarterly reviews align corpora eligibility, retention policies, and customer-facing disclosure requirements so retrieval remains trustworthy at scale."
+        }
+      ]
+    },
+    {
+      "title": "Self-evaluating agents catch regressions",
+      "slug": "large-language-models-evaluation",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Before each release we run synthetic dialogues, adversarial prompts, and scenario-based checklists through an automated evaluation harness. An oversight agent summarizes failures in plain English so product managers can veto the launch or refine guardrails."
+        },
+        {
+          "type": "paragraph",
+          "text": "Regression coverage now spans 380 prompts across localization, accessibility, and safety personas. Failures automatically open issues in the launch tracker with links to the conversation transcript and the model snapshot, making it trivial for research engineers to reproduce and patch."
+        },
+        {
+          "type": "paragraph",
+          "text": "A monthly red-team exercise taps external domain experts to probe jailbreaks and factual blind spots. Their findings translate into prompt template updates, additional retrieval corpora, and guardrail policy changes so the entire orchestration stack keeps learning together."
+        }
+      ]
+    },
+    {
+      "title": "References",
+      "slug": "large-language-models-references",
+      "body": [
+        {
+          "type": "list",
+          "items": [
+            "Anthropic. (2024). Latency-aware agent routing for LLMs. https://www.anthropic.com/research/latency-aware-agent-routing",
+            "LangChain. (2024). Building evaluation harnesses for production LLM applications. https://blog.langchain.dev/evaluation-harness",
+            "Pinecone Research. (2024). Retrieval-augmented generation in the enterprise. https://www.pinecone.io/learn/enterprise-rag/"
+          ]
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Tiered routing balances latency, cost, and quality without sacrificing user trust.",
+    "Treat retrieval as a continuously learning subsystem—capture misses and retrain nightly.",
+    "Automated evaluation harnesses unlock faster, safer launches for cross-functional teams."
+  ]
+}
