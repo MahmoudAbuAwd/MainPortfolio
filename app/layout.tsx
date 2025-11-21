@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Libre_Baskerville, Plus_Jakarta_Sans } from 'next/font/google'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
 
@@ -9,6 +9,13 @@ const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-sans',
+  display: 'swap',
+})
+
+const fontSerif = Libre_Baskerville({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
@@ -153,7 +160,9 @@ export default function RootLayout({
           {JSON.stringify(jsonLd)}
         </Script>
       </head>
-      <body className={`${fontSans.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}>
+      <body
+        className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}
+      >
         {children}
       </body>
       </html>

@@ -13,6 +13,7 @@ const brandFontClass = "font-sans"
 
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const isMobile = useMobile()
   const openMenuButtonRef = useRef<HTMLButtonElement>(null)
   const closeMenuButtonRef = useRef<HTMLButtonElement>(null)
@@ -33,6 +34,16 @@ export function FloatingNav() {
     link.click()
     document.body.removeChild(link)
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 64)
+    }
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
@@ -59,18 +70,30 @@ export function FloatingNav() {
   return (
     <>
       {/* Top Navigation (always visible) */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/60 bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/60"
+      <motion.nav
+        className={clsx(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "supports-[backdrop-filter]:backdrop-blur",
+          isScrolled
+            ? "border-b border-zinc-800/70 bg-zinc-950/85 backdrop-blur-xl shadow-[0_20px_45px_-30px_rgba(0,0,0,0.75)]"
+            : "border-transparent bg-transparent"
+        )}
         aria-label="Primary"
       >
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="h-16 flex items-center gap-4">
+          <div
+            className={clsx(
+              "flex items-center gap-4 transition-all duration-300",
+              isScrolled ? "h-14" : "h-16"
+            )}
+          >
             {/* Logo / Name */}
             <Link href="/" className="flex items-center">
               <span
                 className={clsx(
                   brandFontClass,
-                  "text-2xl font-semibold tracking-tight uppercase text-white drop-shadow-[0_3px_20px_rgba(168,85,247,0.35)]"
+                  "font-semibold tracking-tight uppercase text-white drop-shadow-[0_3px_20px_rgba(168,85,247,0.35)] transition-all duration-300",
+                  isScrolled ? "text-xl" : "text-2xl"
                 )}
               >
                 Mahmoud
@@ -78,12 +101,21 @@ export function FloatingNav() {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex items-center gap-1 ml-auto">
+            <div
+              className={clsx(
+                "hidden md:flex items-center gap-1 ml-auto transition-all duration-300",
+                isScrolled ? "gap-0.5" : "gap-1"
+              )}
+            >
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="px-3.5 py-2 text-sm font-medium flex items-center gap-2 text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-zinc-800/50"
+                  className={clsx(
+                    "px-3.5 py-2 text-sm font-medium flex items-center gap-2 rounded-lg transition-all duration-200",
+                    "text-zinc-300 hover:text-white",
+                    isScrolled ? "hover:bg-zinc-900/60" : "hover:bg-zinc-800/50"
+                  )}
                 >
                   <span className="opacity-70 group-hover:opacity-100 transition-opacity">
                     {item.icon}
@@ -93,7 +125,12 @@ export function FloatingNav() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 ml-auto md:ml-4">
+            <div
+              className={clsx(
+                "flex items-center gap-2 ml-auto md:ml-4 transition-all duration-300",
+                isScrolled ? "gap-1" : "gap-2"
+              )}
+            >
               {/* Resume CTA */}
               <Button
                 size="sm"
@@ -108,7 +145,12 @@ export function FloatingNav() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden w-10 h-10 rounded-lg bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800/50"
+                className={clsx(
+                  "md:hidden w-10 h-10 rounded-lg border text-zinc-300 transition-all duration-300",
+                  isScrolled
+                    ? "border-zinc-800 bg-zinc-950/80 hover:bg-zinc-900/70 hover:text-white"
+                    : "border-zinc-800/70 bg-zinc-900/80 hover:bg-zinc-800/60 hover:text-white"
+                )}
                 onClick={() => setIsOpen(true)}
                 aria-label="Open menu"
                 aria-haspopup="dialog"
@@ -121,7 +163,7 @@ export function FloatingNav() {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>

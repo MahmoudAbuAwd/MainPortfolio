@@ -5,11 +5,12 @@ import { motion } from "framer-motion"
 interface SectionHeadingProps {
   title: string
   subtitle: string
+  className?: string
 }
 
-export function SectionHeading({ title, subtitle }: SectionHeadingProps) {
+export function SectionHeading({ title, subtitle, className }: SectionHeadingProps) {
   return (
-    <div className="text-center space-y-4">
+    <div className={`text-center space-y-4 ${className ?? ""}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
