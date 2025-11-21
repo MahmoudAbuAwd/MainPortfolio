@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Send, CheckCircle, X } from "lucide-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
@@ -15,7 +15,18 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const successCloseButtonRef = useRef<HTMLButtonElement>(null)
   const supabase = createClientComponentClient()
+
+  useEffect(() => {
+    if (showSuccessModal) {
+      const timeoutId = window.setTimeout(() => {
+        successCloseButtonRef.current?.focus()
+      }, 150)
+
+      return () => window.clearTimeout(timeoutId)
+    }
+  }, [showSuccessModal])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -75,38 +86,59 @@ export function ContactForm() {
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
 
           <div className="relative">
-            <h3 className="text-2xl font-bold mb-6">Send Me a Message</h3>
+            <h3 id="contact-form-heading" className="text-2xl font-bold mb-6">Send Me a Message</h3>
 
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="space-y-6"
+              aria-labelledby="contact-form-heading"
+            >
               <div className="space-y-2">
+                <label htmlFor="contact-name" className="block text-sm font-medium text-zinc-200">
+                  Name
+                </label>
                 <Input
+                  id="contact-name"
                   name="name"
-                  placeholder="Your Name"
+                  placeholder="Enter your full name"
                   required
                   className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
                 />
               </div>
               <div className="space-y-2">
+                <label htmlFor="contact-email" className="block text-sm font-medium text-zinc-200">
+                  Email address
+                </label>
                 <Input
+                  id="contact-email"
                   name="email"
                   type="email"
-                  placeholder="Your Email"
+                  placeholder="name@example.com"
                   required
                   className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
                 />
               </div>
               <div className="space-y-2">
+                <label htmlFor="contact-subject" className="block text-sm font-medium text-zinc-200">
+                  Subject
+                </label>
                 <Input
+                  id="contact-subject"
                   name="subject"
-                  placeholder="Subject"
+                  placeholder="What would you like to discuss?"
                   required
                   className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
                 />
               </div>
               <div className="space-y-2">
+                <label htmlFor="contact-message" className="block text-sm font-medium text-zinc-200">
+                  Message
+                </label>
                 <Textarea
+                  id="contact-message"
                   name="message"
-                  placeholder="Your Message"
+                  placeholder="Share the details of your project or question"
                   rows={5}
                   required
                   className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
@@ -139,6 +171,10 @@ export function ContactForm() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="contact-success-title"
+            aria-describedby="contact-success-description"
             onClick={closeSuccessModal}
           >
             <motion.div
@@ -161,6 +197,8 @@ export function ContactForm() {
               <button
                 onClick={closeSuccessModal}
                 className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors duration-200"
+                aria-label="Close message sent modal"
+                ref={successCloseButtonRef}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -187,10 +225,10 @@ export function ContactForm() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.3 }}
                 >
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 id="contact-success-title" className="text-2xl font-bold text-white mb-2">
                     Message Sent Successfully! 🎉
                   </h3>
-                  <p className="text-zinc-300 mb-6">
+                  <p id="contact-success-description" className="text-zinc-300 mb-6">
                     Thanks for reaching out! I'll get back to you as soon as possible.
                   </p>
                 </motion.div>
@@ -225,6 +263,7 @@ export function ContactForm() {
                   <Button
                     onClick={closeSuccessModal}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 border-0 px-6"
+                    aria-label="Dismiss success message"
                   >
                     Got it!
                   </Button>

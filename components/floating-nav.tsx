@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
@@ -14,6 +14,9 @@ const brandFontClass = "font-sans"
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false)
   const isMobile = useMobile()
+  const openMenuButtonRef = useRef<HTMLButtonElement>(null)
+  const closeMenuButtonRef = useRef<HTMLButtonElement>(null)
+  const firstNavLinkRef = useRef<HTMLAnchorElement>(null)
 
   const navItems = [
     { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
@@ -31,10 +34,35 @@ export function FloatingNav() {
     document.body.removeChild(link)
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      const timeout = window.setTimeout(() => {
+        (isMobile ? firstNavLinkRef.current : null)?.focus()
+      }, 120)
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          setIsOpen(false)
+        }
+      }
+
+      window.addEventListener("keydown", handleKeyDown)
+      return () => {
+        window.clearTimeout(timeout)
+        window.removeEventListener("keydown", handleKeyDown)
+      }
+    } else if (isMobile) {
+      openMenuButtonRef.current?.focus()
+    }
+  }, [isOpen, isMobile])
+
   return (
     <>
       {/* Top Navigation (always visible) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/60 bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/60">
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800/60 bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/60"
+        aria-label="Primary"
+      >
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           <div className="h-16 flex items-center gap-4">
             {/* Logo / Name */}
@@ -83,6 +111,10 @@ export function FloatingNav() {
                 className="md:hidden w-10 h-10 rounded-lg bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800/50"
                 onClick={() => setIsOpen(true)}
                 aria-label="Open menu"
+                aria-haspopup="dialog"
+                aria-expanded={isOpen}
+                aria-controls="mobile-navigation"
+                ref={openMenuButtonRef}
               >
                 <Menu className="h-5 w-5" />
               </Button>
@@ -102,6 +134,7 @@ export function FloatingNav() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={() => setIsOpen(false)}
+              role="presentation"
             />
 
             <motion.div
@@ -110,6 +143,10 @@ export function FloatingNav() {
               animate={{ x: 0 }}
               exit={{ x: -300 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              id="mobile-navigation"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="mobile-navigation-title"
             >
               <div className="flex flex-col h-full p-6">
                 {/* Header with Close Button */}
@@ -120,12 +157,16 @@ export function FloatingNav() {
                       brandFontClass,
                       "text-2xl font-semibold tracking-tight uppercase text-white"
                     )}
+                    id="mobile-navigation-title"
+                    onClick={() => setIsOpen(false)}
                   >
                     Mahmoud AbuAwd
                   </Link>
                   <button
                     className="p-2 rounded-lg hover:bg-zinc-800/50 transition-colors"
                     onClick={() => setIsOpen(false)}
+                    aria-label="Close menu"
+                    ref={closeMenuButtonRef}
                   >
                     <X className="h-5 w-5 text-zinc-300" />
                   </button>
@@ -133,26 +174,26 @@ export function FloatingNav() {
 
                 {/* Navigation Links */}
                 <nav className="flex-1 space-y-2">
-                  {navItems.map((item) => (
+                  {navItems.map((item, index) => (
                     <Link
                       key={item.name}
                       href={item.href}
                       className="flex items-center justify-between px-4 py-3 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800/50 transition-colors group"
                       onClick={() => setIsOpen(false)}
+                      ref={index === 0 ? firstNavLinkRef : undefined}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="opacity-70 group-hover:opacity-100 transition-opacity">
+                        <span className="opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
                           {item.icon}
                         </span>
                         <span className="font-medium">{item.name}</span>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
+                      <ChevronRight className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" aria-hidden="true" />
                     </Link>
                   ))}
                 </nav>
 
-                {/* Resume Button */
-                }
+                {/* Resume Button */}
                 <Button
                   className="mt-6 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-[0_0_0_1px_rgba(255,255,255,0.05)]"
                   onClick={handleDownloadResume}

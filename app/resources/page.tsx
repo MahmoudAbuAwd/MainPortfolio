@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Metadata } from "next"
 import { BookOpen, FileText, Link2 } from "lucide-react"
 
@@ -42,36 +43,82 @@ type Resource = {
 
 const resources: Resource[] = [
   {
-    title: "LLM Orchestration Field Manual",
+    title: "Deep Learning Specialization Summary",
     description:
-      "PDF playbook outlining routing patterns, guardrails, and evaluation loops for resilient large language model deployments.",
-    url: "https://storage.googleapis.com/gweb-cloudblog-publish/original_images/LLM_Orchestration_Field_Manual.pdf",
+      "Comprehensive course notes distilling Coursera's Deep Learning Specialization into key architectures, optimization tricks, and deployment best practices.",
+    url: "/Deep_learning_specialization2.pdf",
     type: "pdf",
-    category: "Playbooks & PDFs",
+    category: "Course Summaries",
   },
   {
-    title: "MLOps Architecture Blueprint",
-    description:
-      "Google Cloud's whitepaper covering data contracts, monitoring, and release governance for production ML systems.",
-    url: "https://services.google.com/fh/files/misc/mlops_whitepaper.pdf",
-    type: "pdf",
-    category: "Playbooks & PDFs",
-  },
-  {
-    title: "LangChain Production Cookbook",
-    description:
-      "Curated recipes and best practices for building retrieval-augmented and agentic LLM applications with LangChain.",
-    url: "https://blog.langchain.dev/langchain-production-cookbook/",
+    title: "Advanced RAG Techniques – Comprehensive Research Guide",
+    description: "Comprehensive guide covering 36 advanced RAG techniques for retrieval-augmented systems.",
+    url: "https://cobalt-verdict-599.notion.site/Advanced-RAG-Techniques-Comprehensive-Research-Guide-298193c0f5718019bde0cbcbe8c1a4f3",
     type: "link",
-    category: "Tooling & Frameworks",
+    category: "Retrieval-Augmented Generation",
   },
   {
-    title: "Weights & Biases LLMOps Guide",
-    description:
-      "Comprehensive guide to experiment tracking, evaluation harnesses, and observability for LLM-powered products.",
-    url: "https://wandb.ai/site/articles/llmops-guide",
+    title: "AWS AI Practitioner – Security & IAM Roles",
+    description: "Notion notes covering access management, shared responsibility, and guardrail best practices.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-02-Security-and-IAM-roles-1dc193c0f571808684e8d91bf778c315",
     type: "link",
-    category: "Tooling & Frameworks",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – Intro to AI",
+    description: "Foundational AI concepts, terminology, and AWS positioning summarized for quick review.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-03-Intro-to-AI-1dd193c0f5718061a6e1f88742b9334c",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – Prompt Engineering",
+    description: "Prompt design patterns, evaluation tips, and generative AI safety notes for the exam.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-04-Prompt-Engineering-1e4193c0f57180e38d62f70ad1aebf2d",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – AI Challenges & Ethics",
+    description: "Key ethical considerations, bias mitigation, and responsible AI guardrails in AWS.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-05-AI-Challenges-Ethics-1e8193c0f571800ea4c3eba33b07b8bd",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – AWS AI Services",
+    description: "Service overview cheat-sheet with core capabilities and common use cases.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-06-AWS-AI-services-1e8193c0f57180be8f7df39bcb87398d",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – Amazon Bedrock",
+    description: "Bedrock components, model catalog, and orchestration workflows in concise bullet form.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-07-Amazon-Bedrock-1ea193c0f5718071b3f3f7bfe4ab2d45",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – Amazon Q",
+    description: "Study notes on Amazon Q’s capabilities, integrations, and security posture.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-08-Amazon-Q-1eb193c0f57180a381a6d0335cc12f88",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – Amazon SageMaker",
+    description: "Lifecycle overview, key features, and deployment workflows for SageMaker.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-09-Amazon-SageMaker-1ee193c0f571806c9bf6d18a064a219a",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
+  },
+  {
+    title: "AWS AI Practitioner – AWS Cloud Services",
+    description: "Refresher on supporting cloud services, data pipelines, and monitoring touchpoints.",
+    url: "https://cobalt-verdict-599.notion.site/AWS-AI-10-AWS-Cloud-Services-1f2193c0f571806dacc4c21b56df8052",
+    type: "link",
+    category: "AWS AI Practitioner Notes",
   },
 ]
 
@@ -85,6 +132,18 @@ export default function ResourcesPage() {
   }, {} as Record<string, Resource[]>)
 
   const hasResources = Object.keys(resourcesByCategory).length > 0
+
+  const slugify = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "")
+
+  const categorizedResources = Object.entries(resourcesByCategory).map(([category, categoryResources]) => ({
+    category,
+    id: slugify(category),
+    resources: categoryResources,
+  }))
 
   const resourcesStructuredData = {
     "@context": "https://schema.org",
@@ -109,6 +168,12 @@ export default function ResourcesPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-950 to-black text-white">
+      <a
+        href="#resources-main"
+        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-zinc-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg"
+      >
+        Skip to main content
+      </a>
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
@@ -117,7 +182,7 @@ export default function ResourcesPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_65%)]" />
       </div>
 
-      <main className="relative pt-28 pb-24">
+      <main id="resources-main" className="relative pt-28 pb-24" role="main">
         <script
           suppressHydrationWarning
           type="application/ld+json"
@@ -137,11 +202,37 @@ export default function ResourcesPage() {
           </div>
         </section>
 
+        {hasResources && (
+          <nav className="mt-14 px-4 sm:px-6 lg:px-8" aria-label="Resource categories">
+            <div className="mx-auto max-w-5xl rounded-3xl border border-zinc-800/70 bg-zinc-900/60 p-6">
+              <h2 className="text-lg font-semibold text-white">Jump to a learning track</h2>
+              <p className="mt-2 text-sm text-zinc-500">
+                Quickly access the resource category that matches your current AI learning goal.
+              </p>
+              <ul className="mt-4 flex flex-wrap gap-3">
+                {categorizedResources.map(({ category, id, resources }) => (
+                  <li key={id}>
+                    <Link
+                      href={`#${id}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-100 transition-colors hover:border-blue-400 hover:text-blue-50"
+                    >
+                      <span className="font-semibold">{category}</span>
+                      <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-100" aria-label={`${resources.length} resources`}>
+                        {resources.length}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </nav>
+        )}
+
         <section className="mt-16 px-4 sm:px-6 lg:px-8">
           {hasResources ? (
             <div className="mx-auto max-w-6xl space-y-12">
-              {Object.entries(resourcesByCategory).map(([category, categoryResources]) => (
-                <div key={category} className="space-y-6">
+              {categorizedResources.map(({ category, id, resources: categoryResources }) => (
+                <div key={category} id={id} className="space-y-6 scroll-mt-32">
                   <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                     <h2 className="text-2xl font-semibold text-white">
                       {category}
