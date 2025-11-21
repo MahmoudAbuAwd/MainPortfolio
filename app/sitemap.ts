@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://abuawd.online'
+import { getAllBlogPosts } from '@/lib/blog'
+
+const FALLBACK_SITE_URL = 'https://abuawd.online'
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL
   const now = new Date()
 
-  const routes: MetadataRoute.Sitemap = [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
       lastModified: now,
@@ -61,6 +65,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  return routes
+  const blogPosts = await getAllBlogPosts().catch(() => [])
+
+  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => {
+    const publishedDate = post.publishedAt ? new Date(post.publishedAt) : now
+    const lastModified = Number.isNaN(publishedDate.valueOf()) ? now : publishedDate
+
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }
+  })
+
+  return [...staticRoutes, ...blogRoutes]
 }
 
