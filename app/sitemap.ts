@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { getAllBlogPosts } from '@/lib/blog'
+import { papers } from '@/app/research-papers/data'
 
 const FALLBACK_SITE_URL = 'https://abuawd.online'
 
@@ -63,6 +64,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/research-papers`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
   ]
 
   const blogPosts = await getAllBlogPosts().catch(() => [])
@@ -79,6 +86,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   })
 
-  return [...staticRoutes, ...blogRoutes]
-}
+  const paperRoutes: MetadataRoute.Sitemap = papers.map((p) => ({
+    url: `${baseUrl}/research-papers/${p.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
 
+  return [...staticRoutes, ...blogRoutes, ...paperRoutes]
+}
