@@ -102,11 +102,11 @@ export default function ResearchPapersPage() {
 
         <section className="mt-16 px-4 sm:px-6 lg:px-8">
           {hasPapers ? (
-            <div className="mx-auto max-w-7xl grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+            <div className="mx-auto max-w-4xl flex flex-col items-center justify-center gap-8">
               {papers.map((paper) => (
                 <article
                   key={paper.title}
-                  className="group relative overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/85 p-8 md:p-10 shadow-sm transition-all hover:-translate-y-1 hover:border-blue-400/50 hover:shadow-[0_25px_60px_-30px_rgba(96,165,250,0.5)]"
+                  className="group relative w-full overflow-hidden rounded-2xl border border-zinc-700/80 bg-zinc-900/85 p-8 md:p-12 shadow-sm transition-all hover:-translate-y-1 hover:border-blue-400/50 hover:shadow-[0_25px_60px_-30px_rgba(96,165,250,0.5)]"
                 >
                   <div className="flex items-start gap-3">
                     <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-blue-300" />
@@ -158,27 +158,10 @@ export default function ResearchPapersPage() {
           )}
         </section>
 
-        <section className="mt-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-3xl border border-zinc-800/80 bg-zinc-900/60 px-8 py-10 text-center md:flex-row md:items-center md:text-left">
-            <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-white">
-                Want to feature a new paper?
-              </h2>
-              <p className="mt-3 text-sm text-zinc-400">
-                Send me the PDF or link and I’ll add it here. Preprints and published works welcome.
-              </p>
-            </div>
-            <a
-              href="mailto:mahmoodabuawad08@gmail.com"
-              className="inline-flex items-center justify-center rounded-full border border-blue-500/40 bg-blue-500/10 px-6 py-3 text-sm font-semibold text-blue-200 transition-colors hover:border-blue-400 hover:text-blue-100"
-            >
-              Submit a paper
-            </a>
-          </div>
-        </section>
-      </main>
+        </main>
 
       <SiteFooter />
     </div>
   )
 }
+

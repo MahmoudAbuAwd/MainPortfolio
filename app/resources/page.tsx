@@ -120,6 +120,41 @@ const resources: Resource[] = [
     type: "link",
     category: "AWS AI Practitioner Notes",
   },
+  {
+    title: "MLA C01 - 1 - Getting Started with ML, DevOps, and AWS",
+    description: "Foundational course covering machine learning concepts, DevOps practices, and AWS essentials for ML professionals.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-1-Getting-Started-with-ML-DevOps-and-AWS-25d193c0f57180e693cbd69a626ca8c1?pvs=74",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 2 - Data Preparation for Machine Learning",
+    description: "Comprehensive guide on data ingestion, cleaning, transformation, and preparation techniques for ML workflows.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-2-Data-Preparation-for-Machine-Learning-279193c0f57180549543cb97858bbfb1?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 3 - Machine Learning Model Development",
+    description: "Detailed exploration of model architecture design, training strategies, evaluation metrics, and optimization techniques.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-3-Machine-Learning-Model-Development-285193c0f57180329c39d9c1b81c14a7?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 4 - Deployment and Orchestration of ML Workflows",
+    description: "Best practices for containerizing models, orchestrating workflows, and scaling ML systems in production environments.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-4-Deployment-and-Orchestration-of-ML-Workflows-285193c0f5718008b2a1e7e2ea719953?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 5 - ML Solution Monitoring, Maintenance, and Security",
+    description: "Essential practices for monitoring model performance, maintaining system health, implementing security measures, and ensuring compliance.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-5-ML-Solution-Monitoring-Maintenance-and-Security-285193c0f57180c59b73d482f71ccbc7?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
 ]
 
 export default function ResourcesPage() {
