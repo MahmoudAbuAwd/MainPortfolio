@@ -29,8 +29,8 @@ export function FloatingNav() {
 
   const handleDownloadResume = () => {
     const link = document.createElement('a')
-    link.href = '/CV.pdf'
-    link.download = 'CV.pdf'
+    link.href = '/Resume.pdf'
+    link.download = 'Resume.pdf'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
