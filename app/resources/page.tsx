@@ -127,6 +127,41 @@ const resources: Resource[] = [
     type: "link",
     category: "Research Papers",
   },
+  {
+    title: "MLA C01 - 1 - Getting Started with ML, DevOps, and AWS",
+    description: "Foundational course covering machine learning concepts, DevOps practices, and AWS essentials for ML professionals.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-1-Getting-Started-with-ML-DevOps-and-AWS-25d193c0f57180e693cbd69a626ca8c1?pvs=74",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 2 - Data Preparation for Machine Learning",
+    description: "Comprehensive guide on data ingestion, cleaning, transformation, and preparation techniques for ML workflows.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-2-Data-Preparation-for-Machine-Learning-279193c0f57180549543cb97858bbfb1?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 3 - Machine Learning Model Development",
+    description: "Detailed exploration of model architecture design, training strategies, evaluation metrics, and optimization techniques.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-3-Machine-Learning-Model-Development-285193c0f57180329c39d9c1b81c14a7?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 4 - Deployment and Orchestration of ML Workflows",
+    description: "Best practices for containerizing models, orchestrating workflows, and scaling ML systems in production environments.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-4-Deployment-and-Orchestration-of-ML-Workflows-285193c0f5718008b2a1e7e2ea719953?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
+  {
+    title: "MLA C01 - 5 - ML Solution Monitoring, Maintenance, and Security",
+    description: "Essential practices for monitoring model performance, maintaining system health, implementing security measures, and ensuring compliance.",
+    url: "https://cobalt-verdict-599.notion.site/MLA-C01-5-ML-Solution-Monitoring-Maintenance-and-Security-285193c0f57180c59b73d482f71ccbc7?source=copy_link",
+    type: "link",
+    category: "Machine Learning Associate (MLA)",
+  },
 ]
 
 export default function ResourcesPage() {
@@ -184,9 +219,9 @@ export default function ResourcesPage() {
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-blue-700/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_65%)]" />
+        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-purple-600/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pink-600/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(168,85,247,0.08),_transparent_65%)]" />
       </div>
 
       <main id="resources-main" className="relative pt-28 pb-24" role="main">
@@ -197,7 +232,7 @@ export default function ResourcesPage() {
         />
         <section className="px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-4 py-1 text-sm text-blue-100">
+            <span className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/10 px-4 py-1 text-sm text-purple-200">
               Curated learning hub
             </span>
             <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
@@ -221,10 +256,10 @@ export default function ResourcesPage() {
                   <li key={id}>
                     <Link
                       href={`#${id}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-100 transition-colors hover:border-blue-400 hover:text-blue-50"
+                      className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-50"
                     >
                       <span className="font-semibold">{category}</span>
-                      <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-xs text-blue-100" aria-label={`${resources.length} resources`}>
+                      <span className="rounded-full bg-purple-500/20 px-2 py-0.5 text-xs text-purple-100" aria-label={`${resources.length} resources`}>
                         {resources.length}
                       </span>
                     </Link>
@@ -253,16 +288,16 @@ export default function ResourcesPage() {
                     {categoryResources.map((resource) => (
                       <article
                         key={resource.title}
-                        className="group relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 transition-all hover:-translate-y-1.5 hover:border-blue-500/40 hover:shadow-[0_25px_60px_-30px_rgba(96,165,250,0.7)]"
+                        className="group relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 transition-all hover:-translate-y-1.5 hover:border-purple-500/40 hover:shadow-[0_25px_60px_-30px_rgba(147,51,234,0.7)]"
                       >
                         <div className="flex items-start gap-3">
                           {resource.type === 'pdf' ? (
-                            <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-blue-300" />
+                            <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-purple-300" />
                           ) : (
-                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-blue-400" />
+                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-purple-400" />
                           )}
                           <div>
-                            <h3 className="text-lg font-semibold text-white group-hover:text-blue-200">
+                            <h3 className="text-lg font-semibold text-white group-hover:text-purple-200">
                               {resource.title}
                             </h3>
                             <p className="mt-2 text-sm text-zinc-400">
@@ -275,7 +310,7 @@ export default function ResourcesPage() {
                           href={resource.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-6 inline-flex items-center text-sm font-semibold text-blue-300 transition-colors hover:text-blue-200"
+                          className="mt-6 inline-flex items-center text-sm font-semibold text-purple-300 transition-colors hover:text-purple-200"
                         >
                           {resource.type === 'pdf' ? 'Open PDF' : 'Visit Link'}
                           <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -311,7 +346,7 @@ export default function ResourcesPage() {
             </div>
             <a
               href="mailto:mahmoodabuawad08@gmail.com"
-              className="inline-flex items-center justify-center rounded-full border border-blue-500/40 bg-blue-500/10 px-6 py-3 text-sm font-semibold text-blue-200 transition-colors hover:border-blue-400 hover:text-blue-100"
+              className="inline-flex items-center justify-center rounded-full border border-purple-500/40 bg-purple-500/10 px-6 py-3 text-sm font-semibold text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-100"
             >
               Submit a resource
             </a>

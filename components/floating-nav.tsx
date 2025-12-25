@@ -23,8 +23,7 @@ export function FloatingNav() {
     { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
     { name: "Blog", href: "/blog", icon: <PenSquare className="h-4 w-4" /> },
     { name: "Resources", href: "/resources", icon: <BookOpen className="h-4 w-4" /> },
-    { name: "Research Papers", href: "/research-papers", icon: <FileText className="h-4 w-4" /> },
-    { name: "Contact", href: "/#contact", icon: <Mail className="h-4 w-4" /> },
+    { name: "Contact", href: "/contact", icon: <Mail className="h-4 w-4" /> },
   ]
 
   const handleDownloadResume = () => {

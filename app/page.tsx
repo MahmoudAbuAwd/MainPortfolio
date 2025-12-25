@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button"
 import { ProjectCard } from "@/components/project-card"
 import { SkillBadge } from "@/components/skill-badge"
 import { Timeline } from "@/components/timeline"
-import { ContactForm } from "@/components/contact-form"
 import { FloatingNav } from "@/components/floating-nav"
 import { MouseFollower } from "@/components/mouse-follower"
 import { SiteFooter } from "@/components/site-footer"
@@ -555,8 +554,13 @@ export default function Portfolio() {
 {/* Hero Section */}
 <header
   id="hero"
-  className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-purple-950 via-purple-900 to-purple-950 px-4 py-24 text-white sm:py-32"
+  className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-black via-purple-950 to-black px-4 py-24 text-white sm:py-32"
 >
+  {/* Grid Pattern Background */}
+  <div className="absolute inset-0 z-0">
+    <div className="hero-grid" />
+  </div>
+  
   <div className="container relative z-10">
     <div className="mx-auto flex max-w-4xl flex-col items-center gap-10 text-center">
       <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-medium uppercase tracking-[0.18em] text-white/85">
@@ -796,158 +800,6 @@ export default function Portfolio() {
               className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-700/50 backdrop-blur-sm"
             >
               <GitHubActivity />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Contact Section */}
-      <section id="contact" className="py-32 relative overflow-hidden">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 z-0">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-            animate={{
-              x: [-20, 20, -20],
-              y: [-10, 10, -10],
-            }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-            animate={{
-              x: [10, -10, 10],
-              y: [20, -20, 20],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-          />
-          <motion.div
-            className="absolute top-2/3 left-1/3 w-48 h-48 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
-            animate={{
-              x: [0, 15, 0],
-              y: [15, 0, 15],
-            }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-          />
-        </div>
-
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <SectionHeading 
-              title="Contact Me" 
-              subtitle="Get In Touch" 
-            />
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16">
-            {/* Contact Information - Enhanced */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <GlassmorphicCard className="hover:shadow-purple-500/10 transition-all duration-300">
-                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-                  Contact Information
-                </h3>
-                
-                <div className="space-y-4">
-                  {/* Email */}
-                  <ContactCard 
-                    icon={<Mail className="h-5 w-5" />}
-                    title="Email Address"
-                    value="Mahmoodabuawad08@gmail.com"
-                    href="mailto:mahmoodabuawad08@gmail.com"
-                    gradient="from-purple-500 to-pink-600"
-                    hoverColor="purple-400"
-                  />
-                  
-                  {/* Phone */}
-                  <ContactCard 
-                    icon={<Phone className="h-5 w-5" />}
-                    title="Phone Number"
-                    value="+962 79 103 4222"
-                    href="tel:+962791034222"
-                    gradient="from-blue-500 to-teal-600"
-                    hoverColor="blue-400"
-                  />
-                  
-                  {/* LinkedIn */}
-                  <ContactCard 
-                    icon={<Linkedin className="h-5 w-5" />}
-                    title="LinkedIn Profile"
-                    value="Mahmoud AbuAwd"
-                    href="https://www.linkedin.com/in/mahmoud-abuawd-247290225/"
-                    gradient="from-blue-600 to-blue-700"
-                    hoverColor="blue-400"
-                    external
-                  />
-                  
-                  {/* GitHub */}
-                  <ContactCard 
-                    icon={<Github className="h-5 w-5" />}
-                    title="GitHub Profile"
-                    value="MahmoudAbuAwd"
-                    href="https://github.com/MahmoudAbuAwd"
-                    gradient="from-gray-700 to-gray-800"
-                    hoverColor="gray-300"
-                    external
-                  />
-                </div>
-
-                {/* Availability Status */}
-                <div className="mt-8 pt-8 border-t border-zinc-800/50">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                      <h4 className="text-lg font-medium mb-1">Current Availability</h4>
-                      <p className="text-sm text-zinc-400">Open to new opportunities and collaborations</p>
-                    </div>
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.05, 1],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                      }}
-                      className="flex items-center gap-2 px-4 py-2 bg-zinc-800 rounded-full border border-zinc-700/50"
-                    >
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
-                      <span className="text-sm font-medium text-green-400">Available for work</span>
-                    </motion.div>
-                  </div>
-                </div>
-              </GlassmorphicCard>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <ContactForm />
             </motion.div>
           </div>
         </div>
