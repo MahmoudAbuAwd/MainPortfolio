@@ -555,7 +555,7 @@ export default function Portfolio() {
 {/* Hero Section */}
 <header
   id="hero"
-  className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[linear-gradient(135deg,#2a1749,#1f2a6d,#062d4b)] px-4 py-24 text-white sm:py-32"
+  className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-purple-950 via-purple-900 to-purple-950 px-4 py-24 text-white sm:py-32"
 >
   <div className="container relative z-10">
     <div className="mx-auto flex max-w-4xl flex-col items-center gap-10 text-center">

@@ -120,6 +120,13 @@ const resources: Resource[] = [
     type: "link",
     category: "AWS AI Practitioner Notes",
   },
+  {
+    title: "The Role of Artificial Intelligence in Enhancing the Criminal Justice System to Reduce Arbitrary Detention",
+    description: "Comprehensive research examining AI's role in reducing arbitrary detention and protecting human rights, balancing technological advancement with privacy, fairness, and accountability across justice systems. Published in Zenodo (2025).",
+    url: "https://zenodo.org/records/17727308",
+    type: "link",
+    category: "Research Papers",
+  },
 ]
 
 export default function ResourcesPage() {
@@ -177,8 +184,8 @@ export default function ResourcesPage() {
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-purple-600/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pink-500/20 blur-3xl" />
+        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-blue-700/20 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_65%)]" />
       </div>
 
@@ -252,7 +259,7 @@ export default function ResourcesPage() {
                           {resource.type === 'pdf' ? (
                             <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-blue-300" />
                           ) : (
-                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-purple-300" />
+                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-blue-400" />
                           )}
                           <div>
                             <h3 className="text-lg font-semibold text-white group-hover:text-blue-200">

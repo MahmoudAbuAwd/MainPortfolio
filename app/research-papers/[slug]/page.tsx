@@ -80,8 +80,8 @@ export default function PaperDetailPage({ params }: { params: { slug: string } }
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-purple-600/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pink-500/20 blur-3xl" />
+        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-blue-700/20 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_65%)]" />
       </div>
 

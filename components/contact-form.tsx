@@ -103,7 +103,7 @@ export function ContactForm() {
                   name="name"
                   placeholder="Enter your full name"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
+                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
@@ -116,7 +116,7 @@ export function ContactForm() {
                   type="email"
                   placeholder="name@example.com"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
+                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
@@ -128,7 +128,7 @@ export function ContactForm() {
                   name="subject"
                   placeholder="What would you like to discuss?"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
+                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
@@ -141,7 +141,7 @@ export function ContactForm() {
                   placeholder="Share the details of your project or question"
                   rows={5}
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-purple-500 focus:ring-purple-500/20"
+                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <Button

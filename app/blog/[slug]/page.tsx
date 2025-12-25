@@ -41,7 +41,7 @@ function renderLinkedText(text: string) {
       <Link
         key={`${part.href}-${index}`}
         href={part.href}
-        className="text-purple-300 underline-offset-2 transition-colors hover:text-purple-200"
+        className="text-blue-300 underline-offset-2 transition-colors hover:text-blue-200"
       >
         {part.value}
       </Link>
@@ -72,7 +72,7 @@ function renderBodyNode(node: BlogBodyNode) {
                 {item.label}
               </p>
               {item.sublabel && (
-                <p className="mt-1 text-xs text-purple-100/70">{item.sublabel}</p>
+                <p className="mt-1 text-xs text-blue-100/70">{item.sublabel}</p>
               )}
             </div>
           ))}
@@ -95,7 +95,7 @@ function renderBodyNode(node: BlogBodyNode) {
     case "quote":
       return (
         <blockquote className="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6">
-          <Quote className="absolute -left-3 -top-3 h-12 w-12 text-purple-500/20" />
+          <Quote className="absolute -left-3 -top-3 h-12 w-12 text-blue-500/20" />
           <p className="text-lg leading-relaxed text-zinc-200">
             “{renderLinkedText(node.text)}”
           </p>
@@ -154,8 +154,8 @@ export default async function BlogArticlePage({
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-32 left-6 h-72 w-72 rounded-full bg-purple-600/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pink-600/20 blur-3xl" />
+        <div className="absolute -top-32 left-6 h-72 w-72 rounded-full bg-blue-600/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-blue-700/20 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_65%)]" />
       </div>
 
