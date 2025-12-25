@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next'
 
 import { getAllBlogPosts } from '@/lib/blog'
-import { papers } from '@/app/research-papers/data'
 
 const FALLBACK_SITE_URL = 'https://abuawd.online'
 
@@ -17,57 +16,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/#hero`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#about`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#skills`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#experience`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#projects`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#contact`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/blog`,
       lastModified: now,
       changeFrequency: 'weekly',
-      priority: 0.85,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/resources`,
       lastModified: now,
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/research-papers`,
+      url: `${baseUrl}/contact`,
       lastModified: now,
-      changeFrequency: 'weekly',
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
   ]
@@ -82,16 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/blog/${post.slug}`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.7,
     }
   })
 
-  const paperRoutes: MetadataRoute.Sitemap = papers.map((p) => ({
-    url: `${baseUrl}/research-papers/${p.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  }))
-
-  return [...staticRoutes, ...blogRoutes, ...paperRoutes]
+  return [...staticRoutes, ...blogRoutes]
 }
