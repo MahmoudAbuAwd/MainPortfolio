@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
 import { Libre_Baskerville, Plus_Jakarta_Sans } from 'next/font/google'
+import { Chatbot } from '@/components/chatbot'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
 
@@ -164,6 +165,7 @@ export default function RootLayout({
         className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}
       >
         {children}
+        <Chatbot />
       </body>
       </html>
     )
