@@ -138,7 +138,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Favicon links */}
         <link rel="icon" href="/certs/ai.png" type="/certs/ai.png" />
@@ -163,6 +163,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}
+        suppressHydrationWarning
       >
         {children}
         <Chatbot />

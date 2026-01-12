@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Send, CheckCircle, X } from "lucide-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,7 +15,6 @@ export function ContactForm() {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const successCloseButtonRef = useRef<HTMLButtonElement>(null)
-  const supabase = createClientComponentClient()
 
   useEffect(() => {
     if (showSuccessModal) {
@@ -35,27 +33,22 @@ export function ContactForm() {
     setIsSubmitting(true)
 
     const formData = new FormData(formRef.current)
-    const name = formData.get("name") as string
-    const email = formData.get("email") as string
-    const subject = formData.get("subject") as string
-    const message = formData.get("message") as string
 
     try {
-      const { error } = await supabase
-        .from("contact")
-        .insert({
-          name,
-          email,
-          service: subject,
-          message,
-          created_at: new Date().toISOString(),
-        })
+      // Submit to FormSubmit
+      const response = await fetch('https://formsubmit.co/mahmoodabuawad08@gmail.com', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
 
-      if (error) {
-        throw error
+      if (!response.ok) {
+        throw new Error('Failed to send message')
       }
 
-      // Show success modal instead of toast
+      // Show success modal
       setShowSuccessModal(true)
       formRef.current.reset()
     } catch (error) {
@@ -94,6 +87,10 @@ export function ContactForm() {
               className="space-y-6"
               aria-labelledby="contact-form-heading"
             >
+              {/* Hidden fields for FormSubmit configuration */}
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio" />
+              
               <div className="space-y-2">
                 <label htmlFor="contact-name" className="block text-sm font-medium text-zinc-200">
                   Name
