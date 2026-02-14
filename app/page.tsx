@@ -560,7 +560,7 @@ export default function Portfolio() {
   <div className="absolute inset-0 z-0">
     <div className="hero-grid" />
   </div>
-  
+
   <div className="container relative z-10">
     <div className="mx-auto flex max-w-4xl flex-col items-center gap-10 text-center">
       <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-medium uppercase tracking-[0.18em] text-white/85">

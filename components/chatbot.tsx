@@ -56,12 +56,23 @@ function BotMarkdown({ content }: { content: string }) {
         li: ({ children }) => <li className="text-[13px] text-zinc-100">{children}</li>,
         strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
         em: ({ children }) => <em className="italic text-zinc-200">{children}</em>,
-        a: ({ children, href }) => (
-          <a href={href} target="_blank" rel="noopener noreferrer"
-            className="text-purple-300 underline underline-offset-2 hover:text-purple-200 text-[13px]">
-            {children}
-          </a>
-        ),
+        a: ({ children, href }) => {
+          const raw = typeof children === 'string' ? children : String(children ?? '');
+          let label: string = raw;
+
+          if (href?.startsWith('mailto:')) {
+            label = 'Email';
+          } else if (href && (raw === href || raw.startsWith('http'))) {
+            try { label = new URL(href).hostname.replace(/^www\./, ''); } catch { label = raw; }
+          }
+
+          return (
+            <a href={href} target="_blank" rel="noopener noreferrer"
+              className="text-purple-300 underline underline-offset-2 hover:text-purple-200 text-[13px]">
+              {label}
+            </a>
+          );
+        },
         code: ({ children, className }) =>
           className?.includes('language-') ? (
             <code className="my-2 block overflow-x-auto rounded-lg border border-white/10 bg-black/50 p-2.5 font-mono text-xs text-emerald-400">
@@ -323,10 +334,11 @@ export function Chatbot() {
           <div className="relative">
             <div className="h-10 w-10 rounded-full p-[1.5px]"
               style={{ background: 'linear-gradient(135deg, #9333ea, #ec4899)' }}>
-              <div className="flex h-full w-full items-center justify-center rounded-full"
-                style={{ background: 'linear-gradient(135deg, #1a0a30, #120820)' }}>
-                <Bot className="h-4.5 w-4.5 text-purple-300" />
-              </div>
+              <img
+                src="/ai-avatar.jpg"
+                alt="Mahmoud AI"
+                className="h-full w-full rounded-full object-cover"
+              />
             </div>
             {/* Glow behind avatar */}
             <div className="absolute inset-0 -z-10 animate-pulse rounded-full blur-md"
@@ -343,7 +355,7 @@ export function Chatbot() {
             <p className="mt-0.5 text-[11px]">
               {isStreaming
                 ? <span className="text-purple-400">Generating…</span>
-                : <span className="text-zinc-500">AI Portfolio Assistant</span>
+                : <span className="text-zinc-500">Your AI Assistant</span>
               }
             </p>
           </div>
@@ -385,8 +397,8 @@ export function Chatbot() {
                   >
                     {/* Bot mini-avatar */}
                     {msg.role === 'assistant' && (
-                      <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/20 bg-purple-950/60">
-                        <Bot className="h-3.5 w-3.5 text-purple-400" />
+                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-purple-500/20 overflow-hidden">
+                        <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                       </div>
                     )}
 
@@ -436,8 +448,8 @@ export function Chatbot() {
               {/* Thinking dots */}
               {isLoading && (
                 <div className="flex gap-2.5 animate-in fade-in-0 duration-200">
-                  <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/20 bg-purple-950/60">
-                    <Bot className="h-3.5 w-3.5 text-purple-400" />
+                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-purple-500/20 overflow-hidden">
+                    <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                   </div>
                   <div className="rounded-2xl rounded-tl-sm px-4 py-3"
                     style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -465,7 +477,7 @@ export function Chatbot() {
                         <button
                           key={q}
                           onClick={() => sendMessage(q)}
-                          className="block w-full rounded-xl px-3 py-1.5 text-left text-[12px] text-zinc-200 transition-all duration-150 hover:text-white focus:outline-none"
+                          className="block w-full rounded-xl px-3 py-1.5 text-left text-[11px] text-zinc-200 transition-all duration-150 hover:text-white focus:outline-none"
                           style={{
                             background: 'rgba(147,51,234,0.06)',
                             border: '1px solid rgba(147,51,234,0.18)',
