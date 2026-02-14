@@ -600,7 +600,7 @@ export default function Portfolio() {
           <Link href="#contact" className="w-full sm:w-auto">
             <Button
               variant="outline"
-              className="w-full rounded-full border-white/30 bg-white/5 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-white/10 sm:w-auto"
+              className="w-full rounded-full border-white/30 bg-white/5 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-white/10 hover:text-white sm:w-auto"
             >
               Let&apos;s Collaborate
             </Button>
@@ -670,7 +670,7 @@ export default function Portfolio() {
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Certifications</p>
             </div>
             <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">
-              <p className="text-3xl font-semibold text-white">30+</p>
+              <p className="text-3xl font-semibold text-white">25+</p>
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Open Source PRs</p>
             </div>
             <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">

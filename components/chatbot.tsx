@@ -298,7 +298,7 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open AI assistant"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_32px_rgba(147,51,234,0.5)] transition-all duration-200 hover:scale-105 focus:outline-none"
+        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_32px_rgba(147,51,234,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
         style={{ background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)' }}
       >
         <MessageCircle className="h-6 w-6 text-white" />
@@ -312,11 +312,14 @@ export function Chatbot() {
   return (
     <div
       className={cn(
-        'fixed bottom-6 right-6 z-50 flex w-[390px] flex-col overflow-hidden rounded-2xl',
+        'fixed z-50 flex flex-col overflow-hidden rounded-2xl',
         'border border-white/[0.07]',
         'shadow-[0_30px_80px_-10px_rgba(88,28,135,0.35),0_0_0_1px_rgba(255,255,255,0.04)]',
         'transition-[height] duration-300 ease-in-out',
-        isMinimized ? 'h-[64px]' : 'h-[min(500px,calc(100vh-5rem))]'
+        // Mobile: stretch edge-to-edge with small margins, above the FAB
+        // Desktop: fixed size bottom-right corner
+        'left-3 right-3 bottom-[5rem] sm:left-auto sm:bottom-6 sm:right-6 sm:w-[390px]',
+        isMinimized ? 'h-[64px]' : 'h-[min(78vh,560px)] sm:h-[min(500px,calc(100vh-5rem))]'
       )}
       style={{ background: 'linear-gradient(160deg, #13082b 0%, #0e0c1e 40%, #0a0a14 100%)' }}
     >
@@ -381,7 +384,7 @@ export function Chatbot() {
       {!isMinimized && (
         <>
           {/* ── Messages ── */}
-          <ScrollArea className="flex-1 px-3 py-3">
+          <ScrollArea className="flex-1 px-3 py-3 sm:px-3">
             <div className="space-y-4">
               {messages.map((msg, i) => {
                 const isLast = i === messages.length - 1;
@@ -402,7 +405,7 @@ export function Chatbot() {
                       </div>
                     )}
 
-                    <div className={cn('flex max-w-[78%] flex-col gap-1', msg.role === 'user' && 'items-end')}>
+                    <div className={cn('flex max-w-[85%] flex-col gap-1 sm:max-w-[78%]', msg.role === 'user' && 'items-end')}>
                       {/* User bubble */}
                       {msg.role === 'user' ? (
                         <div
@@ -539,7 +542,7 @@ export function Chatbot() {
 
           {/* ── Input area ── */}
           <div
-            className="shrink-0 px-3 pb-3 pt-2"
+            className="shrink-0 px-3 pb-4 pt-2 sm:pb-3"
             style={{
               background: 'linear-gradient(0deg, rgba(10,10,20,0.95) 0%, transparent 100%)',
               borderTop: '1px solid rgba(255,255,255,0.06)',
@@ -558,11 +561,12 @@ export function Chatbot() {
                 disabled={isLoading || isStreaming}
                 placeholder="Ask me anything…"
                 rows={1}
-                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-xl px-3.5 py-3 text-[13px] leading-relaxed text-white placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
+                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-xl px-3.5 py-3 leading-relaxed text-white placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
                 style={{
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.09)',
-                  // focus handled via onFocus/onBlur for inline style
+                  // 16px prevents iOS Safari from auto-zooming on focus
+                  fontSize: '16px',
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(147,51,234,0.5)';
@@ -578,7 +582,7 @@ export function Chatbot() {
                 onClick={() => sendMessage()}
                 disabled={isLoading || isStreaming || !input.trim()}
                 aria-label="Send"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white transition-all duration-150 hover:scale-105 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:scale-100"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white transition-all duration-150 hover:scale-105 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:scale-100"
                 style={{
                   background: 'linear-gradient(135deg, #7c3aed, #db2777)',
                   boxShadow: '0 4px 16px rgba(124,58,237,0.35)',
@@ -595,8 +599,8 @@ export function Chatbot() {
               </button>
             </div>
 
-            {/* Footer */}
-            <p className="mt-2 select-none text-center text-[10px] text-zinc-400">
+            {/* Footer — hide on mobile to save space */}
+            <p className="mt-2 hidden select-none text-center text-[10px] text-zinc-400 sm:block">
               <Sparkles className="mr-1 inline h-2.5 w-2.5 text-purple-400" />
               Powered by Mahmoud · Enter to send
             </p>
