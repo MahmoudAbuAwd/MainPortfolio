@@ -156,7 +156,7 @@ const EnhancedAboutSection = () => {
 
   const stats = [
     { label: "Projects", value: "15+", icon: Code },
-    { label: "Certifications", value: "25+", icon: Award },
+    { label: "Certifications", value: "30+", icon: Award },
     { label: "Open Source PRs", value: "30+", icon: Star },
     { label: "Domains", value: "AI • ML • Cloud", icon: Globe },
   ]
@@ -554,85 +554,137 @@ export default function Portfolio() {
 {/* Hero Section */}
 <header
   id="hero"
-  className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-black via-purple-950 to-black px-4 py-24 text-white sm:py-32"
+  className="relative isolate overflow-hidden border-b border-white/10 bg-zinc-900 px-4 pb-16 pt-20 text-white sm:pb-20 sm:pt-28 lg:pt-32"
 >
-  {/* Grid Pattern Background */}
-  <div className="absolute inset-0 z-0">
+  <div className="pointer-events-none absolute inset-0 z-0">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(168,85,247,0.22),transparent_45%),radial-gradient(circle_at_84%_20%,rgba(236,72,153,0.16),transparent_40%),radial-gradient(circle_at_50%_85%,rgba(139,92,246,0.14),transparent_50%)]" />
+    <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(24,24,27,0.05),rgba(9,9,11,0.85))]" />
     <div className="hero-grid" />
   </div>
 
   <div className="container relative z-10">
-    <div className="mx-auto flex max-w-4xl flex-col items-center gap-10 text-center">
-      <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-medium uppercase tracking-[0.18em] text-white/85">
-        Mahmoud AbuAwd
-      </span>
-      <div className="space-y-6">
-        <h1 className="font-serif text-5xl leading-tight sm:text-6xl lg:text-7xl">
-          <span className="block">{headlineName}</span>
-          <span className="mt-3 block text-5xl sm:text-6xl lg:text-7xl">{headlineRole}</span>
-        </h1>
-        <p className="mx-auto max-w-3xl text-lg text-white/85">
-          I build intelligent systems that transform ideas into scalable real-world solutions.
-        </p>
+    <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="space-y-7 text-center sm:text-left">
+        <div className="space-y-4 sm:space-y-5">
+          <div className="flex justify-center sm:justify-start">
+            <span className="inline-flex items-center justify-center rounded-full border border-purple-500/35 bg-purple-500/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-purple-100/90">
+              AI/ML Engineer • Based in Jordan
+
+            </span>
+          </div>
+          <h1 className="text-4xl font-semibold leading-[1.14] tracking-tight text-white sm:text-5xl lg:text-7xl">
+            <span className="block">{headlineName}</span>
+            <span className="mt-3 block pb-3 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-200 bg-clip-text text-transparent sm:mt-4">
+              {headlineRole}
+            </span>
+          </h1>
+          <p className="mx-auto max-w-xl text-sm leading-relaxed text-zinc-400 sm:mx-0 sm:max-w-2xl sm:text-base lg:text-lg">
+            I design and ship AI products with measurable impact, from model development to production deployment and monitoring.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2 sm:justify-start sm:gap-3">
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">LLMs</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">Generative AI</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">Machine Learning</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">MLOps</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">AWS</span>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <Link href="#projects" className="w-full sm:w-auto">
+            <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-purple-500/25 transition-all duration-200 hover:-translate-y-1 hover:from-purple-700 hover:to-pink-700 sm:w-auto">
+              View Projects
+            </Button>
+          </Link>
+          <Link href="#contact" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              className="w-full rounded-full border-white/30 bg-white/5 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-white/10 sm:w-auto"
+            >
+              Let&apos;s Collaborate
+            </Button>
+          </Link>
+        </div>
+
+        <div className="flex justify-center gap-3 pt-1 sm:justify-start">
+          <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+            >
+              <Github className="h-5 w-5" />
+              <span className="sr-only">GitHub</span>
+            </Button>
+          </Link>
+          <Link href="https://www.linkedin.com/in/mahmoud-abuawd/" target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+            >
+              <Linkedin className="h-5 w-5" />
+              <span className="sr-only">LinkedIn</span>
+            </Button>
+          </Link>
+          <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+            >
+              <Twitter className="h-5 w-5" />
+              <span className="sr-only">Twitter</span>
+            </Button>
+          </Link>
+          <Link href="mailto:mahmoodabuawad08@gmail.com">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+            >
+              <Mail className="h-5 w-5" />
+              <span className="sr-only">Email</span>
+            </Button>
+          </Link>
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-4">
-        <Link href="/blog">
-          <Button className="rounded-full bg-[#2A50FF] px-6 py-3 text-base font-semibold text-white shadow-lg shadow-[#2A50FF]/30 transition-transform duration-200 hover:-translate-y-1 hover:bg-[#1f3fd1]">
-            Read My Blog
-          </Button>
-        </Link>
-        <Link href="/resources">
-          <Button
-            variant="outline"
-            className="rounded-full border border-[#3E1F92]/70 bg-transparent px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-[#3E1F92]/15 hover:shadow-[0_0_35px_-12px_rgba(62,31,146,0.95)] !text-white hover:!text-white"
-          >
-            Explore My Resources
-          </Button>
-        </Link>
-      </div>
+      <div className="relative hidden lg:block">
+        <div className="rounded-3xl border border-purple-500/20 bg-zinc-800/50 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-8">
+          <div className="mb-6 flex items-center justify-between">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-300">Impact Snapshot</p>
+            <span className="rounded-full border border-emerald-300/40 bg-emerald-300/15 px-3 py-1 text-xs font-medium text-emerald-200">
+              Available
+            </span>
+          </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-        <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-white/20 hover:text-white"
-          >
-            <Github className="h-5 w-5" />
-            <span className="sr-only">GitHub</span>
-          </Button>
-        </Link>
-        <Link href="https://www.linkedin.com/in/mahmoud-abuawd/" target="_blank" rel="noopener noreferrer">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-white/20 hover:text-white"
-          >
-            <Linkedin className="h-5 w-5" />
-            <span className="sr-only">LinkedIn</span>
-          </Button>
-        </Link>
-        <Link href="https://twitter.com/s9mod" target="_blank" rel="noopener noreferrer">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-white/20 hover:text-white"
-          >
-            <Twitter className="h-5 w-5" />
-            <span className="sr-only">Twitter</span>
-          </Button>
-        </Link>
-        <Link href="mailto:mahmoodabuawad08@gmail.com">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-white/20 hover:text-white"
-          >
-            <Mail className="h-5 w-5" />
-            <span className="sr-only">Email</span>
-          </Button>
-        </Link>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">
+              <p className="text-3xl font-semibold text-white">15+</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Projects Built</p>
+            </div>
+            <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">
+              <p className="text-3xl font-semibold text-white">30+</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Certifications</p>
+            </div>
+            <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">
+              <p className="text-3xl font-semibold text-white">30+</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Open Source PRs</p>
+            </div>
+            <div className="rounded-2xl border border-purple-500/15 bg-zinc-900/60 p-4">
+              <p className="text-sm font-semibold text-white">AI • ML • Cloud</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-zinc-400">Core Domains</p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-purple-500/25 bg-gradient-to-r from-purple-600/12 via-pink-500/10 to-purple-900/12 p-4">
+            <p className="text-sm text-zinc-200">
+              Building reliable, production-ready AI systems with a strong focus on business outcomes and user experience.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
