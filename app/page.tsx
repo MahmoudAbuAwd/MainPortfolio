@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowRight, Github, Linkedin, Mail, Twitter, ArrowUpRight, Download, Phone , Star , Code , Award , Globe } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Mail, Twitter, ArrowUpRight, Download, Phone , Star , Code , Award , Globe, BookOpen, FolderOpen } from "lucide-react"
 import React from "react"
 import type { ReactNode } from "react"
 
@@ -554,7 +554,7 @@ export default function Portfolio() {
 {/* Hero Section */}
 <header
   id="hero"
-  className="relative isolate overflow-hidden border-b border-white/10 bg-zinc-900 px-4 pb-16 pt-20 text-white sm:pb-20 sm:pt-28 lg:pt-32"
+  className="relative isolate overflow-hidden border-b border-white/10 bg-zinc-900 px-4 pb-12 pt-16 text-white sm:pb-20 sm:pt-28 lg:pt-32"
 >
   <div className="pointer-events-none absolute inset-0 z-0">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_15%,rgba(168,85,247,0.22),transparent_45%),radial-gradient(circle_at_84%_20%,rgba(236,72,153,0.16),transparent_40%),radial-gradient(circle_at_50%_85%,rgba(139,92,246,0.14),transparent_50%)]" />
@@ -563,58 +563,59 @@ export default function Portfolio() {
   </div>
 
   <div className="container relative z-10">
-    <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-      <div className="space-y-7 text-center sm:text-left">
-        <div className="space-y-4 sm:space-y-5">
+    <div className="mx-auto grid max-w-6xl items-center gap-8 sm:gap-12 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="space-y-5 text-center sm:space-y-7 sm:text-left">
+        <div className="space-y-3 sm:space-y-5">
           <div className="flex justify-center sm:justify-start">
-            <span className="inline-flex items-center justify-center rounded-full border border-purple-500/35 bg-purple-500/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-purple-100/90">
+            <span className="inline-flex items-center justify-center rounded-full border border-purple-500/35 bg-purple-500/15 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-purple-100/90 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.22em]">
               AI/ML Engineer • Based in Jordan
-
             </span>
           </div>
-          <h1 className="text-4xl font-semibold leading-[1.14] tracking-tight text-white sm:text-5xl lg:text-7xl">
+          <h1 className="text-3xl font-semibold leading-[1.14] tracking-tight text-white sm:text-5xl lg:text-7xl">
             <span className="block">{headlineName}</span>
-            <span className="mt-3 block pb-3 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-200 bg-clip-text text-transparent sm:mt-4">
+            <span className="mt-2 block pb-2 bg-gradient-to-r from-purple-300 via-pink-300 to-purple-200 bg-clip-text text-transparent sm:mt-4 sm:pb-3">
               {headlineRole}
             </span>
           </h1>
-          <p className="mx-auto max-w-xl text-sm leading-relaxed text-zinc-400 sm:mx-0 sm:max-w-2xl sm:text-base lg:text-lg">
+          <p className="mx-auto max-w-xl text-[0.8rem] leading-relaxed text-zinc-400 sm:mx-0 sm:max-w-2xl sm:text-base lg:text-lg">
             I design and ship AI products with measurable impact, from model development to production deployment and monitoring.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 sm:justify-start sm:gap-3">
-          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">LLMs</span>
-          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">Generative AI</span>
-          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">Machine Learning</span>
-          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">MLOps</span>
-          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-3 py-1 text-xs text-zinc-200">AWS</span>
+        <div className="flex flex-wrap justify-center gap-1.5 sm:justify-start sm:gap-3">
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-0.5 text-[0.65rem] text-zinc-200 sm:px-3 sm:py-1 sm:text-xs">LLMs</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-0.5 text-[0.65rem] text-zinc-200 sm:px-3 sm:py-1 sm:text-xs">Generative AI</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-0.5 text-[0.65rem] text-zinc-200 sm:px-3 sm:py-1 sm:text-xs">Machine Learning</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-0.5 text-[0.65rem] text-zinc-200 sm:px-3 sm:py-1 sm:text-xs">MLOps</span>
+          <span className="rounded-full border border-purple-500/25 bg-purple-500/10 px-2.5 py-0.5 text-[0.65rem] text-zinc-200 sm:px-3 sm:py-1 sm:text-xs">AWS</span>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-          <Link href="#projects" className="w-full sm:w-auto">
-            <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-purple-500/25 transition-all duration-200 hover:-translate-y-1 hover:from-purple-700 hover:to-pink-700 sm:w-auto">
-              View Projects
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <Link href="/blog" className="w-full sm:w-auto">
+            <Button className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/25 transition-all duration-200 hover:-translate-y-1 hover:from-purple-700 hover:to-pink-700 sm:w-auto sm:text-base">
+              <BookOpen className="mr-2 h-4 w-4" />
+              Read My Blogs
             </Button>
           </Link>
-          <Link href="#contact" className="w-full sm:w-auto">
+          <Link href="/resources" className="w-full sm:w-auto">
             <Button
               variant="outline"
-              className="w-full rounded-full border-white/30 bg-white/5 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-white/10 hover:text-white sm:w-auto"
+              className="w-full rounded-full border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-1 hover:bg-white/10 hover:text-white sm:w-auto sm:text-base"
             >
-              Let&apos;s Collaborate
+              <FolderOpen className="mr-2 h-4 w-4" />
+              Explore My Resources
             </Button>
           </Link>
         </div>
 
-        <div className="flex justify-center gap-3 pt-1 sm:justify-start">
+        <div className="flex justify-center gap-2.5 pt-0.5 sm:gap-3 sm:pt-1 sm:justify-start">
           <Link href="https://github.com/MahmoudAbuAwd" target="_blank" rel="noopener noreferrer">
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+              className="h-9 w-9 rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white sm:h-10 sm:w-10"
             >
-              <Github className="h-5 w-5" />
+              <Github className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="sr-only">GitHub</span>
             </Button>
           </Link>
@@ -622,9 +623,9 @@ export default function Portfolio() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+              className="h-9 w-9 rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white sm:h-10 sm:w-10"
             >
-              <Linkedin className="h-5 w-5" />
+              <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="sr-only">LinkedIn</span>
             </Button>
           </Link>
@@ -632,9 +633,9 @@ export default function Portfolio() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+              className="h-9 w-9 rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white sm:h-10 sm:w-10"
             >
-              <Twitter className="h-5 w-5" />
+              <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="sr-only">Twitter</span>
             </Button>
           </Link>
@@ -642,9 +643,9 @@ export default function Portfolio() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white"
+              className="h-9 w-9 rounded-full bg-white/10 text-white/80 transition-colors duration-200 hover:bg-purple-500/20 hover:text-white sm:h-10 sm:w-10"
             >
-              <Mail className="h-5 w-5" />
+              <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="sr-only">Email</span>
             </Button>
           </Link>
