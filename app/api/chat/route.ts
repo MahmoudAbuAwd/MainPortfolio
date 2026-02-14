@@ -1,37 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { CohereClient } from 'cohere-ai';
 
-// Initialize Cohere client
 const cohere = new CohereClient({
   token: process.env.COHERE_API_KEY,
 });
 
-export async function POST(req: NextRequest) {
-  try {
-    const { message, chatHistory = [] } = await req.json();
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-    if (!message) {
-      return NextResponse.json(
-        { error: 'Message is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!process.env.COHERE_API_KEY) {
-      return NextResponse.json(
-        { error: 'Cohere API key not configured' },
-        { status: 500 }
-      );
-    }
-
-    // Format chat history for Cohere
-    const formattedHistory = chatHistory.map((msg: { role: string; content: string }) => ({
-      role: msg.role === 'user' ? 'USER' : 'CHATBOT',
-      message: msg.content,
-    }));
-
-    // System prompt - customize this to change the chatbot's behavior
-    const systemPrompt = `You are an AI assistant representing Mahmoud Ibrahim AbuAwd, an AI & ML Engineer based in Amman, Jordan. Use the following information to answer questions about his background, skills, and experience:
+const SYSTEM_PROMPT = `You are an AI assistant representing Mahmoud Ibrahim AbuAwd, an AI & ML Engineer based in Amman, Jordan. Use the following information to answer questions about his background, skills, and experience:
 
 CONTACT INFORMATION:
 - Location: Amman, Jordan
@@ -147,25 +124,95 @@ When answering questions:
 - Emphasize practical, hands-on experience with AI/ML technologies
 - Showcase both technical depth and breadth of knowledge`;
 
-    // Call Cohere API
-    const response = await cohere.chat({
-      model: 'command-a-03-2025',
-      message: message,
-      chatHistory: formattedHistory,
-      preamble: systemPrompt,
-      temperature: 0.7,
-      promptTruncation: 'AUTO',
+const MAX_MESSAGE_LENGTH = 2000;
+const MAX_HISTORY_TURNS = 10; // cap to last 10 exchanges to control token cost
+
+export async function POST(req: NextRequest) {
+  try {
+    const { message, chatHistory = [] } = await req.json();
+
+    if (!message?.trim()) {
+      return new Response(
+        JSON.stringify({ error: 'Message is required' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Guard: reject oversized input to prevent token abuse
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return new Response(
+        JSON.stringify({ error: 'Message too long (max 2000 characters)' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!process.env.COHERE_API_KEY) {
+      return new Response(
+        JSON.stringify({ error: 'AI service not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Cap history to last N turns so prompt size stays bounded
+    const recentHistory = Array.isArray(chatHistory)
+      ? chatHistory.slice(-MAX_HISTORY_TURNS)
+      : [];
+
+    const formattedHistory = recentHistory
+      .filter((msg: { role: string; content: string }) => msg.content?.trim())
+      .map((msg: { role: string; content: string }) => ({
+        role: (msg.role === 'user' ? 'USER' : 'CHATBOT') as 'USER' | 'CHATBOT',
+        message: msg.content,
+      }));
+
+    const encoder = new TextEncoder();
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          // NOTE: must await chatStream before iterating — it returns Promise<AsyncIterable>
+          const chatStream = await cohere.chatStream({
+            model: 'command-a-03-2025',
+            message,
+            chatHistory: formattedHistory,
+            preamble: SYSTEM_PROMPT,
+            temperature: 0.7,
+            promptTruncation: 'AUTO',
+          });
+
+          for await (const chunk of chatStream) {
+            if (chunk.eventType === 'text-generation') {
+              controller.enqueue(
+                encoder.encode(`data: ${JSON.stringify({ text: chunk.text })}\n\n`)
+              );
+            } else if (chunk.eventType === 'stream-end') {
+              controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
+            }
+          }
+        } catch (err: any) {
+          console.error('Stream error:', err);
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ error: 'Stream interrupted' })}\n\n`)
+          );
+        } finally {
+          controller.close();
+        }
+      },
     });
 
-    return NextResponse.json({
-      message: response.text,
-      generationId: response.generationId,
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no',
+      },
     });
-  } catch (error: any) {
-    console.error('Cohere API Error:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to generate response' },
-      { status: 500 }
+  } catch (err: any) {
+    console.error('Chat API Error:', err);
+    return new Response(
+      JSON.stringify({ error: 'Failed to process request' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
