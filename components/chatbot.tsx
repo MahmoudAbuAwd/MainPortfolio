@@ -45,17 +45,17 @@ function BotMarkdown({ content }: { content: string }) {
       rehypePlugins={[rehypeSanitize]}
       components={{
         p: ({ children }) => (
-          <p className="mb-2 last:mb-0 text-[13px] leading-relaxed text-zinc-100">{children}</p>
+          <p className="mb-2 last:mb-0 text-[13px] leading-relaxed text-pal-50">{children}</p>
         ),
         ul: ({ children }) => (
-          <ul className="mb-2 list-disc space-y-0.5 pl-4 text-[13px] text-zinc-100">{children}</ul>
+          <ul className="mb-2 list-disc space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ul>
         ),
         ol: ({ children }) => (
-          <ol className="mb-2 list-decimal space-y-0.5 pl-4 text-[13px] text-zinc-100">{children}</ol>
+          <ol className="mb-2 list-decimal space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ol>
         ),
-        li: ({ children }) => <li className="text-[13px] text-zinc-100">{children}</li>,
+        li: ({ children }) => <li className="text-[13px] text-pal-50">{children}</li>,
         strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
-        em: ({ children }) => <em className="italic text-zinc-200">{children}</em>,
+        em: ({ children }) => <em className="italic text-pal-100">{children}</em>,
         a: ({ children, href }) => {
           const raw = typeof children === 'string' ? children : String(children ?? '');
           let label: string = raw;
@@ -68,7 +68,7 @@ function BotMarkdown({ content }: { content: string }) {
 
           return (
             <a href={href} target="_blank" rel="noopener noreferrer"
-              className="text-purple-300 underline underline-offset-2 hover:text-purple-200 text-[13px]">
+              className="text-pal-100 underline underline-offset-2 hover:text-pal-50 text-[13px]">
               {label}
             </a>
           );
@@ -90,9 +90,9 @@ function BotMarkdown({ content }: { content: string }) {
         ),
         h1: ({ children }) => <h1 className="mb-1.5 mt-3 text-sm font-bold text-white">{children}</h1>,
         h2: ({ children }) => <h2 className="mb-1 mt-2.5 text-sm font-bold text-white">{children}</h2>,
-        h3: ({ children }) => <h3 className="mb-1 mt-2 text-xs font-semibold text-zinc-100">{children}</h3>,
+        h3: ({ children }) => <h3 className="mb-1 mt-2 text-xs font-semibold text-pal-50">{children}</h3>,
         blockquote: ({ children }) => (
-          <blockquote className="my-2 border-l-2 border-purple-400/60 pl-3 text-[13px] italic text-zinc-300">
+          <blockquote className="my-2 border-l-2 border-pal-200/60 pl-3 text-[13px] italic text-pal-100">
             {children}
           </blockquote>
         ),
@@ -113,7 +113,7 @@ function TypingDots() {
       {[0, 160, 320].map((d) => (
         <span
           key={d}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-purple-400/60"
+          className="h-1.5 w-1.5 animate-bounce rounded-full bg-pal-200/60"
           style={{ animationDelay: `${d}ms` }}
         />
       ))}
@@ -298,8 +298,8 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open AI assistant"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_32px_rgba(147,51,234,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
-        style={{ background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)' }}
+        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_32px_rgba(66,72,116,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
+        style={{ background: 'linear-gradient(135deg, #424874 0%, #A6B1E1 100%)' }}
       >
         <MessageCircle className="h-6 w-6 text-white" />
       </button>
@@ -314,29 +314,29 @@ export function Chatbot() {
       className={cn(
         'fixed z-50 flex flex-col overflow-hidden rounded-2xl',
         'border border-white/[0.07]',
-        'shadow-[0_30px_80px_-10px_rgba(88,28,135,0.35),0_0_0_1px_rgba(255,255,255,0.04)]',
+        'shadow-[0_30px_80px_-10px_rgba(30,32,69,0.5),0_0_0_1px_rgba(255,255,255,0.04)]',
         'transition-[height] duration-300 ease-in-out',
         // Mobile: stretch edge-to-edge with small margins, above the FAB
         // Desktop: fixed size bottom-right corner
         'left-3 right-3 bottom-[5rem] sm:left-auto sm:bottom-6 sm:right-6 sm:w-[390px]',
         isMinimized ? 'h-[64px]' : 'h-[min(78vh,560px)] sm:h-[min(500px,calc(100vh-5rem))]'
       )}
-      style={{ background: 'linear-gradient(160deg, #13082b 0%, #0e0c1e 40%, #0a0a14 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #0d0e1a 0%, #0f1025 40%, #080910 100%)' }}
     >
       {/* ── Rainbow top line ── */}
-      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600" />
+      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-pal-500 via-pal-200 to-pal-500" />
 
       {/* ── Header ── */}
       <div
         className="flex shrink-0 items-center justify-between px-4 py-3"
-        style={{ background: 'linear-gradient(180deg, rgba(88,28,135,0.18) 0%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(180deg, rgba(66,72,116,0.18) 0%, transparent 100%)' }}
       >
         {/* Left: avatar + name */}
         <div className="flex items-center gap-3">
           {/* Avatar with glowing ring */}
           <div className="relative">
             <div className="h-10 w-10 rounded-full p-[1.5px]"
-              style={{ background: 'linear-gradient(135deg, #9333ea, #ec4899)' }}>
+              style={{ background: 'linear-gradient(135deg, #424874, #A6B1E1)' }}>
               <img
                 src="/ai-avatar.jpg"
                 alt="Mahmoud AI"
@@ -345,20 +345,20 @@ export function Chatbot() {
             </div>
             {/* Glow behind avatar */}
             <div className="absolute inset-0 -z-10 animate-pulse rounded-full blur-md"
-              style={{ background: 'radial-gradient(circle, rgba(147,51,234,0.4) 0%, transparent 70%)' }} />
+              style={{ background: 'radial-gradient(circle, rgba(66,72,116,0.4) 0%, transparent 70%)' }} />
             {/* Online dot */}
-            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#13082b] bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#0d0e1a] bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
           </div>
 
           <div>
             <p className="text-sm font-semibold leading-none"
-              style={{ background: 'linear-gradient(90deg, #fff 0%, #d8b4fe 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              style={{ background: 'linear-gradient(90deg, #F4EEFF 0%, #DCD6F7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Mahmoud AI
             </p>
             <p className="mt-0.5 text-[11px]">
               {isStreaming
-                ? <span className="text-purple-400">Generating…</span>
-                : <span className="text-zinc-500">Your AI Assistant</span>
+                ? <span className="text-pal-200">Generating…</span>
+                : <span className="text-pal-300">Your AI Assistant</span>
               }
             </p>
           </div>
@@ -367,15 +367,15 @@ export function Chatbot() {
         {/* Right: action buttons */}
         <div className="flex items-center gap-0.5">
           <button onClick={handleClear} title="Clear chat" aria-label="Clear chat"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-all hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
             <Trash2 className="h-3.5 w-3.5" />
           </button>
           <button onClick={() => setIsMinimized((v) => !v)} aria-label="Minimize"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
             <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', isMinimized && 'rotate-180')} />
           </button>
           <button onClick={handleClose} aria-label="Close"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -400,7 +400,7 @@ export function Chatbot() {
                   >
                     {/* Bot mini-avatar */}
                     {msg.role === 'assistant' && (
-                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-purple-500/20 overflow-hidden">
+                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-pal-400/20 overflow-hidden">
                         <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                       </div>
                     )}
@@ -411,8 +411,8 @@ export function Chatbot() {
                         <div
                           className="rounded-2xl rounded-tr-sm px-3.5 py-2.5"
                           style={{
-                            background: 'linear-gradient(135deg, #7c3aed, #db2777)',
-                            boxShadow: '0 4px 20px rgba(124,58,237,0.3)',
+                            background: 'linear-gradient(135deg, #424874, #A6B1E1)',
+                            boxShadow: '0 4px 20px rgba(66,72,116,0.3)',
                           }}
                         >
                           <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-white">
@@ -435,14 +435,14 @@ export function Chatbot() {
                             <>
                               <BotMarkdown content={msg.content} />
                               {showCursor && (
-                                <span className="ml-0.5 inline-block h-3.5 w-0.5 animate-pulse rounded-sm bg-purple-400 align-middle" />
+                                <span className="ml-0.5 inline-block h-3.5 w-0.5 animate-pulse rounded-sm bg-pal-200 align-middle" />
                               )}
                             </>
                           )}
                         </div>
                       )}
 
-                      <span className="px-1 text-[10px] text-zinc-500">{formatTime(msg.timestamp)}</span>
+                      <span className="px-1 text-[10px] text-pal-300">{formatTime(msg.timestamp)}</span>
                     </div>
                   </div>
                 );
@@ -451,7 +451,7 @@ export function Chatbot() {
               {/* Thinking dots */}
               {isLoading && (
                 <div className="flex gap-2.5 animate-in fade-in-0 duration-200">
-                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-purple-500/20 overflow-hidden">
+                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-pal-400/20 overflow-hidden">
                     <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                   </div>
                   <div className="rounded-2xl rounded-tl-sm px-4 py-3"
@@ -466,35 +466,35 @@ export function Chatbot() {
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-400 ml-9">
                   {isLoadingFollowUps ? (
                     <div className="flex items-center gap-1.5 py-1">
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-purple-500/60" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-purple-500/60" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-purple-500/60" style={{ animationDelay: '300ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '0ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '150ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '300ms' }} />
                     </div>
                   ) : (
                     <div className="space-y-1.5">
-                      <p className="flex items-center gap-1 text-[10px] text-zinc-400">
-                        <CornerDownRight className="h-2.5 w-2.5 text-purple-400" />
+                      <p className="flex items-center gap-1 text-[10px] text-pal-200">
+                        <CornerDownRight className="h-2.5 w-2.5 text-pal-200" />
                         Follow-up questions
                       </p>
                       {followUps.map((q) => (
                         <button
                           key={q}
                           onClick={() => sendMessage(q)}
-                          className="block w-full rounded-xl px-3 py-1.5 text-left text-[11px] text-zinc-200 transition-all duration-150 hover:text-white focus:outline-none"
+                          className="block w-full rounded-xl px-3 py-1.5 text-left text-[11px] text-pal-100 transition-all duration-150 hover:text-white focus:outline-none"
                           style={{
-                            background: 'rgba(147,51,234,0.06)',
-                            border: '1px solid rgba(147,51,234,0.18)',
+                            background: 'rgba(66,72,116,0.06)',
+                            border: '1px solid rgba(66,72,116,0.18)',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(147,51,234,0.13)';
-                            e.currentTarget.style.borderColor = 'rgba(147,51,234,0.38)';
+                            e.currentTarget.style.background = 'rgba(66,72,116,0.13)';
+                            e.currentTarget.style.borderColor = 'rgba(66,72,116,0.38)';
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(147,51,234,0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(147,51,234,0.18)';
+                            e.currentTarget.style.background = 'rgba(66,72,116,0.06)';
+                            e.currentTarget.style.borderColor = 'rgba(66,72,116,0.18)';
                           }}
                         >
-                          <span className="mr-1.5 text-purple-500/70">↗</span>
+                          <span className="mr-1.5 text-pal-200/70">↗</span>
                           {q}
                         </button>
                       ))}
@@ -506,8 +506,8 @@ export function Chatbot() {
               {/* ── Quick prompt chips ── */}
               {showPrompts && (
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500 pt-1">
-                  <p className="mb-2 flex items-center gap-1.5 text-[11px] text-zinc-500">
-                    <Zap className="h-3 w-3 text-purple-500" />
+                  <p className="mb-2 flex items-center gap-1.5 text-[11px] text-pal-300">
+                    <Zap className="h-3 w-3 text-pal-200" />
                     Quick questions
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -515,18 +515,18 @@ export function Chatbot() {
                       <button
                         key={q}
                         onClick={() => sendMessage(q)}
-                        className="rounded-xl px-2.5 py-2 text-left text-[11px] text-zinc-300 transition-all duration-150 hover:text-white focus:outline-none"
+                        className="rounded-xl px-2.5 py-2 text-left text-[11px] text-pal-100 transition-all duration-150 hover:text-white focus:outline-none"
                         style={{
-                          background: 'rgba(147,51,234,0.06)',
-                          border: '1px solid rgba(147,51,234,0.2)',
+                          background: 'rgba(66,72,116,0.06)',
+                          border: '1px solid rgba(66,72,116,0.2)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(147,51,234,0.12)';
-                          e.currentTarget.style.borderColor = 'rgba(147,51,234,0.4)';
+                          e.currentTarget.style.background = 'rgba(66,72,116,0.12)';
+                          e.currentTarget.style.borderColor = 'rgba(66,72,116,0.4)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(147,51,234,0.06)';
-                          e.currentTarget.style.borderColor = 'rgba(147,51,234,0.2)';
+                          e.currentTarget.style.background = 'rgba(66,72,116,0.06)';
+                          e.currentTarget.style.borderColor = 'rgba(66,72,116,0.2)';
                         }}
                       >
                         {q}
@@ -561,7 +561,7 @@ export function Chatbot() {
                 disabled={isLoading || isStreaming}
                 placeholder="Ask me anything…"
                 rows={1}
-                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-xl px-3.5 py-3 leading-relaxed text-white placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
+                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-xl px-3.5 py-3 leading-relaxed text-white placeholder:text-pal-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
                 style={{
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.09)',
@@ -569,8 +569,8 @@ export function Chatbot() {
                   fontSize: '16px',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(147,51,234,0.5)';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(147,51,234,0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(66,72,116,0.5)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(66,72,116,0.1)';
                 }}
                 onBlur={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
@@ -584,15 +584,15 @@ export function Chatbot() {
                 aria-label="Send"
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white transition-all duration-150 hover:scale-105 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:scale-100"
                 style={{
-                  background: 'linear-gradient(135deg, #7c3aed, #db2777)',
-                  boxShadow: '0 4px 16px rgba(124,58,237,0.35)',
+                  background: 'linear-gradient(135deg, #424874, #A6B1E1)',
+                  boxShadow: '0 4px 16px rgba(66,72,116,0.35)',
                 }}
                 onMouseEnter={(e) => {
                   if (!e.currentTarget.disabled)
-                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(124,58,237,0.55)';
+                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(66,72,116,0.55)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(124,58,237,0.35)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(66,72,116,0.35)';
                 }}
               >
                 <Send className="h-4 w-4" />
@@ -600,8 +600,8 @@ export function Chatbot() {
             </div>
 
             {/* Footer — hide on mobile to save space */}
-            <p className="mt-2 hidden select-none text-center text-[10px] text-zinc-400 sm:block">
-              <Sparkles className="mr-1 inline h-2.5 w-2.5 text-purple-400" />
+            <p className="mt-2 hidden select-none text-center text-[10px] text-pal-200 sm:block">
+              <Sparkles className="mr-1 inline h-2.5 w-2.5 text-pal-200" />
               Powered by Mahmoud · Enter to send
             </p>
           </div>

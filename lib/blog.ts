@@ -9,6 +9,7 @@ export type BlogBodyNode =
     }
   | { type: "list"; items: string[]; ordered?: boolean }
   | { type: "quote"; text: string; attribution?: string }
+  | { type: "image"; src: string; alt: string; caption?: string }
 
 export interface BlogSection {
   title: string

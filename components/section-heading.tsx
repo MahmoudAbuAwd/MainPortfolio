@@ -10,38 +10,25 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ title, subtitle, className }: SectionHeadingProps) {
   return (
-    <div className={`text-center space-y-4 ${className ?? ""}`}>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+    <div className={`space-y-3 ${className ?? ""}`}>
+      <motion.p
+        className="text-sm font-medium uppercase tracking-widest text-pal-200"
+        initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
         viewport={{ once: true }}
       >
-        <div className="inline-block">
-          <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-2">
-            <span className="relative z-10">{subtitle}</span>
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
-          </div>
-        </div>
-      </motion.div>
-
+        {subtitle}
+      </motion.p>
       <motion.h2
-        className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-300"
-        initial={{ opacity: 0, y: 20 }}
+        className="text-3xl font-bold text-white sm:text-4xl"
+        initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
         viewport={{ once: true }}
       >
         {title}
       </motion.h2>
-
-      <motion.div
-        className="w-24 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mt-6"
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        viewport={{ once: true }}
-      />
     </div>
   )
 }

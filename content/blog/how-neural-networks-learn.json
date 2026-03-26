@@ -1,0 +1,145 @@
+{
+  "slug": "how-neural-networks-learn",
+  "title": "How Neural Networks Actually Learn",
+  "description": "A visual deep dive into the mechanics of neural network training — from forward passes to backpropagation, explained with animated visuals.",
+  "excerpt": "Ever wondered what really happens inside a neural network during training? This visual guide breaks down the learning process step by step with animations.",
+  "publishedAt": "2026-03-25",
+  "readTime": "8 min read",
+  "tags": ["Deep Learning", "Neural Networks", "Visual Guide"],
+  "heroStat": {
+    "value": "1B+",
+    "label": "Parameters",
+    "sublabel": "Modern LLMs train billions of weights through this exact process"
+  },
+  "sections": [
+    {
+      "title": "The Forward Pass",
+      "slug": "forward-pass",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Training a neural network starts with the forward pass. Input data flows through layers of neurons, each applying a weighted sum followed by an activation function. The output is a prediction — which is usually wrong at first."
+        },
+        {
+          "type": "image",
+          "src": "https://media.giphy.com/media/l0HlNQ03J5JR3m3Ic/giphy.gif",
+          "alt": "Neural network forward pass animation",
+          "caption": "Data flowing through a neural network layer by layer"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each neuron receives inputs, multiplies them by learned weights, adds a bias, and passes the result through a non-linear activation function like ReLU or sigmoid. This non-linearity is what gives neural networks their power to learn complex patterns."
+        }
+      ]
+    },
+    {
+      "title": "Loss Calculation",
+      "slug": "loss-calculation",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Once the network produces a prediction, we compare it to the actual target using a loss function. Common choices include Mean Squared Error for regression and Cross-Entropy for classification."
+        },
+        {
+          "type": "statGrid",
+          "items": [
+            { "value": "MSE", "label": "Regression Loss", "sublabel": "Penalizes large errors quadratically" },
+            { "value": "CE", "label": "Classification Loss", "sublabel": "Measures probability distribution distance" },
+            { "value": "MAE", "label": "Robust Loss", "sublabel": "Less sensitive to outliers" }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The loss quantifies how wrong the model is. A high loss means the prediction is far from the truth. The goal of training is to minimize this loss — and that's where backpropagation comes in."
+        }
+      ]
+    },
+    {
+      "title": "Backpropagation — The Learning Engine",
+      "slug": "backpropagation",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Backpropagation is the algorithm that actually teaches the network. It computes the gradient of the loss with respect to every weight in the network by applying the chain rule of calculus — working backwards from the output to the input."
+        },
+        {
+          "type": "image",
+          "src": "https://media.giphy.com/media/3o7btNa0RUYa5E7iiQ/giphy.gif",
+          "alt": "Backpropagation gradient flow animation",
+          "caption": "Gradients flowing backward through the network to update weights"
+        },
+        {
+          "type": "quote",
+          "text": "Backpropagation is simply the chain rule applied recursively through a computational graph. Nothing more, nothing less.",
+          "attribution": "Andrej Karpathy"
+        },
+        {
+          "type": "paragraph",
+          "text": "These gradients tell each weight how much it contributed to the error and in which direction it should change. Weights that caused more error get larger updates."
+        }
+      ]
+    },
+    {
+      "title": "Gradient Descent — Taking Steps",
+      "slug": "gradient-descent",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "With gradients computed, the optimizer updates all weights by taking a small step in the direction that reduces the loss. The learning rate controls how big each step is — too large and you overshoot, too small and training takes forever."
+        },
+        {
+          "type": "image",
+          "src": "https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif",
+          "alt": "Gradient descent optimization animation",
+          "caption": "Gradient descent navigating a loss landscape to find the minimum"
+        },
+        {
+          "type": "list",
+          "items": [
+            "SGD — The classic optimizer, simple but effective with momentum",
+            "Adam — Adaptive learning rates per parameter, the go-to default",
+            "AdamW — Adam with decoupled weight decay, preferred for transformers",
+            "Learning rate schedulers — Warm up then decay for stable training"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The Training Loop",
+      "slug": "training-loop",
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "These steps — forward pass, loss calculation, backpropagation, and weight update — repeat thousands or millions of times. Each cycle through the entire dataset is called an epoch. Over time, the network's predictions improve dramatically."
+        },
+        {
+          "type": "image",
+          "src": "https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif",
+          "alt": "Machine learning training progress animation",
+          "caption": "A model gradually improving its predictions over training iterations"
+        },
+        {
+          "type": "paragraph",
+          "text": "Modern deep learning frameworks like PyTorch and TensorFlow automate the gradient computation entirely. You define the forward pass, and the framework handles backpropagation automatically through automatic differentiation (autograd)."
+        },
+        {
+          "type": "quote",
+          "text": "The most important skill in deep learning is not math — it is the ability to iterate quickly, experiment relentlessly, and debug fearlessly.",
+          "attribution": "Jeremy Howard"
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Neural networks learn by repeatedly adjusting weights to minimize a loss function",
+    "The forward pass produces predictions; backpropagation computes how to improve them",
+    "Gradient descent optimizers like Adam control the weight update process",
+    "Modern frameworks handle gradient computation automatically — focus on architecture design",
+    "Training is iterative: thousands of forward-backward cycles gradually improve accuracy",
+    "The learning rate is the most important hyperparameter to tune"
+  ],
+  "cta": {
+    "label": "Explore AI Resources",
+    "href": "/resources"
+  }
+}

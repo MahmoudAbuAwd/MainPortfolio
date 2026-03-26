@@ -104,8 +104,8 @@ export const metadata: Metadata = {
     images: ['/imggg.png'],
   },
   icons: {
-    icon: '/certs/ai.png',
-    apple: '/certs/ai.png',
+    icon: '/command.png',
+    apple: '/command.png',
   },
   verification: {
     google: ['wfNe4dC0_Gs0uv9mZErxak0e7SskKE1cCqMWudvcSC8', 'aq5RbQYjIu5R-p4Uejgu53IYhfiJKCkpJCR_TKh3n8M'],
@@ -128,7 +128,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0b0b0d',
+  themeColor: '#0d0e1a',
   colorScheme: 'dark',
 }
 
@@ -141,9 +141,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Favicon links */}
-        <link rel="icon" href="/certs/ai.png" type="/certs/ai.png" />
+        <link rel="icon" href="/command.png" type="image/png" />
         {/* For Apple devices */}
-        <link rel="apple-touch-icon" href="/certs/ai.png" />
+        <link rel="apple-touch-icon" href="/command.png" />
         {/* Google Analytics (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-GGJLWFKNKW"
@@ -162,7 +162,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white antialiased`}
+        className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white antialiased`}
         suppressHydrationWarning
       >
         {children}

@@ -75,8 +75,8 @@ export function ContactForm() {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <div className="relative overflow-hidden rounded-xl bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-6 transition-all duration-300 hover:border-purple-500/50">
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
+        <div className="relative overflow-hidden rounded-xl bg-pal-800/50 backdrop-blur-sm border border-pal-700/50 p-6 transition-all duration-300 hover:border-pal-400/50">
+          <div className="absolute -inset-1 bg-gradient-to-r from-pal-500/10 to-pal-200/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
 
           <div className="relative">
             <h3 id="contact-form-heading" className="text-2xl font-bold mb-6">Send Me a Message</h3>
@@ -92,7 +92,7 @@ export function ContactForm() {
               <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio" />
               
               <div className="space-y-2">
-                <label htmlFor="contact-name" className="block text-sm font-medium text-zinc-200">
+                <label htmlFor="contact-name" className="block text-sm font-medium text-pal-100">
                   Name
                 </label>
                 <Input
@@ -100,11 +100,11 @@ export function ContactForm() {
                   name="name"
                   placeholder="Enter your full name"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="contact-email" className="block text-sm font-medium text-zinc-200">
+                <label htmlFor="contact-email" className="block text-sm font-medium text-pal-100">
                   Email address
                 </label>
                 <Input
@@ -113,11 +113,11 @@ export function ContactForm() {
                   type="email"
                   placeholder="name@example.com"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="contact-subject" className="block text-sm font-medium text-zinc-200">
+                <label htmlFor="contact-subject" className="block text-sm font-medium text-pal-100">
                   Subject
                 </label>
                 <Input
@@ -125,11 +125,11 @@ export function ContactForm() {
                   name="subject"
                   placeholder="What would you like to discuss?"
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="contact-message" className="block text-sm font-medium text-zinc-200">
+                <label htmlFor="contact-message" className="block text-sm font-medium text-pal-100">
                   Message
                 </label>
                 <Textarea
@@ -138,12 +138,12 @@ export function ContactForm() {
                   placeholder="Share the details of your project or question"
                   rows={5}
                   required
-                  className="bg-zinc-900/50 border-zinc-700 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 border-0"
+                className="w-full bg-gradient-to-r from-[#424874] to-[#A6B1E1] hover:from-[#A6B1E1] hover:to-[#424874] border-0"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -184,16 +184,16 @@ export function ContactForm() {
                 stiffness: 300,
                 duration: 0.4 
               }}
-              className="relative bg-zinc-900/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 border border-zinc-700/50 shadow-2xl"
+              className="relative bg-pal-900/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 border border-pal-700/50 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-pal-500/10 via-pal-200/10 to-pal-500/10 rounded-2xl"></div>
               
               {/* Close Button */}
               <button
                 onClick={closeSuccessModal}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors duration-200"
+                className="absolute top-4 right-4 text-pal-200 hover:text-white transition-colors duration-200"
                 aria-label="Close message sent modal"
                 ref={successCloseButtonRef}
               >
@@ -225,7 +225,7 @@ export function ContactForm() {
                   <h3 id="contact-success-title" className="text-2xl font-bold text-white mb-2">
                     Message Sent Successfully! 🎉
                   </h3>
-                  <p id="contact-success-description" className="text-zinc-300 mb-6">
+                  <p id="contact-success-description" className="text-pal-100 mb-6">
                     Thanks for reaching out! I'll get back to you as soon as possible.
                   </p>
                 </motion.div>
@@ -246,7 +246,7 @@ export function ContactForm() {
                         duration: 1.5,
                         ease: "easeOut"
                       }}
-                      className="absolute top-1/2 left-1/2 w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                      className="absolute top-1/2 left-1/2 w-2 h-2 bg-gradient-to-r from-[#A6B1E1] to-[#DCD6F7] rounded-full"
                     />
                   ))}
                 </div>
@@ -259,7 +259,7 @@ export function ContactForm() {
                 >
                   <Button
                     onClick={closeSuccessModal}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 border-0 px-6"
+                    className="bg-gradient-to-r from-[#424874] to-[#A6B1E1] hover:from-[#A6B1E1] hover:to-[#424874] border-0 px-6"
                     aria-label="Dismiss success message"
                   >
                     Got it!

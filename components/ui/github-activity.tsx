@@ -1,29 +1,35 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Github, GitCommit, GitPullRequest, Star, GitBranch, Clock, Code2, Users, Activity, TrendingUp } from 'lucide-react'
+import {
+  Github,
+  GitCommit,
+  GitPullRequest,
+  Star,
+  GitBranch,
+  Code2,
+  Users,
+  ArrowUpRight,
+  GitFork,
+} from 'lucide-react'
 import { Skeleton } from './skeleton'
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
 
 interface GitHubEvent {
   id: string
   type: string
-  repo: {
-    name: string
-  }
+  repo: { name: string }
   payload?: {
     action?: string
     ref?: string
     ref_type?: string
-    commits?: Array<{
-      message: string
-      sha: string
-      url: string
-    }>
-    pull_request?: {
-      html_url: string
-      title: string
-    }
+    size?: number
+    commits?: Array<{ message: string; sha: string }>
+    pull_request?: { html_url: string; title: string }
   }
   created_at: string
 }
@@ -31,367 +37,270 @@ interface GitHubEvent {
 interface GitHubStats {
   totalRepos: number
   totalStars: number
-  totalCommits: number
   followers: number
   following: number
+  totalForks: number
 }
 
-const GitHubActivity = () => {
-  const [activity, setActivity] = useState<GitHubEvent[]>([])
+interface RepoInfo {
+  stargazers_count: number
+  forks_count: number
+  language: string | null
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+const GITHUB_USER = 'MahmoudAbuAwd'
+
+function timeAgo(dateString: string): string {
+  const seconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000)
+  if (seconds < 60) return 'just now'
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}d ago`
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(new Date(dateString))
+}
+
+function eventMeta(event: GitHubEvent) {
+  const repo = event.repo.name.replace(`${GITHUB_USER}/`, '')
+  switch (event.type) {
+    case 'PushEvent': {
+      const n = event.payload?.size ?? event.payload?.commits?.length ?? 1
+      return { icon: GitCommit, iconColor: 'text-pal-200', accent: 'from-pal-500/15 to-pal-400/5', verb: `Pushed ${n} commit${n !== 1 ? 's' : ''} to`, repo, detail: event.payload?.commits?.[0]?.message ?? null, url: `https://github.com/${event.repo.name}/commits` }
+    }
+    case 'CreateEvent':
+      return { icon: GitBranch, iconColor: 'text-blue-400', accent: 'from-blue-500/15 to-blue-400/5', verb: event.payload?.ref_type === 'branch' ? `Created branch ${event.payload.ref} in` : `Created ${event.payload?.ref_type ?? 'repo'}`, repo, detail: null, url: `https://github.com/${event.repo.name}` }
+    case 'PullRequestEvent':
+      return { icon: GitPullRequest, iconColor: 'text-green-400', accent: 'from-green-500/15 to-green-400/5', verb: `${event.payload?.action ?? 'Updated'} PR in`, repo, detail: event.payload?.pull_request?.title ?? null, url: event.payload?.pull_request?.html_url ?? `https://github.com/${event.repo.name}/pulls` }
+    case 'WatchEvent':
+      return { icon: Star, iconColor: 'text-yellow-400', accent: 'from-yellow-500/15 to-yellow-400/5', verb: 'Starred', repo, detail: null, url: `https://github.com/${event.repo.name}` }
+    default:
+      return { icon: Github, iconColor: 'text-pal-300', accent: 'from-pal-500/10 to-pal-400/5', verb: event.type.replace('Event', ''), repo, detail: null, url: `https://github.com/${event.repo.name}` }
+  }
+}
+
+const langColors: Record<string, string> = {
+  Python: 'bg-blue-500', JavaScript: 'bg-yellow-400', TypeScript: 'bg-blue-400',
+  Jupyter: 'bg-orange-400', 'Jupyter Notebook': 'bg-orange-400', HTML: 'bg-red-400',
+  CSS: 'bg-purple-400', Shell: 'bg-green-400', Dockerfile: 'bg-cyan-400',
+}
+
+/* ------------------------------------------------------------------ */
+/*  Sub-components                                                     */
+/* ------------------------------------------------------------------ */
+
+function StatsAndLanguages({ stats, sortedLanguages, totalLangRepos }: {
+  stats: GitHubStats
+  sortedLanguages: [string, number][]
+  totalLangRepos: number
+}) {
+  return (
+    <div className="space-y-5">
+      {/* Stats grid — 2x2 on mobile, 4 cols on desktop */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {[
+          { icon: Code2, label: 'Repos', value: stats.totalRepos, color: 'text-blue-400' },
+          { icon: Star, label: 'Stars', value: stats.totalStars, color: 'text-yellow-400' },
+          { icon: GitFork, label: 'Forks', value: stats.totalForks, color: 'text-pal-200' },
+          { icon: Users, label: 'Followers', value: stats.followers, color: 'text-green-400' },
+        ].map((s) => (
+          <div key={s.label} className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-3.5 sm:p-4">
+            <div className="flex items-center gap-2">
+              <s.icon className={`h-4 w-4 ${s.color}`} />
+              <span className="text-[11px] sm:text-xs text-pal-300">{s.label}</span>
+            </div>
+            <p className="mt-1.5 text-xl font-bold text-white">{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Language bar */}
+      {sortedLanguages.length > 0 && (
+        <div className="space-y-2.5">
+          <p className="text-[11px] font-medium text-pal-300 uppercase tracking-wider">Languages</p>
+          <div className="flex h-2 overflow-hidden rounded-full bg-white/[0.04]">
+            {sortedLanguages.map(([lang, count]) => (
+              <div key={lang} className={`${langColors[lang] ?? 'bg-pal-400'}`} style={{ width: `${(count / totalLangRepos) * 100}%` }} />
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            {sortedLanguages.map(([lang, count]) => (
+              <span key={lang} className="flex items-center gap-1.5 text-[11px] text-pal-200">
+                <span className={`inline-block h-1.5 w-1.5 rounded-full ${langColors[lang] ?? 'bg-pal-400'}`} />
+                {lang} <span className="text-pal-300">{Math.round((count / totalLangRepos) * 100)}%</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ActivityFeed({ events }: { events: GitHubEvent[] }) {
+  if (events.length === 0) {
+    return <p className="text-center py-6 text-sm text-pal-300">No recent public activity.</p>
+  }
+
+  return (
+    <div className="space-y-2">
+      {events.map((event, i) => {
+        const meta = eventMeta(event)
+        const Icon = meta.icon
+        return (
+          <motion.a
+            key={event.id}
+            href={meta.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.04 }}
+            className="group flex items-start gap-3 rounded-xl bg-white/[0.02] border border-white/[0.05] px-3 sm:px-4 py-3 transition-all duration-300 hover:bg-white/[0.05] hover:border-white/[0.1] block"
+          >
+            <div className={`mt-0.5 flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${meta.accent} border border-white/[0.06]`}>
+              <Icon className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${meta.iconColor}`} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] sm:text-sm text-pal-100 leading-snug">
+                {meta.verb}{' '}
+                <span className="font-semibold text-white">{meta.repo}</span>
+              </p>
+              {meta.detail && (
+                <p className="mt-0.5 text-[11px] sm:text-xs text-pal-300 truncate">
+                  {meta.detail.length > 50 ? meta.detail.slice(0, 50) + '...' : meta.detail}
+                </p>
+              )}
+            </div>
+            <span className="shrink-0 text-[10px] sm:text-[11px] text-pal-300 mt-0.5">{timeAgo(event.created_at)}</span>
+          </motion.a>
+        )
+      })}
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main — exports two components for separate rendering               */
+/* ------------------------------------------------------------------ */
+
+function GitHubActivity() {
+  const [events, setEvents] = useState<GitHubEvent[]>([])
   const [stats, setStats] = useState<GitHubStats | null>(null)
+  const [languages, setLanguages] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'activity' | 'stats'>('activity')
-  const [timeRange, setTimeRange] = useState<'day' | 'week' | 'month'>('week')
 
   useEffect(() => {
-    const fetchData = async () => {
+    let cancelled = false
+    const fetchAll = async () => {
       try {
         setLoading(true)
         setError(null)
-        
-        // Fetch both activity and stats in parallel
-        const [activityResponse, userResponse] = await Promise.all([
-          fetch('https://api.github.com/users/MahmoudAbuAwd/events'),
-          fetch('https://api.github.com/users/MahmoudAbuAwd')
+        const [userRes, eventsRes, reposRes] = await Promise.all([
+          fetch(`https://api.github.com/users/${GITHUB_USER}`),
+          fetch(`https://api.github.com/users/${GITHUB_USER}/events?per_page=30`),
+          fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`),
         ])
-        
-        if (!activityResponse.ok || !userResponse.ok) {
-          throw new Error('Failed to fetch GitHub data')
-        }
+        if (!userRes.ok || !eventsRes.ok || !reposRes.ok) throw new Error('GitHub API request failed')
+        const [userData, eventsData, reposData]: [any, GitHubEvent[], RepoInfo[]] = await Promise.all([userRes.json(), eventsRes.json(), reposRes.json()])
+        if (cancelled) return
 
-        const activityData: GitHubEvent[] = await activityResponse.json()
-        const userData = await userResponse.json()
+        const totalStars = reposData.reduce((s, r) => s + (r.stargazers_count ?? 0), 0)
+        const totalForks = reposData.reduce((s, r) => s + (r.forks_count ?? 0), 0)
+        const langMap: Record<string, number> = {}
+        for (const repo of reposData) { if (repo.language) langMap[repo.language] = (langMap[repo.language] ?? 0) + 1 }
 
-        // Filter and sort events based on time range
-        const now = new Date()
-        const filteredEvents = activityData
-          .filter(event => {
-            const eventDate = new Date(event.created_at)
-            let timeDiff = 0
-            
-            if (timeRange === 'day') {
-              timeDiff = (now.getTime() - eventDate.getTime()) / (1000 * 60 * 60 * 24)
-              return timeDiff <= 1
-            } else if (timeRange === 'week') {
-              timeDiff = (now.getTime() - eventDate.getTime()) / (1000 * 60 * 60 * 24 * 7)
-              return timeDiff <= 1
-            } else { // month
-              timeDiff = (now.getTime() - eventDate.getTime()) / (1000 * 60 * 60 * 24 * 30)
-              return timeDiff <= 1
-            }
-          })
-          .filter(event => ['PushEvent', 'CreateEvent', 'PullRequestEvent', 'WatchEvent'].includes(event.type))
-          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0, 10)
-
-        setActivity(filteredEvents)
-        
-        // Set user statistics
-        setStats({
-          totalRepos: userData.public_repos,
-          totalStars: 0, // Will be fetched separately
-          totalCommits: 0, // Will be fetched separately
-          followers: userData.followers,
-          following: userData.following
-        })
-
-        // Fetch additional stats (stars and commits)
-        const [starsResponse, commitsResponse] = await Promise.all([
-          fetch('https://api.github.com/users/MahmoudAbuAwd/starred?per_page=1'),
-          fetch('https://api.github.com/search/commits?q=author:MahmoudAbuAwd', {
-            headers: {
-              'Accept': 'application/vnd.github.cloak-preview'
-            }
-          })
-        ])
-
-        if (starsResponse.ok && commitsResponse.ok) {
-          const starsData = await starsResponse.json()
-          const commitsData = await commitsResponse.json()
-          
-          setStats(prev => ({
-            ...prev!,
-            totalStars: starsData.length,
-            totalCommits: commitsData.total_count
-          }))
-        }
-
+        setStats({ totalRepos: userData.public_repos, totalStars, followers: userData.followers, following: userData.following, totalForks })
+        setLanguages(langMap)
+        setEvents(eventsData.filter((e) => ['PushEvent', 'CreateEvent', 'PullRequestEvent', 'WatchEvent'].includes(e.type)).slice(0, 6))
       } catch (err) {
-        console.error('GitHub fetch error:', err)
-        setError(err instanceof Error ? err.message : 'Unknown error occurred')
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Unknown error')
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
+    fetchAll()
+    return () => { cancelled = true }
+  }, [])
 
-    fetchData()
-  }, [timeRange])
-
-  const getEventDetails = (event: GitHubEvent) => {
-    const repoName = event.repo.name.replace('MahmoudAbuAwd/', '')
-    
-    switch (event.type) {
-      case 'PushEvent':
-        return {
-          icon: <GitCommit className="h-4 w-4 text-purple-400" />,
-          text: `Pushed ${event.payload?.commits?.length || 1} commit${event.payload?.commits?.length !== 1 ? 's' : ''} to`,
-          color: 'bg-purple-500/10 border-purple-500/20',
-          url: `https://github.com/${event.repo.name}/commits`
-        }
-      case 'CreateEvent':
-        return {
-          icon: <GitBranch className="h-4 w-4 text-blue-400" />,
-          text: event.payload?.ref_type === 'branch' 
-            ? `Created branch ${event.payload.ref} in` 
-            : `Created ${event.payload?.ref_type || 'repository'} in`,
-          color: 'bg-blue-500/10 border-blue-500/20',
-          url: `https://github.com/${event.repo.name}`
-        }
-      case 'PullRequestEvent':
-        return {
-          icon: <GitPullRequest className="h-4 w-4 text-green-400" />,
-          text: `${event.payload?.action || 'updated'} pull request in`,
-          color: 'bg-green-500/10 border-green-500/20',
-          url: event.payload?.pull_request?.html_url || `https://github.com/${event.repo.name}/pulls`
-        }
-      case 'WatchEvent':
-        return {
-          icon: <Star className="h-4 w-4 text-yellow-400" />,
-          text: 'Starred',
-          color: 'bg-yellow-500/10 border-yellow-500/20',
-          url: `https://github.com/${event.repo.name}`
-        }
-      default:
-        return {
-          icon: <Github className="h-4 w-4 text-gray-400" />,
-          text: `Performed ${event.type.replace('Event', '').toLowerCase()} on`,
-          color: 'bg-gray-500/10 border-gray-500/20',
-          url: `https://github.com/${event.repo.name}`
-        }
-    }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInHours = Math.abs(now.getTime() - date.getTime()) / (1000 * 60 * 60)
-
-    if (diffInHours < 24) {
-      return new Intl.DateTimeFormat('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }).format(date) + ' today'
-    } else if (diffInHours < 48) {
-      return 'Yesterday'
-    } else {
-      return new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric'
-      }).format(date)
-    }
-  }
-
-  const renderCommitMessage = (message: string) => {
-    const truncatedMessage = message.length > 50 
-      ? `${message.substring(0, 50)}...` 
-      : message
-    return (
-      <span className="text-xs text-zinc-300 block mt-1 truncate">
-        {truncatedMessage}
-      </span>
-    )
-  }
+  const sortedLanguages = useMemo(() => Object.entries(languages).sort(([, a], [, b]) => b - a).slice(0, 6), [languages])
+  const totalLangRepos = sortedLanguages.reduce((s, [, c]) => s + c, 0)
 
   if (error) {
     return (
-      <div className="rounded-lg bg-red-900/20 border border-red-800/50 p-4 text-red-300">
-        Error loading GitHub activity: {error}
-        <div className="mt-2 text-sm">
-          Note: GitHub API has rate limits. Try refreshing later or adding a token.
+      <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-5 text-sm text-red-300">
+        <p className="font-medium">Could not load GitHub data</p>
+        <p className="mt-1 text-red-400/80 text-xs">GitHub API rate limit may have been reached. Try refreshing later.</p>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl bg-white/[0.04]" />)}
         </div>
+        <Skeleton className="h-32 w-full rounded-2xl bg-white/[0.04]" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30">
-          <Github className="h-6 w-6 text-purple-400" />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-white">GitHub Profile</h3>
-          <p className="text-sm text-zinc-400">Recent activity and statistics</p>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-        <div className="flex gap-2">
-          <button
-            onClick={() => setActiveTab('activity')}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${activeTab === 'activity' ? 'bg-purple-500/20 text-purple-300' : 'text-zinc-400 hover:text-zinc-200'}`}
-          >
-            Activity
-          </button>
-          <button
-            onClick={() => setActiveTab('stats')}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${activeTab === 'stats' ? 'bg-purple-500/20 text-purple-300' : 'text-zinc-400 hover:text-zinc-200'}`}
-          >
-            Statistics
-          </button>
-        </div>
-        {activeTab === 'activity' && (
-          <div className="flex items-center gap-2 text-xs">
-            <Clock className="h-4 w-4 text-zinc-500" />
-            <select 
-              value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value as 'day' | 'week' | 'month')}
-              className="bg-zinc-900 border border-zinc-800 rounded-md px-2 py-1 text-zinc-300 focus:outline-none focus:ring-1 focus:ring-purple-500"
-            >
-              <option value="day">Last 24h</option>
-              <option value="week">Last week</option>
-              <option value="month">Last month</option>
-            </select>
+    <div className="space-y-8">
+      {/* ── Profile header ── */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/[0.06] border border-white/[0.08]">
+            <Github className="h-5 w-5 text-pal-200" />
           </div>
-        )}
-      </div>
-
-      {loading ? (
-        <div className="space-y-3">
-          {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-16 w-full rounded-lg bg-zinc-800/50" />
-          ))}
-        </div>
-      ) : activeTab === 'activity' ? (
-        activity.length === 0 ? (
-          <div className="text-center py-6 text-zinc-400">
-            No recent activity found for selected time range.
-          </div>
-        ) : (
-          <div className="grid gap-3">
-            {activity.map((event) => {
-              const { icon, text, color, url } = getEventDetails(event)
-              const repoName = event.repo.name.replace('MahmoudAbuAwd/', '')
-              
-              return (
-                <motion.a
-                  key={event.id}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.02 }}
-                  className={`p-4 rounded-xl border ${color} backdrop-blur-sm transition-all duration-300 block`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
-                      {icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white">
-                        {text} <span className="text-purple-300">{repoName}</span>
-                      </p>
-                      {event.type === 'PushEvent' && event.payload?.commits?.[0]?.message && (
-                        renderCommitMessage(event.payload.commits[0].message)
-                      )}
-                      <p className="text-xs text-zinc-400 mt-1">
-                        {formatDate(event.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                </motion.a>
-              )
-            })}
-          </div>
-        )
-      ) : (
-        <div className="grid grid-cols-2 gap-4 pt-2">
-          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                <Code2 className="h-5 w-5 text-blue-400" />
-              </div>
-              <div>
-                <p className="text-sm text-zinc-400">Repositories</p>
-                <p className="text-xl font-bold text-white">{stats?.totalRepos || 0}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                <Star className="h-5 w-5 text-yellow-400" />
-              </div>
-              <div>
-                <p className="text-sm text-zinc-400">Stars</p>
-                <p className="text-xl font-bold text-white">{stats?.totalStars || 0}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                <GitCommit className="h-5 w-5 text-purple-400" />
-              </div>
-              <div>
-                <p className="text-sm text-zinc-400">Commits</p>
-                <p className="text-xl font-bold text-white">{stats?.totalCommits || 0}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/10 border border-green-500/20">
-                <Users className="h-5 w-5 text-green-400" />
-              </div>
-              <div>
-                <p className="text-sm text-zinc-400">Followers</p>
-                <p className="text-xl font-bold text-white">{stats?.followers || 0}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-pink-500/10 border border-pink-500/20">
-                <Activity className="h-5 w-5 text-pink-400" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm text-zinc-400">Contribution Activity</p>
-                <div className="flex items-center gap-2 mt-2">
-                  {[...Array(7)].map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`h-3 flex-1 rounded-sm ${Math.random() > 0.7 ? 'bg-green-500' : 'bg-zinc-800'}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div>
+            <h3 className="font-semibold text-white">GitHub Profile</h3>
+            <p className="text-xs text-pal-300">Live data</p>
           </div>
         </div>
-      )}
-
-      <div className="pt-2 text-center">
         <a
-          href="https://github.com/MahmoudAbuAwd"
+          href={`https://github.com/${GITHUB_USER}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors group"
+          className="flex items-center gap-1 text-xs font-medium text-pal-200 transition-colors hover:text-white group"
         >
-          View full GitHub profile
-          <span className="group-hover:translate-x-1 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
-            </svg>
-          </span>
+          @{GITHUB_USER}
+          <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
+      </div>
+
+      {/* ── Two-panel layout ── */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Left: Stats & Languages */}
+        <div className="rounded-2xl glass p-5">
+          <p className="text-xs font-semibold text-white uppercase tracking-wider mb-4">Statistics</p>
+          {stats && <StatsAndLanguages stats={stats} sortedLanguages={sortedLanguages} totalLangRepos={totalLangRepos} />}
+        </div>
+
+        {/* Right: Recent Activity */}
+        <div className="rounded-2xl glass p-5">
+          <p className="text-xs font-semibold text-white uppercase tracking-wider mb-4">Recent Activity</p>
+          <ActivityFeed events={events} />
+        </div>
+      </div>
+
+      {/* ── Footer ── */}
+      <div className="text-center">
+        <a
+          href={`https://github.com/${GITHUB_USER}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-pal-200 hover:text-white transition-colors group"
+        >
+          View full profile
+          <ArrowUpRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </a>
       </div>
     </div>

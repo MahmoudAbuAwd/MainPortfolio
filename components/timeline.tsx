@@ -1,95 +1,70 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useMobile } from "@/hooks/use-mobile"
 
 const experiences = [
   {
     title: "AI Engineer",
     company: "Kawkab AI",
-    period: "Sep 2025 - Present",
+    period: "Sep 2025 — Present",
     description:
-      "At Kawkab AI, I work as an AI Engineer designing and developing intelligent, scalable solutions such as chatbots, agentic AI systems, and RAG-based applications using LangChain and various LLM frameworks to enable data-driven, automated, and context-aware experiences.",
+      "Designing and developing intelligent, scalable solutions including chatbots, agentic AI systems, and RAG-based applications using LangChain and LLM frameworks.",
   },
   {
     title: "Founder",
     company: "MedGAN AI",
-    period: "Fep 2025 - Present",
+    period: "Feb 2025 — Present",
     description:
-      "Founder of MedGAN, an AI startup specializing in generative models and intelligent solutions for different industries",
+      "Founded an AI startup specializing in generative models and intelligent solutions for the healthcare industry.",
   },
   {
     title: "Intern",
-    company: "Coach you",
-    period: "Jun 2025 - Present",
+    company: "Coach You",
+    period: "Jun 2025 — Present",
     description:
-      "Developed entrepreneurial skills through practical training in building startups—covering idea validation, product development, market research, and team leadership.",
+      "Developing entrepreneurial skills through practical training in startup building — idea validation, product development, market research, and team leadership.",
   },
   {
     title: "AI Engineer",
     company: "Future Advance Internet Solutions",
-    period: "Oct 2024 - Feb 2025",
+    period: "Oct 2024 — Feb 2025",
     description:
       "Developed AI solutions for real-world applications, leveraging Python, machine learning, and deep learning frameworks.",
   },
   {
     title: "Intern",
     company: "Youth Innovation Club",
-    period: "Jun 2024 - Aug 2024",
-    description: "Completed training in 3D modeling and robotic design, focusing on practical applications and prototyping.",
+    period: "Jun 2024 — Aug 2024",
+    description:
+      "Completed training in 3D modeling and robotic design, focusing on practical applications and prototyping.",
   },
 ]
 
 export function Timeline() {
-  const isMobile = useMobile()
-
   return (
-    <div
-      className={`space-y-12 relative ${
-        !isMobile
-          ? "before:absolute before:inset-0 before:left-1/2 before:ml-0 before:-translate-x-px before:border-l-2 before:border-zinc-700 before:h-full before:z-0"
-          : ""
-      }`}
-    >
-      {experiences.map((experience, index) => (
-        <div
+    <div className="relative space-y-0 border-l border-white/[0.08] ml-3">
+      {experiences.map((exp, index) => (
+        <motion.div
           key={index}
-          className={`relative z-10 flex items-center ${index % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"}`}
+          className="relative pl-8 pb-10 last:pb-0"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: index * 0.05 }}
+          viewport={{ once: true }}
         >
-          <motion.div
-            className={`w-full md:w-1/2 ${index % 2 === 0 ? "md:pl-10" : "md:pr-10"}`}
-            initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative overflow-hidden rounded-xl bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-6 transition-all duration-300 hover:border-purple-500/50">
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
+          <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-pal-200 bg-pal-950 shadow-[0_0_8px_rgba(166,177,225,0.3)]" />
 
-              <div className="relative">
-                <h3 className="text-xl font-bold">{experience.title}</h3>
-                <div className="text-zinc-400 mb-4">
-                  {experience.company} | {experience.period}
-                </div>
-                <p className="text-zinc-300">{experience.description}</p>
+          <div className="glass rounded-2xl p-5 transition-all duration-500 hover:border-white/[0.14] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)]">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="font-semibold text-white">{exp.title}</h3>
+                <p className="text-sm text-pal-200">{exp.company}</p>
               </div>
+              <span className="text-xs font-medium text-pal-300">{exp.period}</span>
             </div>
-          </motion.div>
-
-          {!isMobile && (
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-              <motion.div
-                className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 z-10 flex items-center justify-center"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <div className="w-2 h-2 rounded-full bg-white"></div>
-              </motion.div>
-            </div>
-          )}
-        </div>
+            <p className="mt-3 text-sm leading-relaxed text-pal-200">{exp.description}</p>
+          </div>
+        </motion.div>
       ))}
     </div>
   )

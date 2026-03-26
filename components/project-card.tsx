@@ -1,89 +1,67 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { ArrowUpRight, Github } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 
 interface ProjectCardProps {
   title: string
   description: string
   tags: string[]
-  image: string
-  demoUrl?: string | null
   repoUrl: string
+  demoUrl?: string | null
 }
 
-export function ProjectCard({ title, description, tags, image, demoUrl, repoUrl }: ProjectCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-
+export function ProjectCard({ title, description, tags, repoUrl, demoUrl }: ProjectCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4 }}
       viewport={{ once: true }}
-      className="group"
+      className="group h-full"
     >
-      <div
-        className="relative h-full overflow-hidden rounded-xl bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 transition-all duration-300 group-hover:border-purple-500/50"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+      <div className="flex h-full flex-col rounded-2xl glass p-6 transition-all duration-500 hover:border-white/[0.14] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-pal-200">{description}</p>
 
-        <div className="relative h-full flex flex-col">
-          <div className="relative overflow-hidden h-48">
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-            <img
-              src={image || "/placeholder.svg"}
-              alt={title}
-              className={`w-full h-full object-cover transition-transform duration-700 ${isHovered ? "scale-110" : "scale-100"}`}
-            />
-          </div>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="glass-pill rounded-lg px-2.5 py-0.5 text-xs text-pal-200"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-          <div className="p-6 flex-grow">
-            <h3 className="text-xl font-bold mb-2">{title}</h3>
-            <p className="text-zinc-400 mb-4">{description}</p>
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              {tags.map((tag, index) => (
-                <Badge key={index} variant="secondary" className="bg-zinc-700/50 hover:bg-zinc-700 text-zinc-300">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-
-            <div className="flex justify-end mt-auto pt-4 border-t border-zinc-700/50">
-              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white hover:bg-zinc-700/50" asChild>
-                <Link href={repoUrl} target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" />
-                  Code
-                </Link>
-              </Button>
-              {demoUrl && (
-                <Button
-                  size="sm"
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-pink-500 hover:to-purple-500 border-0 ml-2"
-                  asChild
-                >
-                  <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
-                    Live Demo
-                    <ArrowUpRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              )}
-            </div>
-          </div>
-
-          <div className="absolute top-3 right-3 z-20">
-            <div
-              className={`w-3 h-3 rounded-full ${isHovered ? "bg-green-500" : "bg-zinc-500"} transition-colors duration-300`}
-            ></div>
-          </div>
+        <div className="mt-auto flex items-center gap-2 border-t border-white/[0.06] pt-4 mt-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 text-pal-200 hover:text-white hover:bg-white/[0.06]"
+            asChild
+          >
+            <Link href={repoUrl} target="_blank" rel="noopener noreferrer">
+              <Github className="mr-1.5 h-3.5 w-3.5" />
+              Source
+            </Link>
+          </Button>
+          {demoUrl && (
+            <Button
+              size="sm"
+              className="h-8 bg-pal-500 hover:bg-pal-400 text-white border-0"
+              asChild
+            >
+              <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
+                Live Demo
+                <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>

@@ -209,19 +209,19 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-950 to-black text-white">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white">
       <a
         href="#resources-main"
-        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-zinc-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg"
+        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg"
       >
         Skip to main content
       </a>
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-purple-600/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pink-600/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(168,85,247,0.08),_transparent_65%)]" />
+        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-pal-500/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pal-400/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(66,72,116,0.12),_transparent_65%)]" />
       </div>
 
       <main id="resources-main" className="relative pt-28 pb-24" role="main">
@@ -232,13 +232,13 @@ export default function ResourcesPage() {
         />
         <section className="px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/10 px-4 py-1 text-sm text-purple-200">
+            <span className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-1 text-sm text-pal-100">
               Curated learning hub
             </span>
             <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
               Resources for Builders & Learners
             </h1>
-            <p className="mt-5 text-lg text-zinc-400">
+            <p className="mt-5 text-lg text-pal-200">
               A living library of PDFs, guides, and must-read links to accelerate your AI and engineering journey.
             </p>
           </div>
@@ -246,9 +246,9 @@ export default function ResourcesPage() {
 
         {hasResources && (
           <nav className="mt-14 px-4 sm:px-6 lg:px-8" aria-label="Resource categories">
-            <div className="mx-auto max-w-5xl rounded-3xl border border-zinc-800/70 bg-zinc-900/60 p-6">
+            <div className="mx-auto max-w-5xl rounded-3xl glass p-6">
               <h2 className="text-lg font-semibold text-white">Jump to a learning track</h2>
-              <p className="mt-2 text-sm text-zinc-500">
+              <p className="mt-2 text-sm text-pal-300">
                 Quickly access the resource category that matches your current AI learning goal.
               </p>
               <ul className="mt-4 flex flex-wrap gap-3">
@@ -256,10 +256,10 @@ export default function ResourcesPage() {
                   <li key={id}>
                     <Link
                       href={`#${id}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-50"
+                      className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-2 text-sm font-medium text-pal-100 transition-colors hover:border-pal-200 hover:text-pal-50"
                     >
                       <span className="font-semibold">{category}</span>
-                      <span className="rounded-full bg-purple-500/20 px-2 py-0.5 text-xs text-purple-100" aria-label={`${resources.length} resources`}>
+                      <span className="rounded-full bg-white/[0.1] px-2 py-0.5 text-xs text-pal-50" aria-label={`${resources.length} resources`}>
                         {resources.length}
                       </span>
                     </Link>
@@ -279,7 +279,7 @@ export default function ResourcesPage() {
                     <h2 className="text-2xl font-semibold text-white">
                       {category}
                     </h2>
-                    <p className="text-sm text-zinc-500">
+                    <p className="text-sm text-pal-300">
                       {categoryResources.length} curated resource{categoryResources.length > 1 ? 's' : ''}
                     </p>
                   </div>
@@ -288,19 +288,19 @@ export default function ResourcesPage() {
                     {categoryResources.map((resource) => (
                       <article
                         key={resource.title}
-                        className="group relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-6 transition-all hover:-translate-y-1.5 hover:border-purple-500/40 hover:shadow-[0_25px_60px_-30px_rgba(147,51,234,0.7)]"
+                        className="group relative overflow-hidden rounded-2xl glass p-6 transition-all hover:-translate-y-1.5 hover:border-white/[0.14] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)]"
                       >
                         <div className="flex items-start gap-3">
                           {resource.type === 'pdf' ? (
-                            <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-purple-300" />
+                            <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-pal-100" />
                           ) : (
-                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-purple-400" />
+                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-pal-200" />
                           )}
                           <div>
-                            <h3 className="text-lg font-semibold text-white group-hover:text-purple-200">
+                            <h3 className="text-lg font-semibold text-white group-hover:text-pal-50">
                               {resource.title}
                             </h3>
-                            <p className="mt-2 text-sm text-zinc-400">
+                            <p className="mt-2 text-sm text-pal-200">
                               {resource.description}
                             </p>
                           </div>
@@ -310,7 +310,7 @@ export default function ResourcesPage() {
                           href={resource.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-6 inline-flex items-center text-sm font-semibold text-purple-300 transition-colors hover:text-purple-200"
+                          className="mt-6 inline-flex items-center text-sm font-semibold text-pal-100 transition-colors hover:text-pal-50"
                         >
                           {resource.type === 'pdf' ? 'Open PDF' : 'Visit Link'}
                           <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -324,10 +324,10 @@ export default function ResourcesPage() {
               ))}
             </div>
           ) : (
-            <div className="mx-auto max-w-3xl rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/40 px-8 py-16 text-center">
-              <BookOpen className="mx-auto h-12 w-12 text-zinc-600" />
+            <div className="mx-auto max-w-3xl rounded-2xl glass border-dashed px-8 py-16 text-center">
+              <BookOpen className="mx-auto h-12 w-12 text-pal-300" />
               <h3 className="mt-4 text-xl font-semibold text-white">No resources added yet</h3>
-              <p className="mt-2 text-zinc-500">
+              <p className="mt-2 text-pal-300">
                 Start curating your favorite PDFs, frameworks, and articles. They'll appear here in organized collections.
               </p>
             </div>
@@ -335,18 +335,18 @@ export default function ResourcesPage() {
         </section>
 
         <section className="mt-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-3xl border border-zinc-800/80 bg-zinc-900/60 px-8 py-10 text-center md:flex-row md:items-center md:text-left">
+          <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-3xl glass-strong px-8 py-10 text-center md:flex-row md:items-center md:text-left">
             <div className="flex-1">
               <h2 className="text-2xl font-semibold text-white">
                 Have a powerful resource to recommend?
               </h2>
-              <p className="mt-3 text-sm text-zinc-400">
+              <p className="mt-3 text-sm text-pal-200">
                 Share the guides, courses, and demos that helped you most. Together we can grow a knowledge base for the community.
               </p>
             </div>
             <a
               href="mailto:mahmoodabuawad08@gmail.com"
-              className="inline-flex items-center justify-center rounded-full border border-purple-500/40 bg-purple-500/10 px-6 py-3 text-sm font-semibold text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-100"
+              className="inline-flex items-center justify-center rounded-full glass-pill px-6 py-3 text-sm font-semibold text-pal-100 transition-colors hover:border-pal-200 hover:text-pal-50"
             >
               Submit a resource
             </a>
