@@ -246,7 +246,7 @@ function CertificationsSection() {
 export default function Portfolio() {
   const handleDownloadResume = () => {
     const link = document.createElement("a")
-    link.href = "/Resume.pdf"
+    link.href = "/resume/Resume.pdf"
     link.download = "Resume.pdf"
     document.body.appendChild(link)
     link.click()
