@@ -18,12 +18,12 @@ export function SiteFooter() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative z-10 mt-24 border-t border-white/[0.08] font-mono">
+    <footer className="relative z-10 mt-24 border-t border-hair/[0.08] font-mono">
       <div className="mx-auto max-w-7xl 2xl:max-w-[96rem] px-4 py-12 sm:px-6">
         <p className="text-sm">
           <span className="text-term-green">mahmoud@abuawd</span>
           <span className="text-pal-400">:</span>
-          <span className="text-amber-400">~</span>
+          <span className="text-acc">~</span>
           <span className="text-pal-400">$ </span>
           <span className="text-pal-200">echo &quot;thanks for stopping by&quot;</span>
         </p>
@@ -35,7 +35,7 @@ export function SiteFooter() {
             <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
               {navLinks.map((l) => (
                 <li key={l.label}>
-                  <Link href={l.href} className="text-pal-300 transition-colors hover:text-amber-300">
+                  <Link href={l.href} className="text-pal-300 transition-colors hover:text-acc">
                     <span className="text-pal-500">/</span>
                     {l.label}
                   </Link>
@@ -52,7 +52,7 @@ export function SiteFooter() {
                     href={l.href}
                     target={l.href.startsWith("mailto") ? "_self" : "_blank"}
                     rel="noopener noreferrer"
-                    className="text-pal-300 transition-colors hover:text-amber-300"
+                    className="text-pal-300 transition-colors hover:text-acc"
                   >
                     {l.label}
                   </Link>
@@ -62,7 +62,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-dashed border-white/[0.1] pt-6 text-xs text-pal-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-2 border-t border-dashed border-hair/[0.1] pt-6 text-xs text-pal-400 sm:flex-row sm:items-center sm:justify-between">
           <p># © {year} Mahmoud AbuAwd — all rights reserved</p>
           <p className="cursor-blink">built with next.js, tailwind &amp; framer-motion</p>
         </div>

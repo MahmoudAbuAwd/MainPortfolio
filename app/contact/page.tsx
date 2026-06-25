@@ -1,198 +1,150 @@
 "use client"
 
-import { Metadata } from "next"
-import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { Mail, Phone, MapPin, ArrowUpRight, Github, Linkedin, Download } from "lucide-react"
 import Link from "next/link"
 
 import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { ContactForm } from "@/components/contact-form"
 
-const metadata: Metadata = {
-  title: "Contact Me | Mahmoud AbuAwd",
-  description: "Get in touch with Mahmoud AbuAwd for collaborations, opportunities, or inquiries about AI and machine learning projects.",
-  keywords: [
-    "contact",
-    "Mahmoud AbuAwd",
-    "AI consultant",
-    "machine learning expert",
-    "collaboration",
-  ],
-  openGraph: {
-    title: "Contact Me | Mahmoud AbuAwd",
-    description: "Get in touch for collaborations, opportunities, or inquiries about AI and machine learning projects.",
-    url: "https://abuawd.online/contact",
-    type: "website",
-  },
-  alternates: {
-    canonical: "https://abuawd.online/contact",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Contact Me | Mahmoud AbuAwd",
-    description: "Get in touch for collaborations, opportunities, or inquiries about AI and machine learning projects.",
-  },
+const contactRows = [
+  { icon: Mail, key: "email", value: "mahmoodabuawad08@gmail.com", href: "mailto:mahmoodabuawad08@gmail.com" },
+  { icon: Phone, key: "phone", value: "+962 79 103 4222", href: "tel:+962791034222" },
+  { icon: MapPin, key: "location", value: "Amman, Jordan", href: null },
+]
+
+const quickLinks = [
+  { icon: Github, label: "github", sub: "projects & contributions", href: "https://github.com/MahmoudAbuAwd" },
+  { icon: Linkedin, label: "linkedin", sub: "connect professionally", href: "https://www.linkedin.com/in/mahmoud-abuawd-247290225/" },
+]
+
+function handleDownloadResume() {
+  const link = document.createElement("a")
+  link.href = "/resume/Resume.pdf"
+  link.download = "Resume.pdf"
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 }
 
 export default function ContactPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-pal-950 font-mono text-pal-100">
+      <div className="terminal-atmosphere" aria-hidden />
+
       <a
         href="#contact-main"
-        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg"
+        className="sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:rounded-sm focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-acc focus-visible:ring-2 focus-visible:ring-acc"
       >
         Skip to main content
       </a>
       <FloatingNav />
 
-      <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pal-600/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(66,72,116,0.12),_transparent_65%)]" />
-      </div>
-
-      <main id="contact-main" className="relative pt-28 pb-24" role="main">
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-1 text-sm text-pal-50">
-              Let's Connect
-            </span>
-            <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
-              Get in Touch
-            </h1>
-            <p className="mt-5 text-lg text-pal-200">
-              Have a project in mind or want to collaborate? I'd love to hear from you.
-            </p>
-          </div>
+      <main id="contact-main" className="relative z-10 px-4 pb-24 pt-28 sm:px-6" role="main">
+        {/* Hero */}
+        <section className="mx-auto max-w-5xl">
+          <p className="text-sm text-pal-400">
+            <span className="text-term-green">~/contact</span> $ ./reach-out
+          </p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+            Get in Touch
+          </h1>
+          <p className="mt-4 max-w-xl font-sans leading-relaxed text-pal-300">
+            Have a project in mind or want to collaborate? I&rsquo;d love to hear from you.
+          </p>
         </section>
 
-        <section className="mt-16 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-2">
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <div className="rounded-2xl glass p-8">
-                <h2 className="text-2xl font-semibold text-white mb-6">Contact Information</h2>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 rounded-full bg-white/[0.06] border border-white/[0.08] p-3">
-                      <Mail className="h-6 w-6 text-pal-200" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white mb-1">Email</h3>
-                      <a 
-                        href="mailto:mahmoodabuawad08@gmail.com" 
-                        className="text-pal-200 hover:text-pal-100 transition-colors"
-                      >
-                        mahmoodabuawad08@gmail.com
+        {/* Info + form */}
+        <section className="mx-auto mt-14 grid max-w-5xl gap-6 lg:grid-cols-2">
+          {/* Left column */}
+          <div className="space-y-6">
+            <div className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+              <p className="text-xs text-pal-400">
+                <span className="text-acc">$</span> cat contact.json
+              </p>
+              <div className="mt-4 space-y-3">
+                {contactRows.map((row) => (
+                  <div key={row.key} className="flex items-center gap-3 text-sm">
+                    <row.icon className="h-4 w-4 shrink-0 text-acc" />
+                    <span className="w-20 shrink-0 text-pal-400">{row.key}</span>
+                    {row.href ? (
+                      <a href={row.href} className="truncate text-pal-100 transition-colors hover:text-acc">
+                        {row.value}
                       </a>
-                    </div>
+                    ) : (
+                      <span className="truncate text-pal-100">{row.value}</span>
+                    )}
                   </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 rounded-full bg-white/[0.06] border border-white/[0.08] p-3">
-                      <Phone className="h-6 w-6 text-pal-200" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white mb-1">Phone</h3>
-                      <p className="text-pal-200">+962791034222</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 rounded-full bg-white/[0.06] border border-white/[0.08] p-3">
-                      <MapPin className="h-6 w-6 text-pal-200" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white mb-1">Location</h3>
-                      <p className="text-pal-200">Amman, Jordan</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-2xl glass p-8">
-                <h2 className="text-xl font-semibold text-white mb-4">Quick Links</h2>
-                <p className="text-pal-200 mb-6">
-                  Connect with me or download my resume to learn more about my experience.
-                </p>
-                <div className="space-y-3">
-                  <a
-                    href="https://github.com/MahmoudAbuAwd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.1] transition-colors group"
-                  >
-                    <svg className="h-5 w-5 text-pal-200 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                    </svg>
-                    <div className="flex-1">
-                      <div className="font-medium text-white group-hover:text-pal-100 transition-colors">GitHub Profile</div>
-                      <div className="text-xs text-pal-300">View my projects and contributions</div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://www.linkedin.com/in/mahmoud-abuawd/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.1] transition-colors group"
-                  >
-                    <svg className="h-5 w-5 text-pal-200 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    <div className="flex-1">
-                      <div className="font-medium text-white group-hover:text-pal-100 transition-colors">LinkedIn Profile</div>
-                      <div className="text-xs text-pal-300">Connect with me professionally</div>
-                    </div>
-                  </a>
-
-                  <button
-                    onClick={() => {
-                      const link = document.createElement('a')
-                      link.href = '/resume/Resume.pdf'
-                      link.download = 'Resume.pdf'
-                      document.body.appendChild(link)
-                      link.click()
-                      document.body.removeChild(link)
-                    }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.1] transition-colors group w-full"
-                  >
-                    <svg className="h-5 w-5 text-pal-200 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <div className="flex-1 text-left">
-                      <div className="font-medium text-white group-hover:text-pal-100 transition-colors">Download Resume</div>
-                      <div className="text-xs text-pal-300">Get my latest CV (PDF)</div>
-                    </div>
-                  </button>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="rounded-2xl glass p-8">
-              <h2 className="text-2xl font-semibold text-white mb-6">Send a Message</h2>
+            <div className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+              <p className="text-xs text-pal-400">
+                <span className="text-acc">$</span> ls ./links
+              </p>
+              <div className="mt-4 space-y-2">
+                {quickLinks.map((l) => (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-3 rounded-sm border border-hair/[0.08] bg-hair/[0.02] px-3 py-2.5 transition-colors hover:border-acc/40 hover:bg-acc/[0.06]"
+                  >
+                    <l.icon className="h-4 w-4 text-pal-300 transition-colors group-hover:text-acc" />
+                    <span className="flex-1">
+                      <span className="block text-sm text-pal-100">{l.label}</span>
+                      <span className="block text-xs text-pal-400">{l.sub}</span>
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 text-pal-400 transition-colors group-hover:text-acc" />
+                  </a>
+                ))}
+                <button
+                  onClick={handleDownloadResume}
+                  className="group flex w-full items-center gap-3 rounded-sm border border-hair/[0.08] bg-hair/[0.02] px-3 py-2.5 text-left transition-colors hover:border-acc/40 hover:bg-acc/[0.06]"
+                >
+                  <Download className="h-4 w-4 text-pal-300 transition-colors group-hover:text-acc" />
+                  <span className="flex-1">
+                    <span className="block text-sm text-pal-100">./resume.pdf</span>
+                    <span className="block text-xs text-pal-400">download latest CV</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Right column — form */}
+          <div className="overflow-hidden rounded-md term-panel">
+            <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
+              <span className="flex items-center gap-1.5" aria-hidden>
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+              </span>
+              <span className="ml-2 text-xs text-pal-400">new-message.txt</span>
+            </div>
+            <div className="p-6">
               <ContactForm />
             </div>
           </div>
         </section>
 
-        <section className="mt-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-3xl glass-strong px-8 py-10 text-center md:flex-row md:items-center md:text-left">
+        {/* CTA */}
+        <section className="mx-auto mt-16 max-w-5xl">
+          <div className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-white">
-                Looking for my work?
-              </h2>
-              <p className="mt-3 text-sm text-pal-200">
-                Check out my portfolio and projects to see what I've been working on.
+              <h2 className="text-xl font-semibold text-pal-50">Looking for my work?</h2>
+              <p className="mt-2 font-sans text-sm text-pal-300">
+                Check out my projects to see what I&rsquo;ve been building.
               </p>
             </div>
             <Link
               href="/#projects"
-              className="inline-flex items-center justify-center rounded-full glass-pill px-6 py-3 text-sm font-semibold text-pal-100 transition-colors hover:border-pal-200 hover:text-pal-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-sm border border-acc/40 bg-acc/10 px-5 py-2.5 text-sm text-acc transition-colors hover:bg-acc/20"
             >
-              View Projects
+              view projects
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
         </section>

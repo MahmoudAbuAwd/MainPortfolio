@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Download, ChevronRight } from "lucide-react"
 
 import { useMobile } from "@/hooks/use-mobile"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false)
@@ -65,7 +66,7 @@ export function FloatingNav() {
         className={clsx(
           "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
           isScrolled
-            ? "border-white/[0.08] bg-pal-950/85 backdrop-blur-xl"
+            ? "border-hair/[0.08] bg-pal-950/85 backdrop-blur-xl"
             : "border-transparent bg-transparent"
         )}
         aria-label="Primary"
@@ -81,14 +82,14 @@ export function FloatingNav() {
             <Link href="/" className="group flex items-center gap-3 text-sm">
               <span className="hidden items-center gap-1.5 sm:flex" aria-hidden>
                 <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
                 <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
               </span>
               <span className="tracking-tight">
                 <span className="text-term-green">mahmoud@abuawd</span>
                 <span className="text-pal-400">:</span>
-                <span className="text-amber-400">~</span>
-                <span className="text-pal-400 transition-colors group-hover:text-amber-400">$</span>
+                <span className="text-acc">~</span>
+                <span className="text-pal-400 transition-colors group-hover:text-acc">$</span>
               </span>
             </Link>
 
@@ -103,8 +104,8 @@ export function FloatingNav() {
                     className={clsx(
                       "rounded-sm px-3 py-1.5 text-sm transition-colors",
                       active
-                        ? "text-amber-400"
-                        : "text-pal-300 hover:bg-white/[0.04] hover:text-pal-50"
+                        ? "text-acc"
+                        : "text-pal-300 hover:bg-hair/[0.04] hover:text-pal-50"
                     )}
                   >
                     <span className="text-pal-500">/</span>
@@ -115,16 +116,17 @@ export function FloatingNav() {
             </div>
 
             <div className="ml-auto flex items-center gap-2 md:ml-3">
+              <ThemeToggle />
               <button
                 onClick={handleDownloadResume}
-                className="hidden items-center gap-1.5 rounded-sm border border-amber-400/40 bg-amber-400/10 px-3 py-1.5 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200 md:inline-flex"
+                className="hidden items-center gap-1.5 rounded-sm border border-acc/40 bg-acc/10 px-3 py-1.5 text-sm text-acc transition-colors hover:bg-acc/20 hover:text-acc md:inline-flex"
               >
                 <Download className="h-3.5 w-3.5" />
                 ./resume.pdf
               </button>
 
               <button
-                className="flex h-9 w-9 items-center justify-center rounded-sm border border-white/[0.1] bg-white/[0.03] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 md:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded-sm border border-hair/[0.1] bg-hair/[0.03] text-pal-200 transition-colors hover:border-acc/40 hover:text-acc md:hidden"
                 onClick={() => setIsOpen(true)}
                 aria-label="Open menu"
                 aria-haspopup="dialog"
@@ -153,7 +155,7 @@ export function FloatingNav() {
               role="presentation"
             />
             <motion.div
-              className="fixed inset-y-0 left-0 z-50 w-72 border-r border-white/[0.1] bg-pal-900 font-mono"
+              className="fixed inset-y-0 left-0 z-50 w-72 border-r border-hair/[0.1] bg-pal-900 font-mono"
               initial={{ x: -300 }}
               animate={{ x: 0 }}
               exit={{ x: -300 }}
@@ -170,7 +172,7 @@ export function FloatingNav() {
                     <span className="cursor-blink" />
                   </span>
                   <button
-                    className="rounded-sm p-2 text-pal-200 transition-colors hover:bg-white/[0.05] hover:text-amber-300"
+                    className="rounded-sm p-2 text-pal-200 transition-colors hover:bg-hair/[0.05] hover:text-acc"
                     onClick={() => setIsOpen(false)}
                     aria-label="Close menu"
                     ref={closeMenuButtonRef}
@@ -184,7 +186,7 @@ export function FloatingNav() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="flex items-center justify-between rounded-sm px-3 py-3 text-pal-200 transition-colors hover:bg-white/[0.04] hover:text-amber-300"
+                      className="flex items-center justify-between rounded-sm px-3 py-3 text-pal-200 transition-colors hover:bg-hair/[0.04] hover:text-acc"
                       onClick={() => setIsOpen(false)}
                       ref={index === 0 ? firstNavLinkRef : undefined}
                     >
@@ -199,7 +201,7 @@ export function FloatingNav() {
 
                 <button
                   onClick={handleDownloadResume}
-                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-sm border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-300 transition-colors hover:bg-amber-400/20"
+                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-sm border border-acc/40 bg-acc/10 px-4 py-3 text-sm text-acc transition-colors hover:bg-acc/20"
                 >
                   <Download className="h-4 w-4" />
                   ./resume.pdf

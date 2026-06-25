@@ -41,7 +41,7 @@ function renderLinkedText(text: string) {
       <Link
         key={`${part.href}-${index}`}
         href={part.href}
-        className="text-pal-100 underline-offset-2 transition-colors hover:text-pal-50"
+        className="text-acc underline underline-offset-2 transition-colors hover:opacity-80"
       >
         {part.value}
       </Link>
@@ -53,14 +53,14 @@ function renderLinkedText(text: string) {
 
 function renderBodyNode(node: BlogBodyNode) {
   if (node.type === "paragraph") {
-    return <p className="text-base leading-relaxed text-pal-200">{renderLinkedText(node.text)}</p>
+    return <p className="font-sans text-base leading-relaxed text-pal-300">{renderLinkedText(node.text)}</p>
   }
   if (node.type === "statGrid") {
     return (
       <div className="grid gap-4 sm:grid-cols-3">
         {node.items.map((item) => (
-          <div key={`${item.value}-${item.label}`} className="rounded-2xl bg-white/[0.05] border border-white/[0.08] p-5 text-center">
-            <p className="text-2xl font-semibold text-white">{item.value}</p>
+          <div key={`${item.value}-${item.label}`} className="rounded-2xl bg-hair/[0.05] border border-hair/[0.08] p-5 text-center">
+            <p className="text-2xl font-semibold text-pal-50">{item.value}</p>
             <p className="mt-1 text-xs uppercase tracking-wide text-pal-100">{item.label}</p>
             {item.sublabel && <p className="mt-1 text-xs text-pal-300">{item.sublabel}</p>}
           </div>
@@ -71,7 +71,7 @@ function renderBodyNode(node: BlogBodyNode) {
   if (node.type === "list") {
     const Tag = node.ordered ? "ol" : "ul"
     return (
-      <Tag className={`ml-5 ${node.ordered ? "list-decimal" : "list-disc"} space-y-2 text-pal-200`}>
+      <Tag className={`ml-5 ${node.ordered ? "list-decimal" : "list-disc"} space-y-2 font-sans text-pal-300`}>
         {node.items.map((item) => <li key={item}>{renderLinkedText(item)}</li>)}
       </Tag>
     )
@@ -79,7 +79,7 @@ function renderBodyNode(node: BlogBodyNode) {
   if (node.type === "quote") {
     return (
       <blockquote className="relative overflow-hidden rounded-2xl glass p-6">
-        <Quote className="absolute -left-3 -top-3 h-12 w-12 text-amber-400/20" />
+        <Quote className="absolute -left-3 -top-3 h-12 w-12 text-acc/20" />
         <p className="text-lg leading-relaxed text-pal-100">{renderLinkedText(node.text)}</p>
         {node.attribution && <footer className="mt-3 text-sm text-pal-300">{node.attribution}</footer>}
       </blockquote>
@@ -141,81 +141,65 @@ export default async function BlogArticlePage({
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-pal-950 font-mono text-pal-100">
+      <div className="terminal-atmosphere" aria-hidden />
       <FloatingNav />
 
-      <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-32 left-6 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(66,72,116,0.12),_transparent_65%)]" />
-      </div>
-
-      <main className="relative pt-28 pb-24">
-        <div className="mx-auto flex max-w-5xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+      <main className="relative z-10 px-4 pb-24 pt-28 sm:px-6">
+        <div className="mx-auto flex max-w-3xl flex-col gap-10">
           <Link
             href="/blog"
-            className="inline-flex items-center text-sm font-medium text-pal-200 transition-colors hover:text-white"
+            className="inline-flex items-center text-sm text-pal-400 transition-colors hover:text-acc"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to all articles
+            <ArrowLeft className="mr-2 h-4 w-4" /> cd ../blog
           </Link>
 
-          <header className="space-y-6">
-            <div className="flex flex-wrap items-center gap-4 text-sm text-pal-300">
-              <span className="inline-flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+          <header className="space-y-5">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-pal-400">
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" />
                 {new Date(post.publishedAt).toLocaleDateString(undefined, {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
                 })}
               </span>
-              <span className="inline-flex items-center gap-2">
-                <Clock className="h-4 w-4" />
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
                 {post.readTime}
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-pal-50 sm:text-4xl">
               {post.title}
             </h1>
 
-            <p className="max-w-3xl text-lg text-pal-200">
-              {post.description}
-            </p>
+            <p className="max-w-2xl font-sans text-lg leading-relaxed text-pal-300">{post.description}</p>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-pal-400">
               {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full glass-pill px-3 py-1 text-xs font-medium uppercase tracking-wide text-pal-50"
-                >
-                  {tag}
-                </span>
+                <span key={tag}>#{tag.toLowerCase().replace(/\s+/g, "-")}</span>
               ))}
             </div>
           </header>
 
-          <section className="rounded-3xl glass-strong p-8 sm:p-10">
-            <p className="text-5xl font-bold text-white">{post.heroStat.value}</p>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-pal-100">
-              {post.heroStat.label}
+          <section className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+            <p className="text-xs text-pal-400">
+              <span className="text-acc">$</span> echo $HEADLINE_STAT
             </p>
-            <p className="mt-2 text-sm text-pal-200">{post.heroStat.sublabel}</p>
+            <p className="mt-3 text-4xl font-bold text-acc">{post.heroStat.value}</p>
+            <p className="mt-1 text-sm font-semibold text-pal-100">{post.heroStat.label}</p>
+            <p className="mt-1 font-sans text-sm text-pal-300">{post.heroStat.sublabel}</p>
           </section>
 
-          <div className="space-y-16">
+          <div className="space-y-14">
             {post.sections.map((section) => (
-              <section key={section.slug} className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] border border-white/[0.08] text-lg font-semibold text-pal-200">
-                    &bull;
-                  </span>
-                  <h2 className="text-3xl font-semibold text-white">
-                    {section.title}
-                  </h2>
-                </div>
-
-                <div className="space-y-6">
+              <section key={section.slug} className="space-y-5">
+                <h2 className="text-2xl font-semibold tracking-tight text-pal-50">
+                  <span className="text-acc">## </span>
+                  {section.title}
+                </h2>
+                <div className="space-y-5">
                   {section.body.map((node, index) => (
                     <div key={`${section.slug}-${index}`}>{renderBodyNode(node)}</div>
                   ))}
@@ -224,12 +208,14 @@ export default async function BlogArticlePage({
             ))}
           </div>
 
-          <aside className="rounded-3xl glass p-8">
-            <h3 className="text-lg font-semibold text-white">Key takeaways</h3>
+          <aside className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+            <h3 className="text-sm font-semibold text-pal-50">
+              <span className="text-acc">$</span> cat takeaways.md
+            </h3>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {post.keyTakeaways.map((takeaway) => (
-                <li key={takeaway} className="flex items-start gap-3 text-sm text-pal-200">
-                  <ArrowUpRight className="mt-1 h-4 w-4 flex-shrink-0 text-pal-200" />
+                <li key={takeaway} className="flex items-start gap-2.5 font-sans text-sm text-pal-300">
+                  <span className="mt-0.5 shrink-0 font-mono text-term-green">✓</span>
                   <span>{renderLinkedText(takeaway)}</span>
                 </li>
               ))}
@@ -237,15 +223,16 @@ export default async function BlogArticlePage({
           </aside>
 
           {post.cta && (
-            <div className="flex flex-col items-center justify-between gap-4 rounded-3xl glass-strong p-8 sm:flex-row">
-              <div className="text-sm text-pal-100">
+            <div className="flex flex-col items-center justify-between gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-6 sm:flex-row">
+              <div className="font-sans text-sm text-pal-300">
                 Ready to go further? Explore the tools and checklists I trust in production.
               </div>
               <Link
                 href={post.cta.href}
-                className="inline-flex items-center rounded-full glass-pill px-6 py-2.5 text-sm font-semibold text-pal-100"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-sm border border-acc/40 bg-acc/10 px-5 py-2.5 text-sm text-acc transition-colors hover:bg-acc/20"
               >
                 {post.cta.label}
+                <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           )}

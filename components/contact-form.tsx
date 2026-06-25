@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 
+const fieldClass =
+  "rounded-sm border-hair/[0.1] bg-pal-950/50 font-mono text-pal-50 placeholder:text-pal-400 focus-visible:border-acc/50 focus-visible:ring-2 focus-visible:ring-acc/15"
+
 export function ContactForm() {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -21,7 +24,6 @@ export function ContactForm() {
       const timeoutId = window.setTimeout(() => {
         successCloseButtonRef.current?.focus()
       }, 150)
-
       return () => window.clearTimeout(timeoutId)
     }
   }, [showSuccessModal])
@@ -29,26 +31,16 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!formRef.current) return
-    
     setIsSubmitting(true)
-
     const formData = new FormData(formRef.current)
 
     try {
-      // Submit to FormSubmit
-      const response = await fetch('https://formsubmit.co/mahmoodabuawad08@gmail.com', {
-        method: 'POST',
+      const response = await fetch("https://formsubmit.co/mahmoodabuawad08@gmail.com", {
+        method: "POST",
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { Accept: "application/json" },
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to send message')
-      }
-
-      // Show success modal
+      if (!response.ok) throw new Error("Failed to send message")
       setShowSuccessModal(true)
       formRef.current.reset()
     } catch (error) {
@@ -63,111 +55,70 @@ export function ContactForm() {
     }
   }
 
-  const closeSuccessModal = () => {
-    setShowSuccessModal(false)
-  }
+  const closeSuccessModal = () => setShowSuccessModal(false)
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-      >
-        <div className="relative overflow-hidden rounded-xl bg-pal-800/50 backdrop-blur-sm border border-pal-700/50 p-6 transition-all duration-300 hover:border-amber-400/50">
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/10 to-pal-200/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-5" aria-label="Contact form">
+        {/* Hidden fields for FormSubmit configuration */}
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio" />
 
-          <div className="relative">
-            <h3 id="contact-form-heading" className="text-2xl font-bold mb-6">Send Me a Message</h3>
-
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="space-y-6"
-              aria-labelledby="contact-form-heading"
-            >
-              {/* Hidden fields for FormSubmit configuration */}
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio" />
-              
-              <div className="space-y-2">
-                <label htmlFor="contact-name" className="block text-sm font-medium text-pal-100">
-                  Name
-                </label>
-                <Input
-                  id="contact-name"
-                  name="name"
-                  placeholder="Enter your full name"
-                  required
-                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="contact-email" className="block text-sm font-medium text-pal-100">
-                  Email address
-                </label>
-                <Input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  required
-                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="contact-subject" className="block text-sm font-medium text-pal-100">
-                  Subject
-                </label>
-                <Input
-                  id="contact-subject"
-                  name="subject"
-                  placeholder="What would you like to discuss?"
-                  required
-                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="contact-message" className="block text-sm font-medium text-pal-100">
-                  Message
-                </label>
-                <Textarea
-                  id="contact-message"
-                  name="message"
-                  placeholder="Share the details of your project or question"
-                  rows={5}
-                  required
-                  className="bg-pal-900/50 border-pal-700 focus:border-blue-500 focus:ring-blue-500/20"
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-[#424874] to-[#A6B1E1] hover:from-[#A6B1E1] hover:to-[#424874] border-0"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>Sending...</>
-                ) : (
-                  <>
-                    Send Message <Send className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </form>
-          </div>
+        <div className="space-y-1.5">
+          <label htmlFor="contact-name" className="block text-xs text-pal-400">
+            <span className="text-acc">$</span> name
+          </label>
+          <Input id="contact-name" name="name" placeholder="your full name" required className={fieldClass} />
         </div>
-      </motion.div>
+        <div className="space-y-1.5">
+          <label htmlFor="contact-email" className="block text-xs text-pal-400">
+            <span className="text-acc">$</span> email
+          </label>
+          <Input id="contact-email" name="email" type="email" placeholder="name@example.com" required className={fieldClass} />
+        </div>
+        <div className="space-y-1.5">
+          <label htmlFor="contact-subject" className="block text-xs text-pal-400">
+            <span className="text-acc">$</span> subject
+          </label>
+          <Input id="contact-subject" name="subject" placeholder="what would you like to discuss?" required className={fieldClass} />
+        </div>
+        <div className="space-y-1.5">
+          <label htmlFor="contact-message" className="block text-xs text-pal-400">
+            <span className="text-acc">$</span> message
+          </label>
+          <Textarea
+            id="contact-message"
+            name="message"
+            placeholder="share the details of your project or question"
+            rows={5}
+            required
+            className={fieldClass}
+          />
+        </div>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full rounded-sm border border-acc/50 bg-acc/15 font-mono text-acc transition-colors hover:bg-acc/25 disabled:opacity-50"
+        >
+          {isSubmitting ? (
+            "sending…"
+          ) : (
+            <>
+              ./send <Send className="ml-2 h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </form>
 
-      {/* Success Modal */}
+      {/* Success modal */}
       <AnimatePresence>
         {showSuccessModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
             role="dialog"
             aria-modal="true"
             aria-labelledby="contact-success-title"
@@ -175,96 +126,46 @@ export function ContactForm() {
             onClick={closeSuccessModal}
           >
             <motion.div
-              initial={{ scale: 0.7, opacity: 0, y: 20 }}
+              initial={{ scale: 0.9, opacity: 0, y: 16 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.7, opacity: 0, y: 20 }}
-              transition={{ 
-                type: "spring",
-                damping: 25,
-                stiffness: 300,
-                duration: 0.4 
-              }}
-              className="relative bg-pal-900/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 border border-pal-700/50 shadow-2xl"
+              exit={{ scale: 0.9, opacity: 0, y: 16 }}
+              transition={{ type: "spring", damping: 24, stiffness: 300 }}
+              className="relative w-full max-w-md overflow-hidden rounded-md term-panel font-mono"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-pal-200/10 to-amber-500/10 rounded-2xl"></div>
-              
-              {/* Close Button */}
-              <button
-                onClick={closeSuccessModal}
-                className="absolute top-4 right-4 text-pal-200 hover:text-white transition-colors duration-200"
-                aria-label="Close message sent modal"
-                ref={successCloseButtonRef}
-              >
-                <X className="h-5 w-5" />
-              </button>
-
-              <div className="relative text-center">
-                {/* Success Icon with Animation */}
-                <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ 
-                    delay: 0.2,
-                    type: "spring",
-                    damping: 20,
-                    stiffness: 300 
-                  }}
-                  className="mx-auto w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-6"
+              <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
+                <span className="flex items-center gap-1.5" aria-hidden>
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+                </span>
+                <span className="ml-2 text-xs text-pal-400">status: 200 OK</span>
+                <button
+                  onClick={closeSuccessModal}
+                  className="ml-auto text-pal-400 transition-colors hover:text-acc"
+                  aria-label="Close"
+                  ref={successCloseButtonRef}
                 >
-                  <CheckCircle className="h-8 w-8 text-white" />
-                </motion.div>
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
 
-                {/* Success Text */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.3 }}
-                >
-                  <h3 id="contact-success-title" className="text-2xl font-bold text-white mb-2">
-                    Message Sent Successfully! 🎉
-                  </h3>
-                  <p id="contact-success-description" className="text-pal-100 mb-6">
-                    Thanks for reaching out! I'll get back to you as soon as possible.
-                  </p>
-                </motion.div>
-
-                {/* Animated Particles */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {[...Array(6)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ scale: 0, x: 0, y: 0 }}
-                      animate={{ 
-                        scale: [0, 1, 0],
-                        x: [0, (Math.random() - 0.5) * 200],
-                        y: [0, (Math.random() - 0.5) * 200],
-                      }}
-                      transition={{
-                        delay: 0.6 + i * 0.1,
-                        duration: 1.5,
-                        ease: "easeOut"
-                      }}
-                      className="absolute top-1/2 left-1/2 w-2 h-2 bg-gradient-to-r from-[#A6B1E1] to-[#DCD6F7] rounded-full"
-                    />
-                  ))}
+              <div className="p-8 text-center">
+                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-term-green/40 bg-term-green/10">
+                  <CheckCircle className="h-7 w-7 text-term-green" />
                 </div>
-
-                {/* Action Button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.3 }}
+                <h3 id="contact-success-title" className="text-lg font-semibold text-pal-50">
+                  message sent ✓
+                </h3>
+                <p id="contact-success-description" className="mt-2 font-sans text-sm text-pal-300">
+                  Thanks for reaching out! I&rsquo;ll get back to you as soon as possible.
+                </p>
+                <Button
+                  onClick={closeSuccessModal}
+                  className="mt-6 rounded-sm border border-acc/50 bg-acc/15 px-6 font-mono text-acc transition-colors hover:bg-acc/25"
                 >
-                  <Button
-                    onClick={closeSuccessModal}
-                    className="bg-gradient-to-r from-[#424874] to-[#A6B1E1] hover:from-[#A6B1E1] hover:to-[#424874] border-0 px-6"
-                    aria-label="Dismiss success message"
-                  >
-                    Got it!
-                  </Button>
-                </motion.div>
+                  got it
+                </Button>
               </div>
             </motion.div>
           </motion.div>

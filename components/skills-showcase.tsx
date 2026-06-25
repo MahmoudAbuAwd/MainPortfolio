@@ -21,7 +21,7 @@ export function SkillsShowcase() {
       </p>
 
       <motion.div
-        className="divide-y divide-white/[0.06] border-y border-white/[0.06]"
+        className="divide-y divide-hair/[0.06] border-y border-hair/[0.06]"
         variants={staggerContainer(0.08)}
         initial="hidden"
         whileInView="show"
@@ -33,7 +33,7 @@ export function SkillsShowcase() {
             variants={staggerItem}
             className="grid grid-cols-1 gap-x-6 gap-y-2 py-4 sm:grid-cols-[7rem_1fr]"
           >
-            <div className="text-sm text-amber-400">{g.dir}/</div>
+            <div className="text-sm text-acc">{g.dir}/</div>
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
               {g.items.map((item) => (
                 <span

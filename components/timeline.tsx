@@ -52,7 +52,7 @@ function hash(seed: string) {
 export function Timeline() {
   return (
     <motion.div
-      className="relative ml-2 border-l border-white/[0.1] font-mono"
+      className="relative ml-2 border-l border-hair/[0.1] font-mono"
       variants={staggerContainer(0.1)}
       initial="hidden"
       whileInView="show"
@@ -63,10 +63,10 @@ export function Timeline() {
       {experiences.map((exp) => (
         <motion.div key={exp.company} variants={staggerItem} className="group relative pb-9 pl-6 last:pb-0">
           {/* commit marker */}
-          <span className="absolute -left-[7px] top-1 h-3 w-3 rounded-full border-2 border-amber-400 bg-pal-950 transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(245,166,35,0.5)]" />
+          <span className="absolute -left-[7px] top-1 h-3 w-3 rounded-full border-2 border-acc bg-pal-950 transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(245,166,35,0.5)]" />
 
           <div className="flex flex-wrap items-baseline gap-x-3 text-sm">
-            <span className="text-amber-400/80">{hash(exp.company)}</span>
+            <span className="text-acc/80">{hash(exp.company)}</span>
             <span className="font-semibold text-pal-50">{exp.title}</span>
             <span className="text-pal-400">·</span>
             <span className="text-term-green">{exp.company}</span>

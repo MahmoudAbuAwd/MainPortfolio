@@ -25,26 +25,29 @@ const config = {
         mono: ["var(--font-mono)"],
       },
       colors: {
-        // Terminal palette — warm near-black with neutral text ramp.
-        // Accents (amber / emerald) come from Tailwind built-ins.
+        // Terminal palette — CSS-variable driven so it flips with the theme.
+        // Channels (R G B) are defined in globals.css for .dark / .light.
         pal: {
-          50: '#f7f6f1',
-          100: '#e7e6de',
-          200: '#c0bfb4',
-          300: '#8a897e',
-          400: '#5d5c54',
-          500: '#45443b',
-          600: '#33322b',
-          700: '#262521',
-          800: '#1a1a18',
-          900: '#121211',
-          950: '#0a0a09',
+          50: 'rgb(var(--pal-50) / <alpha-value>)',
+          100: 'rgb(var(--pal-100) / <alpha-value>)',
+          200: 'rgb(var(--pal-200) / <alpha-value>)',
+          300: 'rgb(var(--pal-300) / <alpha-value>)',
+          400: 'rgb(var(--pal-400) / <alpha-value>)',
+          500: 'rgb(var(--pal-500) / <alpha-value>)',
+          600: 'rgb(var(--pal-600) / <alpha-value>)',
+          700: 'rgb(var(--pal-700) / <alpha-value>)',
+          800: 'rgb(var(--pal-800) / <alpha-value>)',
+          900: 'rgb(var(--pal-900) / <alpha-value>)',
+          950: 'rgb(var(--pal-950) / <alpha-value>)',
         },
-        // Phosphor accents
+        // Hairline / subtle-fill color (white on dark, black on light).
+        hair: 'rgb(var(--hair) / <alpha-value>)',
+        // Primary amber accent + green, theme-tuned for contrast.
+        acc: 'rgb(var(--acc) / <alpha-value>)',
         term: {
-          amber: '#f5a623',
-          green: '#3fb950',
-          dim: '#6e6d63',
+          amber: 'rgb(var(--acc) / <alpha-value>)',
+          green: 'rgb(var(--ok) / <alpha-value>)',
+          dim: 'rgb(var(--pal-400) / <alpha-value>)',
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

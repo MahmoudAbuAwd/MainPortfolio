@@ -20,7 +20,7 @@ export function DoiCopyButton({ doi }: { doi: string }) {
     <Button
       variant="ghost"
       size="sm"
-      className="rounded-lg border border-zinc-800/60 text-zinc-300 hover:text-white hover:border-blue-500/40"
+      className="rounded-lg border border-zinc-800/60 text-zinc-300 hover:text-pal-50 hover:border-blue-500/40"
       onClick={handleCopy}
       aria-label="Copy DOI"
     >

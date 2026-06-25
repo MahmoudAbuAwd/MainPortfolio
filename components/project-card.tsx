@@ -23,10 +23,10 @@ export function ProjectCard({ index = 0, title, description, tags, repoUrl, demo
 
   return (
     <motion.div variants={staggerItem} whileHover={hoverLift} className="group h-full">
-      <div className="flex h-full flex-col border border-white/[0.08] bg-pal-900/40 p-5 transition-colors duration-300 group-hover:border-amber-400/40 group-hover:bg-pal-900/70">
+      <div className="flex h-full flex-col border border-hair/[0.08] bg-pal-900/40 p-5 transition-colors duration-300 group-hover:border-acc/40 group-hover:bg-pal-900/70">
         {/* Top meta row */}
         <div className="flex items-center justify-between text-xs">
-          <span className="text-amber-400">[{num}]</span>
+          <span className="text-acc">[{num}]</span>
           <span className="truncate text-pal-400">~/projects/{slug(title)}</span>
         </div>
 
@@ -42,12 +42,12 @@ export function ProjectCard({ index = 0, title, description, tags, repoUrl, demo
           ))}
         </div>
 
-        <div className="mt-auto flex items-center gap-5 border-t border-dashed border-white/[0.1] pt-4 text-sm">
+        <div className="mt-auto flex items-center gap-5 border-t border-dashed border-hair/[0.1] pt-4 text-sm">
           <Link
             href={repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-pal-200 transition-colors hover:text-amber-300"
+            className="inline-flex items-center gap-1.5 text-pal-200 transition-colors hover:text-acc"
           >
             <GitBranch className="h-3.5 w-3.5" />
             source
@@ -57,7 +57,7 @@ export function ProjectCard({ index = 0, title, description, tags, repoUrl, demo
               href={demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/demo inline-flex items-center gap-1 text-amber-400 transition-colors hover:text-amber-300"
+              className="group/demo inline-flex items-center gap-1 text-acc transition-colors hover:text-acc"
             >
               live
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5" />

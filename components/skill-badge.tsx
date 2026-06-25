@@ -34,7 +34,7 @@ export function SkillBadge({ name, level, color = "purple" }: SkillBadgeProps) {
         
         {/* Skill icon/name */}
         <div className="relative z-10 flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors duration-300">
+          <h3 className="font-semibold text-pal-50 group-hover:text-purple-300 transition-colors duration-300">
             {name}
           </h3>
           <span className="text-sm font-medium text-zinc-400 group-hover:text-purple-400 transition-colors duration-300">
@@ -54,7 +54,7 @@ export function SkillBadge({ name, level, color = "purple" }: SkillBadgeProps) {
             >
               {/* Animated shine effect */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-hair/20 to-transparent"
                 animate={{
                   x: ['-100%', '100%'],
                 }}

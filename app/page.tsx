@@ -136,7 +136,7 @@ function StatBar({ value, label, fill }: { value: string; label: string; fill: n
     <div className="flex items-center gap-3 text-sm">
       <span className="w-20 shrink-0 text-pal-300">{label}</span>
       <span className="tracking-tighter" aria-hidden>
-        <span className="text-amber-400">{"█".repeat(filled)}</span>
+        <span className="text-acc">{"█".repeat(filled)}</span>
         <span className="text-pal-700">{"░".repeat(cells - filled)}</span>
       </span>
       <span className="ml-auto font-semibold text-pal-50">
@@ -152,10 +152,10 @@ function StatBar({ value, label, fill }: { value: string; label: string; fill: n
 
 function WindowBar({ path }: { path: string }) {
   return (
-    <div className="flex items-center gap-2 border-b border-white/[0.08] bg-white/[0.02] px-4 py-2.5">
+    <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
       <span className="flex items-center gap-1.5" aria-hidden>
         <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
         <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
       </span>
       <span className="ml-2 text-xs text-pal-400">{path}</span>
@@ -197,9 +197,9 @@ function CertificationsSection() {
       <h3 className="mt-3 flex min-h-[2.75rem] items-center text-sm font-semibold leading-snug text-pal-50">
         {c.label}
       </h3>
-      <div className="mt-3 flex items-center justify-between border-t border-dashed border-white/[0.1] pt-3 text-xs">
+      <div className="mt-3 flex items-center justify-between border-t border-dashed border-hair/[0.1] pt-3 text-xs">
         <span className="text-pal-400">{c.date}</span>
-        <span className="flex items-center gap-1 text-amber-400">
+        <span className="flex items-center gap-1 text-acc">
           open <ExternalLink className="h-3 w-3" />
         </span>
       </div>
@@ -225,8 +225,8 @@ function CertificationsSection() {
               transition={{ duration: 0.4, ease: easeOutExpo }}
               className={`flex h-[170px] flex-col justify-between border p-5 transition-colors duration-300 ${
                 isCenter
-                  ? "border-amber-400/40 bg-pal-900/70"
-                  : "border-white/[0.07] bg-pal-900/30"
+                  ? "border-acc/40 bg-pal-900/70"
+                  : "border-hair/[0.07] bg-pal-900/30"
               }`}
             >
               {cardContent(c)}
@@ -245,7 +245,7 @@ function CertificationsSection() {
           initial={{ opacity: 0, x: direction * 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.35, ease: easeOutExpo }}
-          className="flex h-[170px] flex-col justify-between border border-amber-400/40 bg-pal-900/70 p-5"
+          className="flex h-[170px] flex-col justify-between border border-acc/40 bg-pal-900/70 p-5"
         >
           {cardContent(certifications[current])}
         </motion.a>
@@ -256,18 +256,18 @@ function CertificationsSection() {
         <button
           onClick={() => go(-1)}
           aria-label="Previous certification"
-          className="flex h-9 w-9 items-center justify-center border border-white/[0.1] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 active:scale-90"
+          className="flex h-9 w-9 items-center justify-center border border-hair/[0.1] text-pal-200 transition-colors hover:border-acc/40 hover:text-acc active:scale-90"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
         <span className="min-w-[5rem] text-center text-sm text-pal-400 tabular-nums">
-          <span className="font-semibold text-amber-400">{String(current + 1).padStart(2, "0")}</span>
+          <span className="font-semibold text-acc">{String(current + 1).padStart(2, "0")}</span>
           <span className="text-pal-500"> / {total}</span>
         </span>
         <button
           onClick={() => go(1)}
           aria-label="Next certification"
-          className="flex h-9 w-9 items-center justify-center border border-white/[0.1] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 active:scale-90"
+          className="flex h-9 w-9 items-center justify-center border border-hair/[0.1] text-pal-200 transition-colors hover:border-acc/40 hover:text-acc active:scale-90"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -297,7 +297,7 @@ export default function Portfolio() {
 
       <a
         href="#main-content"
-        className="sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:h-auto focus-visible:w-auto focus-visible:rounded-sm focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+        className="sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:h-auto focus-visible:w-auto focus-visible:rounded-sm focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-acc focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-acc"
       >
         Skip to main content
       </a>
@@ -326,7 +326,7 @@ export default function Portfolio() {
                 >
                   <motion.div variants={staggerItem}>
                     <p className="text-pal-400">
-                      <span className="text-amber-400">$</span> whoami
+                      <span className="text-acc">$</span> whoami
                     </p>
                     <h1 className="mt-1 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl 2xl:text-6xl">
                       Mahmoud AbuAwd
@@ -340,7 +340,7 @@ export default function Portfolio() {
 
                   <motion.div variants={staggerItem}>
                     <p className="text-pal-400">
-                      <span className="text-amber-400">$</span> cat bio.txt
+                      <span className="text-acc">$</span> cat bio.txt
                     </p>
                     <p className="mt-1 max-w-md font-sans leading-relaxed text-pal-300">
                       I design and ship AI products with measurable impact — from model
@@ -350,7 +350,7 @@ export default function Portfolio() {
 
                   <motion.div variants={staggerItem}>
                     <p className="text-pal-400">
-                      <span className="text-amber-400">$</span> status
+                      <span className="text-acc">$</span> status
                     </p>
                     <p className="mt-1 flex items-center gap-2 text-pal-200">
                       <span className="h-1.5 w-1.5 rounded-full bg-term-green animate-pulse" />
@@ -361,14 +361,14 @@ export default function Portfolio() {
                   <motion.div variants={staggerItem} className="flex flex-wrap gap-3 pt-1">
                     <button
                       onClick={handleDownloadResume}
-                      className="inline-flex items-center gap-2 rounded-sm border border-amber-400/50 bg-amber-400/10 px-4 py-2 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200"
+                      className="inline-flex items-center gap-2 rounded-sm border border-acc/50 bg-acc/10 px-4 py-2 text-sm text-acc transition-colors hover:bg-acc/20 hover:text-acc"
                     >
                       <Download className="h-4 w-4" />
                       ./resume.pdf
                     </button>
                     <Link
                       href="/contact"
-                      className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.12] px-4 py-2 text-sm text-pal-200 transition-colors hover:border-white/[0.25] hover:text-pal-50"
+                      className="inline-flex items-center gap-1.5 rounded-sm border border-hair/[0.12] px-4 py-2 text-sm text-pal-200 transition-colors hover:border-hair/[0.25] hover:text-pal-50"
                     >
                       ./contact
                       <ArrowUpRight className="h-3.5 w-3.5" />
@@ -382,7 +382,7 @@ export default function Portfolio() {
                         href={s.href}
                         target={s.href.startsWith("mailto") ? "_self" : "_blank"}
                         rel="noopener noreferrer"
-                        className="text-pal-400 transition-colors hover:text-amber-300"
+                        className="text-pal-400 transition-colors hover:text-acc"
                       >
                         {s.label}
                       </Link>
@@ -392,7 +392,7 @@ export default function Portfolio() {
 
                 {/* Right — stats panel */}
                 <motion.div
-                  className="self-start border border-white/[0.08] bg-pal-950/40 p-5"
+                  className="self-start border border-hair/[0.08] bg-pal-950/40 p-5"
                   variants={fadeUp}
                   initial="hidden"
                   animate="show"
@@ -406,7 +406,7 @@ export default function Portfolio() {
                     ))}
                   </div>
 
-                  <div className="mt-5 space-y-2 border-t border-dashed border-white/[0.1] pt-4 text-xs">
+                  <div className="mt-5 space-y-2 border-t border-dashed border-hair/[0.1] pt-4 text-xs">
                     {[
                       ["location", "Amman, JO"],
                       ["focus", "AI · ML · Cloud"],
@@ -504,9 +504,9 @@ export default function Portfolio() {
                 href="https://github.com/MahmoudAbuAwd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-pal-300 transition-colors hover:text-amber-300"
+                className="inline-flex items-center gap-2 text-pal-300 transition-colors hover:text-acc"
               >
-                <span className="text-amber-400">$</span> git remote -v
+                <span className="text-acc">$</span> git remote -v
                 <span className="text-pal-400">→ view all on github</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
@@ -527,7 +527,7 @@ export default function Portfolio() {
           <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
             <div className="mb-10 flex items-end justify-between">
               <SectionHeading title="Certifications" subtitle="~/certs" className="flex-1" />
-              <span className="ml-4 hidden shrink-0 border border-white/[0.1] px-2.5 py-1 font-mono text-xs text-pal-300 sm:inline-block">
+              <span className="ml-4 hidden shrink-0 border border-hair/[0.1] px-2.5 py-1 font-mono text-xs text-pal-300 sm:inline-block">
                 {certifications.length} files
               </span>
             </div>
@@ -566,14 +566,14 @@ export default function Portfolio() {
                 <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 rounded-sm border border-amber-400/50 bg-amber-400/10 px-5 py-2.5 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200"
+                    className="inline-flex items-center gap-2 rounded-sm border border-acc/50 bg-acc/10 px-5 py-2.5 text-sm text-acc transition-colors hover:bg-acc/20 hover:text-acc"
                   >
                     get in touch
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                   <button
                     onClick={handleDownloadResume}
-                    className="inline-flex items-center gap-2 rounded-sm border border-white/[0.12] px-5 py-2.5 text-sm text-pal-200 transition-colors hover:border-white/[0.25] hover:text-pal-50"
+                    className="inline-flex items-center gap-2 rounded-sm border border-hair/[0.12] px-5 py-2.5 text-sm text-pal-200 transition-colors hover:border-hair/[0.25] hover:text-pal-50"
                   >
                     <Download className="h-4 w-4" />
                     ./resume.pdf

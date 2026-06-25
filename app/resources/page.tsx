@@ -209,58 +209,50 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-pal-950 font-mono text-pal-100">
+      <div className="terminal-atmosphere" aria-hidden />
       <a
         href="#resources-main"
-        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg"
+        className="sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:rounded-sm focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-acc focus-visible:ring-2 focus-visible:ring-acc"
       >
         Skip to main content
       </a>
       <FloatingNav />
 
-      <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-36 left-6 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(66,72,116,0.12),_transparent_65%)]" />
-      </div>
-
-      <main id="resources-main" className="relative pt-28 pb-24" role="main">
+      <main id="resources-main" className="relative z-10 px-4 pb-24 pt-28 sm:px-6" role="main">
         <script
           suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(resourcesStructuredData) }}
         />
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-1 text-sm text-pal-100">
-              Curated learning hub
-            </span>
-            <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
-              Resources for Builders & Learners
-            </h1>
-            <p className="mt-5 text-lg text-pal-200">
-              A living library of PDFs, guides, and must-read links to accelerate your AI and engineering journey.
-            </p>
-          </div>
+        <section className="mx-auto max-w-5xl">
+          <p className="text-sm text-pal-400">
+            <span className="text-term-green">~/resources</span> $ find . -type f
+          </p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+            Resources for Builders &amp; Learners
+          </h1>
+          <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
+            A living library of PDFs, guides, and must-read links to accelerate your AI and engineering journey.
+          </p>
         </section>
 
         {hasResources && (
-          <nav className="mt-14 px-4 sm:px-6 lg:px-8" aria-label="Resource categories">
-            <div className="mx-auto max-w-5xl rounded-3xl glass p-6">
-              <h2 className="text-lg font-semibold text-white">Jump to a learning track</h2>
-              <p className="mt-2 text-sm text-pal-300">
-                Quickly access the resource category that matches your current AI learning goal.
+          <nav className="mx-auto mt-12 max-w-5xl" aria-label="Resource categories">
+            <div className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+              <p className="text-xs text-pal-400">
+                <span className="text-acc">$</span> cd ./&lt;track&gt;
               </p>
-              <ul className="mt-4 flex flex-wrap gap-3">
+              <ul className="mt-4 flex flex-wrap gap-2.5">
                 {categorizedResources.map(({ category, id, resources }) => (
                   <li key={id}>
                     <Link
                       href={`#${id}`}
-                      className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-2 text-sm font-medium text-pal-100 transition-colors hover:border-pal-200 hover:text-pal-50"
+                      className="inline-flex items-center gap-2 rounded-sm border border-hair/[0.1] bg-hair/[0.02] px-3 py-1.5 text-sm text-pal-200 transition-colors hover:border-acc/40 hover:text-acc"
                     >
-                      <span className="font-semibold">{category}</span>
-                      <span className="rounded-full bg-white/[0.1] px-2 py-0.5 text-xs text-pal-50" aria-label={`${resources.length} resources`}>
-                        {resources.length}
+                      <span>{category}</span>
+                      <span className="text-xs text-pal-400" aria-label={`${resources.length} resources`}>
+                        [{resources.length}]
                       </span>
                     </Link>
                   </li>
@@ -270,85 +262,85 @@ export default function ResourcesPage() {
           </nav>
         )}
 
-        <section className="mt-16 px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto mt-14 max-w-5xl">
           {hasResources ? (
-            <div className="mx-auto max-w-6xl space-y-12">
+            <div className="space-y-12">
               {categorizedResources.map(({ category, id, resources: categoryResources }) => (
-                <div key={category} id={id} className="space-y-6 scroll-mt-32">
-                  <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-                    <h2 className="text-2xl font-semibold text-white">
+                <div key={category} id={id} className="scroll-mt-28 space-y-5">
+                  <div className="flex items-baseline justify-between gap-4 border-b border-dashed border-hair/[0.12] pb-3">
+                    <h2 className="text-xl font-semibold tracking-tight text-pal-50 sm:text-2xl">
+                      <span className="text-acc">## </span>
                       {category}
                     </h2>
-                    <p className="text-sm text-pal-300">
-                      {categoryResources.length} curated resource{categoryResources.length > 1 ? 's' : ''}
+                    <p className="shrink-0 text-xs text-pal-400">
+                      {categoryResources.length} file{categoryResources.length > 1 ? "s" : ""}
                     </p>
                   </div>
 
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {categoryResources.map((resource) => (
-                      <article
+                      <a
                         key={resource.title}
-                        className="group relative overflow-hidden rounded-2xl glass p-6 transition-all hover:-translate-y-1.5 hover:border-white/[0.14] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)]"
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex h-full flex-col border border-hair/[0.08] bg-pal-900/40 p-5 transition-colors duration-300 hover:border-acc/40 hover:bg-pal-900/70"
                       >
-                        <div className="flex items-start gap-3">
-                          {resource.type === 'pdf' ? (
-                            <FileText className="mt-0.5 h-6 w-6 flex-shrink-0 text-pal-100" />
-                          ) : (
-                            <Link2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-pal-200" />
-                          )}
-                          <div>
-                            <h3 className="text-lg font-semibold text-white group-hover:text-pal-50">
-                              {resource.title}
-                            </h3>
-                            <p className="mt-2 text-sm text-pal-200">
-                              {resource.description}
-                            </p>
-                          </div>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="flex items-center gap-1.5 text-term-green">
+                            {resource.type === "pdf" ? (
+                              <FileText className="h-3.5 w-3.5" />
+                            ) : (
+                              <Link2 className="h-3.5 w-3.5" />
+                            )}
+                            {resource.type === "pdf" ? "pdf" : "link"}
+                          </span>
+                          <span className="text-pal-400">→</span>
                         </div>
 
-                        <a
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-6 inline-flex items-center text-sm font-semibold text-pal-100 transition-colors hover:text-pal-50"
-                        >
-                          {resource.type === 'pdf' ? 'Open PDF' : 'Visit Link'}
-                          <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <h3 className="mt-3 text-sm font-semibold leading-snug text-pal-50">
+                          {resource.title}
+                        </h3>
+                        <p className="mt-2 font-sans text-sm leading-relaxed text-pal-300">
+                          {resource.description}
+                        </p>
+
+                        <span className="mt-4 inline-flex items-center gap-1 border-t border-dashed border-hair/[0.1] pt-3 text-sm text-acc">
+                          {resource.type === "pdf" ? "open" : "visit"}
+                          <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                           </svg>
-                        </a>
-                      </article>
+                        </span>
+                      </a>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="mx-auto max-w-3xl rounded-2xl glass border-dashed px-8 py-16 text-center">
-              <BookOpen className="mx-auto h-12 w-12 text-pal-300" />
-              <h3 className="mt-4 text-xl font-semibold text-white">No resources added yet</h3>
-              <p className="mt-2 text-pal-300">
-                Start curating your favorite PDFs, frameworks, and articles. They'll appear here in organized collections.
+            <div className="rounded-md border border-dashed border-hair/[0.12] bg-pal-900/40 px-8 py-16 text-center">
+              <BookOpen className="mx-auto h-10 w-10 text-pal-400" />
+              <h3 className="mt-4 text-base font-semibold text-pal-50">No resources added yet</h3>
+              <p className="mt-2 font-sans text-sm text-pal-300">
+                Start curating your favorite PDFs, frameworks, and articles. They&rsquo;ll appear here in organized collections.
               </p>
             </div>
           )}
         </section>
 
-        <section className="mt-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-3xl glass-strong px-8 py-10 text-center md:flex-row md:items-center md:text-left">
+        <section className="mx-auto mt-16 max-w-5xl">
+          <div className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-white">
-                Have a powerful resource to recommend?
-              </h2>
-              <p className="mt-3 text-sm text-pal-200">
-                Share the guides, courses, and demos that helped you most. Together we can grow a knowledge base for the community.
+              <h2 className="text-xl font-semibold text-pal-50">Have a resource to recommend?</h2>
+              <p className="mt-2 font-sans text-sm text-pal-300">
+                Share the guides, courses, and demos that helped you most. Together we can grow a knowledge base.
               </p>
             </div>
             <a
               href="mailto:mahmoodabuawad08@gmail.com"
-              className="inline-flex items-center justify-center rounded-full glass-pill px-6 py-3 text-sm font-semibold text-pal-100 transition-colors hover:border-pal-200 hover:text-pal-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-sm border border-acc/40 bg-acc/10 px-5 py-2.5 text-sm text-acc transition-colors hover:bg-acc/20"
             >
-              Submit a resource
+              submit a resource
             </a>
           </div>
         </section>

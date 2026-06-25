@@ -24,7 +24,7 @@ export function SectionHeading({ title, subtitle, className }: SectionHeadingPro
           variants={staggerItem}
           className="text-2xl font-bold tracking-tight text-pal-50 sm:text-3xl 2xl:text-4xl"
         >
-          <span className="text-amber-400">## </span>
+          <span className="text-acc">## </span>
           {title.toLowerCase()}
         </motion.h2>
         <motion.span
@@ -36,7 +36,7 @@ export function SectionHeading({ title, subtitle, className }: SectionHeadingPro
       </div>
       <motion.div
         variants={staggerItem}
-        className="mt-3 border-t border-dashed border-white/[0.12]"
+        className="mt-3 border-t border-dashed border-hair/[0.12]"
       />
     </motion.div>
   )

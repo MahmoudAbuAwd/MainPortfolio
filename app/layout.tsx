@@ -3,6 +3,7 @@ import Script from 'next/script'
 import './globals.css'
 import { JetBrains_Mono, IBM_Plex_Sans } from 'next/font/google'
 import { Chatbot } from '@/components/chatbot'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
 
@@ -167,8 +168,10 @@ export default function RootLayout({
         className={`${fontMono.variable} ${fontSans.variable} font-mono bg-pal-950 text-pal-100 antialiased`}
         suppressHydrationWarning
       >
-        {children}
-        <Chatbot />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          {children}
+          <Chatbot />
+        </ThemeProvider>
       </body>
       </html>
     )

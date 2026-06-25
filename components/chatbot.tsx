@@ -54,7 +54,7 @@ function BotMarkdown({ content }: { content: string }) {
           <ol className="mb-2 list-decimal space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ol>
         ),
         li: ({ children }) => <li className="text-[13px] text-pal-50">{children}</li>,
-        strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
+        strong: ({ children }) => <strong className="font-semibold text-pal-50">{children}</strong>,
         em: ({ children }) => <em className="italic text-pal-100">{children}</em>,
         a: ({ children, href }) => {
           const raw = typeof children === 'string' ? children : String(children ?? '');
@@ -68,14 +68,14 @@ function BotMarkdown({ content }: { content: string }) {
 
           return (
             <a href={href} target="_blank" rel="noopener noreferrer"
-              className="text-amber-300 underline underline-offset-2 hover:text-amber-200 text-[13px]">
+              className="text-acc underline underline-offset-2 hover:text-acc text-[13px]">
               {label}
             </a>
           );
         },
         code: ({ children, className }) =>
           className?.includes('language-') ? (
-            <code className="my-2 block overflow-x-auto rounded-lg border border-white/10 bg-black/50 p-2.5 font-mono text-xs text-emerald-400">
+            <code className="my-2 block overflow-x-auto rounded-lg border border-hair/10 bg-black/50 p-2.5 font-mono text-xs text-emerald-400">
               {children}
             </code>
           ) : (
@@ -84,19 +84,19 @@ function BotMarkdown({ content }: { content: string }) {
             </code>
           ),
         pre: ({ children }) => (
-          <pre className="my-2 overflow-x-auto rounded-lg border border-white/10 bg-black/50 p-3 text-xs">
+          <pre className="my-2 overflow-x-auto rounded-lg border border-hair/10 bg-black/50 p-3 text-xs">
             {children}
           </pre>
         ),
-        h1: ({ children }) => <h1 className="mb-1.5 mt-3 text-sm font-bold text-white">{children}</h1>,
-        h2: ({ children }) => <h2 className="mb-1 mt-2.5 text-sm font-bold text-white">{children}</h2>,
+        h1: ({ children }) => <h1 className="mb-1.5 mt-3 text-sm font-bold text-pal-50">{children}</h1>,
+        h2: ({ children }) => <h2 className="mb-1 mt-2.5 text-sm font-bold text-pal-50">{children}</h2>,
         h3: ({ children }) => <h3 className="mb-1 mt-2 text-xs font-semibold text-pal-50">{children}</h3>,
         blockquote: ({ children }) => (
           <blockquote className="my-2 border-l-2 border-pal-200/60 pl-3 text-[13px] italic text-pal-100">
             {children}
           </blockquote>
         ),
-        hr: () => <hr className="my-3 border-white/10" />,
+        hr: () => <hr className="my-3 border-hair/10" />,
       }}
     >
       {content}
@@ -113,7 +113,7 @@ function TypingDots() {
       {[0, 160, 320].map((d) => (
         <span
           key={d}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-amber-400/60"
+          className="h-1.5 w-1.5 animate-bounce rounded-full bg-acc/60"
           style={{ animationDelay: `${d}ms` }}
         />
       ))}
@@ -298,7 +298,7 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open AI assistant"
-        className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-md border border-amber-400/40 bg-pal-900/90 px-4 font-mono text-sm text-amber-300 shadow-[0_8px_32px_rgba(0,0,0,0.55)] backdrop-blur transition-colors duration-200 hover:border-amber-400/70 hover:bg-pal-800/90 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
+        className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-md border border-acc/40 bg-pal-900/90 px-4 font-mono text-sm text-acc shadow-[0_8px_32px_rgba(0,0,0,0.55)] backdrop-blur transition-colors duration-200 hover:border-acc/70 hover:bg-pal-800/90 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
       >
         <span className="text-term-green">~$</span>
         <span>ask-me</span>
@@ -314,7 +314,7 @@ export function Chatbot() {
     <div
       className={cn(
         'fixed z-50 flex flex-col overflow-hidden rounded-md font-mono',
-        'border border-white/[0.1] bg-pal-950',
+        'border border-hair/[0.1] bg-pal-950',
         'shadow-[0_30px_80px_-10px_rgba(0,0,0,0.7)]',
         'transition-[height] duration-300 ease-in-out',
         // Mobile: stretch edge-to-edge with small margins, above the FAB
@@ -324,22 +324,22 @@ export function Chatbot() {
       )}
     >
       {/* ── Top accent line ── */}
-      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-amber-500 via-amber-400 to-term-green" />
+      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-acc via-acc to-term-green" />
 
       {/* ── Titlebar ── */}
-      <div className="flex shrink-0 items-center justify-between border-b border-white/[0.08] bg-white/[0.02] px-3 py-2">
+      <div className="flex shrink-0 items-center justify-between border-b border-hair/[0.08] bg-hair/[0.02] px-3 py-2">
         {/* Left: window dots + path */}
         <div className="flex items-center gap-2.5">
           <span className="flex items-center gap-1.5" aria-hidden>
             <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
             <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
           </span>
           <span className="text-xs text-pal-400">
             <span className="text-term-green">mahmoud-ai</span>
             <span className="text-pal-500">:</span>~/assistant
           </span>
-          {isStreaming && <span className="text-[10px] text-amber-400">…gen</span>}
+          {isStreaming && <span className="text-[10px] text-acc">…gen</span>}
         </div>
 
         {/* Right: action buttons */}
@@ -349,11 +349,11 @@ export function Chatbot() {
             <Trash2 className="h-3.5 w-3.5" />
           </button>
           <button onClick={() => setIsMinimized((v) => !v)} aria-label="Minimize"
-            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-white/5 hover:text-pal-100 focus:outline-none">
+            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
             <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', isMinimized && 'rotate-180')} />
           </button>
           <button onClick={handleClose} aria-label="Close"
-            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-white/5 hover:text-pal-100 focus:outline-none">
+            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -378,7 +378,7 @@ export function Chatbot() {
                   >
                     {/* Bot mini-avatar */}
                     {msg.role === 'assistant' && (
-                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-amber-400/20 overflow-hidden">
+                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-acc/20 overflow-hidden">
                         <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                       </div>
                     )}
@@ -386,21 +386,21 @@ export function Chatbot() {
                     <div className={cn('flex max-w-[85%] flex-col gap-1 sm:max-w-[78%]', msg.role === 'user' && 'items-end')}>
                       {/* User bubble */}
                       {msg.role === 'user' ? (
-                        <div className="rounded-md rounded-tr-sm border border-amber-400/30 bg-amber-400/10 px-3.5 py-2">
-                          <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-amber-50">
+                        <div className="rounded-md rounded-tr-sm border border-acc/30 bg-acc/10 px-3.5 py-2">
+                          <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-pal-50">
                             {msg.content}
                           </p>
                         </div>
                       ) : (
                         /* Bot bubble */
-                        <div className="rounded-md rounded-tl-sm border border-white/[0.1] bg-pal-900/60 px-3.5 py-2.5">
+                        <div className="rounded-md rounded-tl-sm border border-hair/[0.1] bg-pal-900/60 px-3.5 py-2.5">
                           {msg.content === '' ? (
                             <TypingDots />
                           ) : (
                             <>
                               <BotMarkdown content={msg.content} />
                               {showCursor && (
-                                <span className="ml-0.5 inline-block h-3.5 w-[3px] animate-pulse rounded-sm bg-amber-400 align-middle" />
+                                <span className="ml-0.5 inline-block h-3.5 w-[3px] animate-pulse rounded-sm bg-acc align-middle" />
                               )}
                             </>
                           )}
@@ -416,10 +416,10 @@ export function Chatbot() {
               {/* Thinking dots */}
               {isLoading && (
                 <div className="flex gap-2.5 animate-in fade-in-0 duration-200">
-                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-amber-400/20 overflow-hidden">
+                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-acc/20 overflow-hidden">
                     <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                   </div>
-                  <div className="rounded-md rounded-tl-sm border border-white/[0.1] bg-pal-900/60 px-4 py-3">
+                  <div className="rounded-md rounded-tl-sm border border-hair/[0.1] bg-pal-900/60 px-4 py-3">
                     <TypingDots />
                   </div>
                 </div>
@@ -430,23 +430,23 @@ export function Chatbot() {
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-400 ml-9">
                   {isLoadingFollowUps ? (
                     <div className="flex items-center gap-1.5 py-1">
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '300ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '0ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '150ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '300ms' }} />
                     </div>
                   ) : (
                     <div className="space-y-1.5">
                       <p className="flex items-center gap-1 text-[10px] text-pal-400">
-                        <CornerDownRight className="h-2.5 w-2.5 text-amber-400" />
+                        <CornerDownRight className="h-2.5 w-2.5 text-acc" />
                         follow-up
                       </p>
                       {followUps.map((q) => (
                         <button
                           key={q}
                           onClick={() => sendMessage(q)}
-                          className="block w-full rounded-sm border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-amber-400/40 hover:bg-amber-400/[0.06] hover:text-amber-200 focus:outline-none"
+                          className="block w-full rounded-sm border border-hair/[0.1] bg-hair/[0.02] px-3 py-1.5 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-acc/40 hover:bg-acc/[0.06] hover:text-acc focus:outline-none"
                         >
-                          <span className="mr-1.5 text-amber-400/70">&gt;</span>
+                          <span className="mr-1.5 text-acc/70">&gt;</span>
                           {q}
                         </button>
                       ))}
@@ -459,14 +459,14 @@ export function Chatbot() {
               {showPrompts && (
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500 pt-1">
                   <p className="mb-2 flex items-center gap-1.5 text-[11px] text-pal-400">
-                    <span className="text-amber-400">$</span> quick-questions
+                    <span className="text-acc">$</span> quick-questions
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
                     {QUICK_PROMPTS.map((q) => (
                       <button
                         key={q}
                         onClick={() => sendMessage(q)}
-                        className="rounded-sm border border-white/[0.1] bg-white/[0.02] px-2.5 py-2 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-amber-400/40 hover:bg-amber-400/[0.06] hover:text-amber-200 focus:outline-none"
+                        className="rounded-sm border border-hair/[0.1] bg-hair/[0.02] px-2.5 py-2 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-acc/40 hover:bg-acc/[0.06] hover:text-acc focus:outline-none"
                       >
                         {q}
                       </button>
@@ -480,9 +480,9 @@ export function Chatbot() {
           </ScrollArea>
 
           {/* ── Input area ── */}
-          <div className="shrink-0 border-t border-white/[0.08] bg-pal-950 px-3 pb-4 pt-2 sm:pb-3">
+          <div className="shrink-0 border-t border-hair/[0.08] bg-pal-950 px-3 pb-4 pt-2 sm:pb-3">
             <div className="flex items-end gap-2">
-              <span className="pb-3 pl-1 text-amber-400" aria-hidden>&gt;</span>
+              <span className="pb-3 pl-1 text-acc" aria-hidden>&gt;</span>
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -495,7 +495,7 @@ export function Chatbot() {
                 disabled={isLoading || isStreaming}
                 placeholder="ask me anything…"
                 rows={1}
-                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-sm border border-white/[0.1] bg-white/[0.03] px-3 py-3 font-mono leading-relaxed text-pal-50 placeholder:text-pal-400 transition-colors duration-150 focus:border-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400/15 disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-sm border border-hair/[0.1] bg-hair/[0.03] px-3 py-3 font-mono leading-relaxed text-pal-50 placeholder:text-pal-400 transition-colors duration-150 focus:border-acc/50 focus:outline-none focus:ring-2 focus:ring-acc/15 disabled:cursor-not-allowed disabled:opacity-50"
                 // 16px prevents iOS Safari from auto-zooming on focus
                 style={{ fontSize: '16px' }}
               />
@@ -504,7 +504,7 @@ export function Chatbot() {
                 onClick={() => sendMessage()}
                 disabled={isLoading || isStreaming || !input.trim()}
                 aria-label="Send"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-amber-400/40 bg-amber-400/15 text-amber-300 transition-colors duration-150 hover:bg-amber-400/25 hover:text-amber-200 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-acc/40 bg-acc/15 text-acc transition-colors duration-150 hover:bg-acc/25 hover:text-acc active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <Send className="h-4 w-4" />
               </button>
