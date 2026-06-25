@@ -1,12 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Github } from "lucide-react"
+import { ArrowUpRight, GitBranch } from "lucide-react"
 import { motion } from "framer-motion"
 
-import { Button } from "@/components/ui/button"
+import { staggerItem, hoverLift } from "@/lib/animations"
 
 interface ProjectCardProps {
+  index?: number
   title: string
   description: string
   tags: string[]
@@ -14,53 +15,53 @@ interface ProjectCardProps {
   demoUrl?: string | null
 }
 
-export function ProjectCard({ title, description, tags, repoUrl, demoUrl }: ProjectCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      viewport={{ once: true }}
-      className="group h-full"
-    >
-      <div className="flex h-full flex-col rounded-2xl glass p-6 transition-all duration-500 hover:border-white/[0.14] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-pal-200">{description}</p>
+const slug = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
 
-        <div className="mt-4 flex flex-wrap gap-1.5">
+export function ProjectCard({ index = 0, title, description, tags, repoUrl, demoUrl }: ProjectCardProps) {
+  const num = String(index + 1).padStart(2, "0")
+
+  return (
+    <motion.div variants={staggerItem} whileHover={hoverLift} className="group h-full">
+      <div className="flex h-full flex-col border border-white/[0.08] bg-pal-900/40 p-5 transition-colors duration-300 group-hover:border-amber-400/40 group-hover:bg-pal-900/70">
+        {/* Top meta row */}
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-amber-400">[{num}]</span>
+          <span className="truncate text-pal-400">~/projects/{slug(title)}</span>
+        </div>
+
+        <h3 className="mt-3 text-lg font-semibold tracking-tight text-pal-50">{title}</h3>
+
+        <p className="mt-2 font-sans text-sm leading-relaxed text-pal-300">{description}</p>
+
+        <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-pal-400">
           {tags.map((tag) => (
-            <span
-              key={tag}
-              className="glass-pill rounded-lg px-2.5 py-0.5 text-xs text-pal-200"
-            >
-              {tag}
+            <span key={tag} className="transition-colors group-hover:text-pal-200">
+              #{tag.toLowerCase().replace(/\s+/g, "-")}
             </span>
           ))}
         </div>
 
-        <div className="mt-auto flex items-center gap-2 border-t border-white/[0.06] pt-4 mt-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 text-pal-200 hover:text-white hover:bg-white/[0.06]"
-            asChild
+        <div className="mt-auto flex items-center gap-5 border-t border-dashed border-white/[0.1] pt-4 text-sm">
+          <Link
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-pal-200 transition-colors hover:text-amber-300"
           >
-            <Link href={repoUrl} target="_blank" rel="noopener noreferrer">
-              <Github className="mr-1.5 h-3.5 w-3.5" />
-              Source
-            </Link>
-          </Button>
+            <GitBranch className="h-3.5 w-3.5" />
+            source
+          </Link>
           {demoUrl && (
-            <Button
-              size="sm"
-              className="h-8 bg-pal-500 hover:bg-pal-400 text-white border-0"
-              asChild
+            <Link
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/demo inline-flex items-center gap-1 text-amber-400 transition-colors hover:text-amber-300"
             >
-              <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
-                Live Demo
-                <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-              </Link>
-            </Button>
+              live
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5" />
+            </Link>
           )}
         </div>
       </div>

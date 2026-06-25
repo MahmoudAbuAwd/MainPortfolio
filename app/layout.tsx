@@ -1,22 +1,24 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
-import { Libre_Baskerville, Plus_Jakarta_Sans } from 'next/font/google'
+import { JetBrains_Mono, IBM_Plex_Sans } from 'next/font/google'
 import { Chatbot } from '@/components/chatbot'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
 
-const fontSans = Plus_Jakarta_Sans({
+// Monospace is the primary voice of the interface (terminal aesthetic).
+const fontMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
-const fontSerif = Libre_Baskerville({
+// Humanist sans reserved for long-form body copy (readability).
+const fontSans = IBM_Plex_Sans({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-serif',
+  weight: ['400', '500', '600'],
+  variable: '--font-sans',
   display: 'swap',
 })
 
@@ -162,7 +164,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${fontSans.variable} ${fontSerif.variable} font-sans bg-gradient-to-b from-pal-950 via-pal-950 to-[#060710] text-white antialiased`}
+        className={`${fontMono.variable} ${fontSans.variable} font-mono bg-pal-950 text-pal-100 antialiased`}
         suppressHydrationWarning
       >
         {children}

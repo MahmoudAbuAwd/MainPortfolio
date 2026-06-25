@@ -2,44 +2,40 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Download, ChevronRight, Mail, BookOpen, PenSquare, Home, FileText } from "lucide-react"
+import { Menu, X, Download, ChevronRight } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { useMobile } from "@/hooks/use-mobile"
-
-const brandFontClass = "font-sans"
 
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const isMobile = useMobile()
+  const pathname = usePathname()
   const openMenuButtonRef = useRef<HTMLButtonElement>(null)
   const closeMenuButtonRef = useRef<HTMLButtonElement>(null)
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null)
 
   const navItems = [
-    { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
-    { name: "Blog", href: "/blog", icon: <PenSquare className="h-4 w-4" /> },
-    { name: "Resources", href: "/resources", icon: <BookOpen className="h-4 w-4" /> },
-    { name: "Contact", href: "/contact", icon: <Mail className="h-4 w-4" /> },
+    { name: "home", href: "/" },
+    { name: "blog", href: "/blog" },
+    { name: "resources", href: "/resources" },
+    { name: "contact", href: "/contact" },
   ]
 
   const handleDownloadResume = () => {
-    const link = document.createElement('a')
-    link.href = '/resume/Resume.pdf'
-    link.download = 'Resume.pdf'
+    const link = document.createElement("a")
+    link.href = "/resume/Resume.pdf"
+    link.download = "Resume.pdf"
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
   }
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 64)
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 64)
     handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -48,15 +44,11 @@ export function FloatingNav() {
   useEffect(() => {
     if (isOpen) {
       const timeout = window.setTimeout(() => {
-        (isMobile ? firstNavLinkRef.current : null)?.focus()
+        ;(isMobile ? firstNavLinkRef.current : null)?.focus()
       }, 120)
-
       const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-          setIsOpen(false)
-        }
+        if (event.key === "Escape") setIsOpen(false)
       }
-
       window.addEventListener("keydown", handleKeyDown)
       return () => {
         window.clearTimeout(timeout)
@@ -69,88 +61,70 @@ export function FloatingNav() {
 
   return (
     <>
-      {/* Top Navigation (always visible) */}
       <motion.nav
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          "supports-[backdrop-filter]:backdrop-blur",
+          "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
           isScrolled
-            ? "border-b border-white/[0.06] bg-pal-950/70 backdrop-blur-2xl shadow-[0_20px_45px_-30px_rgba(0,0,0,0.5)]"
+            ? "border-white/[0.08] bg-pal-950/85 backdrop-blur-xl"
             : "border-transparent bg-transparent"
         )}
         aria-label="Primary"
       >
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <div className="mx-auto max-w-7xl 2xl:max-w-[96rem] px-4 md:px-6">
           <div
             className={clsx(
-              "flex items-center gap-4 transition-all duration-300",
-              isScrolled ? "h-14" : "h-16"
+              "flex items-center gap-4 font-mono transition-all duration-300",
+              isScrolled ? "h-12" : "h-14"
             )}
           >
-            {/* Logo / Name */}
-            <Link href="/" className="flex items-center">
-              <span
-                className={clsx(
-                  brandFontClass,
-                  "font-semibold tracking-tight uppercase text-white transition-all duration-300",
-                  isScrolled ? "text-xl" : "text-2xl"
-                )}
-              >
-                Mahmoud
+            {/* Window dots + prompt path */}
+            <Link href="/" className="group flex items-center gap-3 text-sm">
+              <span className="hidden items-center gap-1.5 sm:flex" aria-hidden>
+                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+              </span>
+              <span className="tracking-tight">
+                <span className="text-term-green">mahmoud@abuawd</span>
+                <span className="text-pal-400">:</span>
+                <span className="text-amber-400">~</span>
+                <span className="text-pal-400 transition-colors group-hover:text-amber-400">$</span>
               </span>
             </Link>
 
             {/* Desktop nav */}
-            <div
-              className={clsx(
-                "hidden md:flex items-center gap-1 ml-auto transition-all duration-300",
-                isScrolled ? "gap-0.5" : "gap-1"
-              )}
-            >
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={clsx(
-                    "px-3.5 py-2 text-sm font-medium flex items-center gap-2 rounded-lg transition-all duration-200",
-                    "text-pal-100 hover:text-white",
-                    isScrolled ? "hover:bg-pal-900/60" : "hover:bg-pal-800/50"
-                  )}
-                >
-                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                    {item.icon}
-                  </span>
-                  {item.name}
-                </Link>
-              ))}
+            <div className="ml-auto hidden items-center gap-1 md:flex">
+              {navItems.map((item) => {
+                const active = pathname === item.href
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={clsx(
+                      "rounded-sm px-3 py-1.5 text-sm transition-colors",
+                      active
+                        ? "text-amber-400"
+                        : "text-pal-300 hover:bg-white/[0.04] hover:text-pal-50"
+                    )}
+                  >
+                    <span className="text-pal-500">/</span>
+                    {item.name}
+                  </Link>
+                )
+              })}
             </div>
 
-            <div
-              className={clsx(
-                "flex items-center gap-2 ml-auto md:ml-4 transition-all duration-300",
-                isScrolled ? "gap-1" : "gap-2"
-              )}
-            >
-              {/* Resume CTA */}
-              <Button
-                size="sm"
-                className="hidden md:inline-flex rounded-lg bg-pal-500 hover:bg-pal-400 transition-colors"
+            <div className="ml-auto flex items-center gap-2 md:ml-3">
+              <button
                 onClick={handleDownloadResume}
+                className="hidden items-center gap-1.5 rounded-sm border border-amber-400/40 bg-amber-400/10 px-3 py-1.5 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200 md:inline-flex"
               >
-                <Download className="h-4 w-4 mr-2" />
-                Resume
-              </Button>
+                <Download className="h-3.5 w-3.5" />
+                ./resume.pdf
+              </button>
 
-              {/* Mobile menu button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className={clsx(
-                  "md:hidden w-10 h-10 rounded-lg border text-pal-100 transition-all duration-300",
-                  isScrolled
-                    ? "border-pal-800 bg-pal-950/80 hover:bg-pal-900/70 hover:text-white"
-                    : "border-pal-800/70 bg-pal-900/80 hover:bg-pal-800/60 hover:text-white"
-                )}
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-sm border border-white/[0.1] bg-white/[0.03] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 md:hidden"
                 onClick={() => setIsOpen(true)}
                 aria-label="Open menu"
                 aria-haspopup="dialog"
@@ -159,28 +133,27 @@ export function FloatingNav() {
                 ref={openMenuButtonRef}
               >
                 <Menu className="h-5 w-5" />
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <>
             <motion.div
-              className="fixed inset-0 z-40 bg-pal-900/95 backdrop-blur-lg"
+              className="fixed inset-0 z-40 bg-pal-950/90 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.25 }}
               onClick={() => setIsOpen(false)}
               role="presentation"
             />
-
             <motion.div
-              className="fixed inset-y-0 left-0 z-50 w-72 bg-pal-900 border-r border-pal-800 shadow-xl"
+              className="fixed inset-y-0 left-0 z-50 w-72 border-r border-white/[0.1] bg-pal-900 font-mono"
               initial={{ x: -300 }}
               animate={{ x: 0 }}
               exit={{ x: -300 }}
@@ -190,59 +163,47 @@ export function FloatingNav() {
               aria-modal="true"
               aria-labelledby="mobile-navigation-title"
             >
-              <div className="flex flex-col h-full p-6">
-                {/* Header with Close Button */}
-                <div className="flex justify-between items-center mb-8">
-                  <Link
-                    href="/"
-                    className={clsx(
-                      brandFontClass,
-                      "text-2xl font-semibold tracking-tight uppercase text-white"
-                    )}
-                    id="mobile-navigation-title"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Mahmoud AbuAwd
-                  </Link>
+              <div className="flex h-full flex-col p-6">
+                <div className="mb-8 flex items-center justify-between">
+                  <span id="mobile-navigation-title" className="text-sm">
+                    <span className="text-term-green">~/menu</span>
+                    <span className="cursor-blink" />
+                  </span>
                   <button
-                    className="p-2 rounded-lg hover:bg-pal-800/50 transition-colors"
+                    className="rounded-sm p-2 text-pal-200 transition-colors hover:bg-white/[0.05] hover:text-amber-300"
                     onClick={() => setIsOpen(false)}
                     aria-label="Close menu"
                     ref={closeMenuButtonRef}
                   >
-                    <X className="h-5 w-5 text-pal-100" />
+                    <X className="h-5 w-5" />
                   </button>
                 </div>
 
-                {/* Navigation Links */}
-                <nav className="flex-1 space-y-2">
+                <nav className="flex-1 space-y-1">
                   {navItems.map((item, index) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="flex items-center justify-between px-4 py-3 rounded-lg text-pal-100 hover:text-white hover:bg-pal-800/50 transition-colors group"
+                      className="flex items-center justify-between rounded-sm px-3 py-3 text-pal-200 transition-colors hover:bg-white/[0.04] hover:text-amber-300"
                       onClick={() => setIsOpen(false)}
                       ref={index === 0 ? firstNavLinkRef : undefined}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
-                          {item.icon}
-                        </span>
-                        <span className="font-medium">{item.name}</span>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-pal-300 group-hover:text-pal-100 transition-colors" aria-hidden="true" />
+                      <span>
+                        <span className="text-pal-500">cd </span>
+                        {item.name}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-pal-400" aria-hidden="true" />
                     </Link>
                   ))}
                 </nav>
 
-                {/* Resume Button */}
-                <Button
-                  className="mt-6 w-full bg-pal-500 hover:bg-pal-400"
+                <button
                   onClick={handleDownloadResume}
+                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-sm border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-300 transition-colors hover:bg-amber-400/20"
                 >
-                  <Download className="h-4 w-4 mr-2" />
-                  Download Resume
-                </Button>
+                  <Download className="h-4 w-4" />
+                  ./resume.pdf
+                </button>
               </div>
             </motion.div>
           </>

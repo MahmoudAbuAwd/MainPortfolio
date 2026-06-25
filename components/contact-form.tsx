@@ -75,8 +75,8 @@ export function ContactForm() {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <div className="relative overflow-hidden rounded-xl bg-pal-800/50 backdrop-blur-sm border border-pal-700/50 p-6 transition-all duration-300 hover:border-pal-400/50">
-          <div className="absolute -inset-1 bg-gradient-to-r from-pal-500/10 to-pal-200/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
+        <div className="relative overflow-hidden rounded-xl bg-pal-800/50 backdrop-blur-sm border border-pal-700/50 p-6 transition-all duration-300 hover:border-amber-400/50">
+          <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/10 to-pal-200/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
 
           <div className="relative">
             <h3 id="contact-form-heading" className="text-2xl font-bold mb-6">Send Me a Message</h3>
@@ -188,7 +188,7 @@ export function ContactForm() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-pal-500/10 via-pal-200/10 to-pal-500/10 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-pal-200/10 to-amber-500/10 rounded-2xl"></div>
               
               {/* Close Button */}
               <button

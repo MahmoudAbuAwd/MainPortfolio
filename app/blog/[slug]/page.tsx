@@ -79,7 +79,7 @@ function renderBodyNode(node: BlogBodyNode) {
   if (node.type === "quote") {
     return (
       <blockquote className="relative overflow-hidden rounded-2xl glass p-6">
-        <Quote className="absolute -left-3 -top-3 h-12 w-12 text-pal-400/20" />
+        <Quote className="absolute -left-3 -top-3 h-12 w-12 text-amber-400/20" />
         <p className="text-lg leading-relaxed text-pal-100">{renderLinkedText(node.text)}</p>
         {node.attribution && <footer className="mt-3 text-sm text-pal-300">{node.attribution}</footer>}
       </blockquote>
@@ -145,8 +145,8 @@ export default async function BlogArticlePage({
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-32 left-6 h-72 w-72 rounded-full bg-pal-500/20 blur-3xl" />
-        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-pal-400/20 blur-3xl" />
+        <div className="absolute -top-32 left-6 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
+        <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(66,72,116,0.12),_transparent_65%)]" />
       </div>
 

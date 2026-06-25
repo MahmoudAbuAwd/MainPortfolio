@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion"
 
+import { staggerContainer, staggerItem, viewportOnce } from "@/lib/animations"
+
 interface SectionHeadingProps {
   title: string
   subtitle: string
@@ -10,25 +12,32 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ title, subtitle, className }: SectionHeadingProps) {
   return (
-    <div className={`space-y-3 ${className ?? ""}`}>
-      <motion.p
-        className="text-sm font-medium uppercase tracking-widest text-pal-200"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        viewport={{ once: true }}
-      >
-        {subtitle}
-      </motion.p>
-      <motion.h2
-        className="text-3xl font-bold text-white sm:text-4xl"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        viewport={{ once: true }}
-      >
-        {title}
-      </motion.h2>
-    </div>
+    <motion.div
+      className={`font-mono ${className ?? ""}`}
+      variants={staggerContainer(0.08)}
+      initial="hidden"
+      whileInView="show"
+      viewport={viewportOnce}
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <motion.h2
+          variants={staggerItem}
+          className="text-2xl font-bold tracking-tight text-pal-50 sm:text-3xl 2xl:text-4xl"
+        >
+          <span className="text-amber-400">## </span>
+          {title.toLowerCase()}
+        </motion.h2>
+        <motion.span
+          variants={staggerItem}
+          className="shrink-0 text-xs uppercase tracking-[0.2em] text-pal-400"
+        >
+          {subtitle}
+        </motion.span>
+      </div>
+      <motion.div
+        variants={staggerItem}
+        className="mt-3 border-t border-dashed border-white/[0.12]"
+      />
+    </motion.div>
   )
 }

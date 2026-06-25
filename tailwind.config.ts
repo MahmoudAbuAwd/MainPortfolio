@@ -22,20 +22,29 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)"],
         serif: ["var(--font-serif)"],
+        mono: ["var(--font-mono)"],
       },
       colors: {
+        // Terminal palette — warm near-black with neutral text ramp.
+        // Accents (amber / emerald) come from Tailwind built-ins.
         pal: {
-          50: '#F4EEFF',
-          100: '#DCD6F7',
-          200: '#A6B1E1',
-          300: '#7C87BD',
-          400: '#525D99',
-          500: '#424874',
-          600: '#363C63',
-          700: '#2A2F55',
-          800: '#1e2045',
-          900: '#141630',
-          950: '#0d0e1a',
+          50: '#f7f6f1',
+          100: '#e7e6de',
+          200: '#c0bfb4',
+          300: '#8a897e',
+          400: '#5d5c54',
+          500: '#45443b',
+          600: '#33322b',
+          700: '#262521',
+          800: '#1a1a18',
+          900: '#121211',
+          950: '#0a0a09',
+        },
+        // Phosphor accents
+        term: {
+          amber: '#f5a623',
+          green: '#3fb950',
+          dim: '#6e6d63',
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

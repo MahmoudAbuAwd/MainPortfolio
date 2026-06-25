@@ -3,24 +3,15 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
-  Github,
-  Linkedin,
-  Mail,
-  Twitter,
   Download,
   ArrowUpRight,
   ExternalLink,
-  FileText,
   ChevronLeft,
   ChevronRight,
-  MapPin,
-  Briefcase,
-  GraduationCap,
-  Globe,
+  FileText,
 } from "lucide-react"
 import React from "react"
 
-import { Button } from "@/components/ui/button"
 import { ProjectCard } from "@/components/project-card"
 import { Timeline } from "@/components/timeline"
 import { FloatingNav } from "@/components/floating-nav"
@@ -28,16 +19,34 @@ import { SiteFooter } from "@/components/site-footer"
 import { SectionHeading } from "@/components/section-heading"
 import { GitHubActivity } from "@/components/ui/github-activity"
 import { SkillsShowcase } from "@/components/skills-showcase"
+import { ScrollProgress } from "@/components/scroll-progress"
+import { CountUp } from "@/components/count-up"
+import { fadeUp, staggerContainer, staggerItem, viewportOnce, easeOutExpo } from "@/lib/animations"
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 
 const socialLinks = [
-  { href: "https://github.com/MahmoudAbuAwd", icon: Github, label: "GitHub" },
-  { href: "https://www.linkedin.com/in/mahmoud-abuawd-247290225/", icon: Linkedin, label: "LinkedIn" },
-  { href: "https://twitter.com/s9mod", icon: Twitter, label: "Twitter" },
-  { href: "mailto:mahmoodabuawad08@gmail.com", icon: Mail, label: "Email" },
+  { href: "https://github.com/MahmoudAbuAwd", label: "github" },
+  { href: "https://www.linkedin.com/in/mahmoud-abuawd-247290225/", label: "linkedin" },
+  { href: "https://twitter.com/s9mod", label: "twitter" },
+  { href: "mailto:mahmoodabuawad08@gmail.com", label: "email" },
+]
+
+const stats = [
+  { value: "15+", label: "projects", fill: 0.6 },
+  { value: "30+", label: "certs", fill: 1 },
+  { value: "30+", label: "os_prs", fill: 0.85 },
+]
+
+const highlights = [
+  "AI Engineer at Kawkab AI",
+  "AWS AI Practitioner Certified",
+  "Founder of MedGAN AI",
+  "30+ professional certifications",
+  "Active open-source contributor",
+  "IEEE & GDG volunteer",
 ]
 
 const projects = [
@@ -117,25 +126,50 @@ const certifications = [
 ]
 
 /* ------------------------------------------------------------------ */
-/*  Floating Glass Orb                                                 */
+/*  ASCII stat bar                                                     */
 /* ------------------------------------------------------------------ */
 
-function GlassOrb({ className }: { className?: string }) {
+function StatBar({ value, label, fill }: { value: string; label: string; fill: number }) {
+  const cells = 14
+  const filled = Math.round(fill * cells)
   return (
-    <div
-      className={`pointer-events-none absolute rounded-full opacity-30 blur-3xl ${className ?? ""}`}
-      aria-hidden
-    />
+    <div className="flex items-center gap-3 text-sm">
+      <span className="w-20 shrink-0 text-pal-300">{label}</span>
+      <span className="tracking-tighter" aria-hidden>
+        <span className="text-amber-400">{"█".repeat(filled)}</span>
+        <span className="text-pal-700">{"░".repeat(cells - filled)}</span>
+      </span>
+      <span className="ml-auto font-semibold text-pal-50">
+        <CountUp value={value} />
+      </span>
+    </div>
   )
 }
 
 /* ------------------------------------------------------------------ */
-/*  Certifications — Card Carousel with Arrows                         */
+/*  Terminal window chrome                                             */
+/* ------------------------------------------------------------------ */
+
+function WindowBar({ path }: { path: string }) {
+  return (
+    <div className="flex items-center gap-2 border-b border-white/[0.08] bg-white/[0.02] px-4 py-2.5">
+      <span className="flex items-center gap-1.5" aria-hidden>
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+      </span>
+      <span className="ml-2 text-xs text-pal-400">{path}</span>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Certifications — terminal card carousel                            */
 /* ------------------------------------------------------------------ */
 
 function CertificationsSection() {
   const [current, setCurrent] = React.useState(0)
-  const [direction, setDirection] = React.useState(0) // -1 left, 1 right
+  const [direction, setDirection] = React.useState(0)
   const total = certifications.length
 
   const go = (dir: number) => {
@@ -145,27 +179,28 @@ function CertificationsSection() {
 
   const getVisible = () => {
     const indices = []
-    for (let offset = -1; offset <= 1; offset++) {
-      indices.push((current + offset + total) % total)
-    }
+    for (let offset = -1; offset <= 1; offset++) indices.push((current + offset + total) % total)
     return indices
   }
 
   const visible = getVisible()
 
-  const cardContent = (c: typeof certifications[0]) => (
+  const cardContent = (c: (typeof certifications)[0]) => (
     <>
-      <div className="flex items-center gap-2 mb-4">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] border border-white/[0.08]">
-          <GraduationCap className="h-4 w-4 text-pal-200" />
-        </div>
-        <span className="text-xs font-medium text-pal-300 uppercase tracking-wider">{c.issuer}</span>
+      <div className="flex items-center justify-between text-xs">
+        <span className="flex items-center gap-1.5 text-term-green">
+          <FileText className="h-3.5 w-3.5" />
+          {c.issuer}
+        </span>
+        <span className="text-pal-400">.pdf</span>
       </div>
-      <h3 className="text-base font-semibold text-white leading-snug min-h-[3rem] flex items-center">{c.label}</h3>
-      <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/[0.06]">
-        <span className="text-xs text-pal-300">{c.date}</span>
-        <span className="text-xs text-pal-200 flex items-center gap-1">
-          View <ExternalLink className="h-3 w-3" />
+      <h3 className="mt-3 flex min-h-[2.75rem] items-center text-sm font-semibold leading-snug text-pal-50">
+        {c.label}
+      </h3>
+      <div className="mt-3 flex items-center justify-between border-t border-dashed border-white/[0.1] pt-3 text-xs">
+        <span className="text-pal-400">{c.date}</span>
+        <span className="flex items-center gap-1 text-amber-400">
+          open <ExternalLink className="h-3 w-3" />
         </span>
       </div>
     </>
@@ -174,7 +209,7 @@ function CertificationsSection() {
   return (
     <div className="space-y-6">
       {/* Desktop: 3 cards */}
-      <div className="hidden sm:grid sm:grid-cols-3 gap-4">
+      <div className="hidden gap-4 sm:grid sm:grid-cols-3">
         {visible.map((idx, pos) => {
           const c = certifications[idx]
           const isCenter = pos === 1
@@ -184,11 +219,14 @@ function CertificationsSection() {
               href={`/Certification/${encodeURIComponent(c.file)}`}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, x: direction * 60 }}
-              animate={{ opacity: isCenter ? 1 : 0.5, x: 0, scale: isCenter ? 1 : 0.95 }}
-              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
-              className={`flex flex-col justify-between rounded-2xl glass p-6 h-[180px] transition-shadow duration-300 ${
-                isCenter ? "border-white/[0.14] shadow-[0_12px_40px_rgba(166,177,225,0.08)]" : ""
+              initial={{ opacity: 0, x: direction * 50 }}
+              animate={{ opacity: isCenter ? 1 : 0.45, x: 0 }}
+              whileHover={isCenter ? { y: -5 } : undefined}
+              transition={{ duration: 0.4, ease: easeOutExpo }}
+              className={`flex h-[170px] flex-col justify-between border p-5 transition-colors duration-300 ${
+                isCenter
+                  ? "border-amber-400/40 bg-pal-900/70"
+                  : "border-white/[0.07] bg-pal-900/30"
               }`}
             >
               {cardContent(c)}
@@ -198,41 +236,40 @@ function CertificationsSection() {
       </div>
 
       {/* Mobile: 1 card */}
-      <div className="sm:hidden overflow-hidden">
+      <div className="overflow-hidden sm:hidden">
         <motion.a
           key={`m-${current}`}
           href={`/Certification/${encodeURIComponent(certifications[current].file)}`}
           target="_blank"
           rel="noopener noreferrer"
-          initial={{ opacity: 0, x: direction * 80 }}
+          initial={{ opacity: 0, x: direction * 60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
-          className="flex flex-col justify-between rounded-2xl glass p-6 h-[180px] border-white/[0.14]"
+          transition={{ duration: 0.35, ease: easeOutExpo }}
+          className="flex h-[170px] flex-col justify-between border border-amber-400/40 bg-pal-900/70 p-5"
         >
           {cardContent(certifications[current])}
         </motion.a>
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-center gap-5">
+      <div className="flex items-center justify-center gap-5 font-mono">
         <button
           onClick={() => go(-1)}
           aria-label="Previous certification"
-          className="flex h-10 w-10 items-center justify-center rounded-full glass-pill transition-all duration-200 hover:bg-white/[0.1] hover:border-white/[0.15] active:scale-90"
+          className="flex h-9 w-9 items-center justify-center border border-white/[0.1] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 active:scale-90"
         >
-          <ChevronLeft className="h-5 w-5 text-pal-200" />
+          <ChevronLeft className="h-4 w-4" />
         </button>
-
-        <span className="text-sm text-pal-300 tabular-nums min-w-[4rem] text-center">
-          <span className="text-white font-semibold">{current + 1}</span> / {total}
+        <span className="min-w-[5rem] text-center text-sm text-pal-400 tabular-nums">
+          <span className="font-semibold text-amber-400">{String(current + 1).padStart(2, "0")}</span>
+          <span className="text-pal-500"> / {total}</span>
         </span>
-
         <button
           onClick={() => go(1)}
           aria-label="Next certification"
-          className="flex h-10 w-10 items-center justify-center rounded-full glass-pill transition-all duration-200 hover:bg-white/[0.1] hover:border-white/[0.15] active:scale-90"
+          className="flex h-9 w-9 items-center justify-center border border-white/[0.1] text-pal-200 transition-colors hover:border-amber-400/40 hover:text-amber-300 active:scale-90"
         >
-          <ChevronRight className="h-5 w-5 text-pal-200" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       </div>
     </div>
@@ -254,17 +291,13 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="relative min-h-screen bg-pal-950 text-white overflow-hidden">
-      {/* ── Global floating orbs for depth ── */}
-      <GlassOrb className="bg-pal-500/40 h-96 w-96 -top-48 -left-48 animate-float" />
-      <GlassOrb className="bg-pal-200/30 h-72 w-72 top-[60vh] -right-36 animate-float-reverse" />
-      <GlassOrb className="bg-pal-400/20 h-80 w-80 top-[150vh] -left-40 animate-float-slow" />
-      <GlassOrb className="bg-pal-100/15 h-64 w-64 top-[250vh] right-0 animate-float" />
-      <GlassOrb className="bg-pal-500/25 h-72 w-72 top-[350vh] -left-20 animate-float-reverse" />
+    <div className="relative min-h-screen overflow-hidden bg-pal-950 text-pal-100">
+      <ScrollProgress />
+      <div className="terminal-atmosphere" aria-hidden />
 
       <a
         href="#main-content"
-        className="sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-lg focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-white focus-visible:shadow-lg focus-visible:clip-auto focus-visible:h-auto focus-visible:w-auto focus-visible:overflow-visible focus-visible:whitespace-normal focus-visible:m-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pal-400"
+        className="sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:h-auto focus-visible:w-auto focus-visible:rounded-sm focus-visible:bg-pal-900 focus-visible:px-4 focus-visible:py-2 focus-visible:text-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
       >
         Skip to main content
       </a>
@@ -272,332 +305,279 @@ export default function Portfolio() {
       <FloatingNav />
 
       <main id="main-content" className="relative z-10">
+        {/* ════════════════ HERO ════════════════ */}
+        <header className="relative flex min-h-[100svh] items-center px-4 pt-16 sm:px-6">
+          <div className="mx-auto w-full max-w-7xl 2xl:max-w-[96rem] py-16">
+            <motion.div
+              className="overflow-hidden rounded-md term-panel"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: easeOutExpo }}
+            >
+              <WindowBar path="mahmoud@abuawd: ~/portfolio" />
 
-        {/* ══════════════════════════════════════════════════════════
-            HERO
-        ══════════════════════════════════════════════════════════ */}
-        <header className="relative flex min-h-[100svh] items-center overflow-hidden px-4 sm:px-6">
-          <div className="pointer-events-none absolute inset-0 hero-aurora" />
-          <div className="pointer-events-none absolute inset-0 noise-overlay" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-pal-950 to-transparent" />
-
-          <div className="relative z-10 mx-auto w-full max-w-5xl py-24">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-              {/* Left — copy */}
-              <motion.div
-                className="space-y-6 text-center sm:text-left"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                <motion.span
-                  className="inline-block rounded-full glass-pill px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-pal-100"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
+              <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
+                {/* Left — prompt block */}
+                <motion.div
+                  className="space-y-5 text-sm sm:text-base"
+                  variants={staggerContainer(0.12, 0.2)}
+                  initial="hidden"
+                  animate="show"
                 >
-                  AI &amp; ML Engineer
-                </motion.span>
-
-                <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                  Mahmoud
-                  <br />
-                  <span className="bg-gradient-to-r from-pal-200 to-pal-50 bg-clip-text text-transparent">
-                    AbuAwd
-                  </span>
-                </h1>
-
-                <p className="mx-auto max-w-lg text-base leading-relaxed text-pal-200 sm:mx-0 sm:text-lg">
-                  I design and ship AI products with measurable impact — from model
-                  development to production deployment and monitoring.
-                </p>
-
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button
-                    className="rounded-xl bg-pal-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-pal-500/25 hover:bg-pal-400 hover:shadow-pal-400/30 transition-all duration-300"
-                    onClick={handleDownloadResume}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Resume
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="rounded-xl border-white/[0.1] bg-white/[0.04] backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-pal-100 hover:bg-white/[0.08] hover:text-white transition-all duration-300"
-                    asChild
-                  >
-                    <Link href="/contact">
-                      Get in Touch
-                      <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
-                    </Link>
-                  </Button>
-                </div>
-
-                <div className="flex justify-center gap-2 sm:justify-start">
-                  {socialLinks.map((s) => (
-                    <Link
-                      key={s.label}
-                      href={s.href}
-                      target={s.href.startsWith("mailto") ? "_self" : "_blank"}
-                      rel="noopener noreferrer"
-                      aria-label={s.label}
-                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-pal-300 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.08] hover:text-white hover:-translate-y-0.5 hover:border-white/[0.15]"
-                    >
-                      <s.icon className="h-4 w-4" />
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Right — glass stats card */}
-              <motion.div
-                className="hidden lg:block"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              >
-                <div className="glass-strong rounded-3xl p-8">
-                  <div className="mb-6 flex items-center justify-between">
-                    <p className="text-xs font-medium uppercase tracking-widest text-pal-300">
-                      At a Glance
+                  <motion.div variants={staggerItem}>
+                    <p className="text-pal-400">
+                      <span className="text-amber-400">$</span> whoami
                     </p>
-                    <span className="flex items-center gap-1.5 text-xs text-emerald-400">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Available for work
-                    </span>
-                  </div>
+                    <h1 className="mt-1 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl 2xl:text-6xl">
+                      Mahmoud AbuAwd
+                    </h1>
+                    <p className="mt-1 text-pal-200">
+                      <span className="text-pal-500">&gt; </span>
+                      AI / ML Engineer
+                      <span className="text-pal-400"> · Amman, Jordan</span>
+                    </p>
+                  </motion.div>
 
-                  <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { value: "15+", label: "Projects" },
-                      { value: "30+", label: "Certifications" },
-                      { value: "30+", label: "OS PRs" },
-                    ].map((s) => (
-                      <div key={s.label} className="rounded-2xl bg-white/[0.04] border border-white/[0.06] p-4 text-center">
-                        <p className="text-2xl font-bold text-white">{s.value}</p>
-                        <p className="mt-1 text-[11px] uppercase tracking-wider text-pal-300">{s.label}</p>
-                      </div>
+                  <motion.div variants={staggerItem}>
+                    <p className="text-pal-400">
+                      <span className="text-amber-400">$</span> cat bio.txt
+                    </p>
+                    <p className="mt-1 max-w-md font-sans leading-relaxed text-pal-300">
+                      I design and ship AI products with measurable impact — from model
+                      development to production deployment and monitoring.
+                    </p>
+                  </motion.div>
+
+                  <motion.div variants={staggerItem}>
+                    <p className="text-pal-400">
+                      <span className="text-amber-400">$</span> status
+                    </p>
+                    <p className="mt-1 flex items-center gap-2 text-pal-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-term-green animate-pulse" />
+                      <span className="text-term-green">available for work</span>
+                    </p>
+                  </motion.div>
+
+                  <motion.div variants={staggerItem} className="flex flex-wrap gap-3 pt-1">
+                    <button
+                      onClick={handleDownloadResume}
+                      className="inline-flex items-center gap-2 rounded-sm border border-amber-400/50 bg-amber-400/10 px-4 py-2 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200"
+                    >
+                      <Download className="h-4 w-4" />
+                      ./resume.pdf
+                    </button>
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.12] px-4 py-2 text-sm text-pal-200 transition-colors hover:border-white/[0.25] hover:text-pal-50"
+                    >
+                      ./contact
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </motion.div>
+
+                  <motion.div variants={staggerItem} className="flex flex-wrap gap-x-5 gap-y-1 pt-1 text-sm">
+                    {socialLinks.map((s) => (
+                      <Link
+                        key={s.label}
+                        href={s.href}
+                        target={s.href.startsWith("mailto") ? "_self" : "_blank"}
+                        rel="noopener noreferrer"
+                        className="text-pal-400 transition-colors hover:text-amber-300"
+                      >
+                        {s.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                </motion.div>
+
+                {/* Right — stats panel */}
+                <motion.div
+                  className="self-start border border-white/[0.08] bg-pal-950/40 p-5"
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                >
+                  <p className="mb-4 text-xs text-pal-400">
+                    <span className="text-term-green">~/stats</span> $ cat summary
+                  </p>
+                  <div className="space-y-3">
+                    {stats.map((s) => (
+                      <StatBar key={s.label} {...s} />
                     ))}
                   </div>
 
-                  <div className="mt-6 space-y-3 text-sm">
+                  <div className="mt-5 space-y-2 border-t border-dashed border-white/[0.1] pt-4 text-xs">
                     {[
-                      { icon: MapPin, label: "Location", value: "Amman, Jordan" },
-                      { icon: Briefcase, label: "Focus", value: "AI \u00b7 ML \u00b7 Cloud" },
-                      { icon: Globe, label: "Languages", value: "Arabic, English" },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-center justify-between border-b border-white/[0.06] pb-2.5 last:border-0 last:pb-0">
-                        <span className="flex items-center gap-2 text-pal-300">
-                          <item.icon className="h-3.5 w-3.5" />
-                          {item.label}
-                        </span>
-                        <span className="text-pal-100">{item.value}</span>
+                      ["location", "Amman, JO"],
+                      ["focus", "AI · ML · Cloud"],
+                      ["langs", "Arabic, English"],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between">
+                        <span className="text-pal-400">{k}</span>
+                        <span className="text-pal-200">{v}</span>
                       </div>
                     ))}
                   </div>
-                </div>
-              </motion.div>
-            </div>
+                  <p className="mt-4 text-sm text-pal-300 cursor-blink" aria-hidden />
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
         </header>
 
-        {/* ══════════════════════════════════════════════════════════
-            ABOUT — Glass Bento Grid
-        ══════════════════════════════════════════════════════════ */}
-        <section id="about" className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-5xl">
-            <SectionHeading title="About Me" subtitle="Background" className="mb-12" />
+        {/* ════════════════ ABOUT ════════════════ */}
+        <section id="about" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
+            <SectionHeading title="About" subtitle="~/about" className="mb-10" />
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <motion.div
-                className="sm:col-span-2 rounded-3xl glass p-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <div className="space-y-4 text-pal-200 leading-relaxed">
-                  <p>
-                    I&rsquo;m an AI engineer with hands-on experience building intelligent applications
-                    using machine learning and deep learning. My work spans end-to-end AI
-                    solutions — from research and model training through to production
-                    deployment on cloud infrastructure.
-                  </p>
-                  <p>
-                    Certified as an AWS AI Practitioner, I specialize in delivering scalable
-                    AI products across web and cloud environments. I&rsquo;ve built solutions
-                    using GANs, NLP pipelines, agentic AI systems, and RAG architectures that
-                    solve real business problems.
-                  </p>
-                </div>
+            <motion.div
+              className="grid gap-8 lg:grid-cols-[1.4fr_1fr]"
+              variants={staggerContainer(0.12)}
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+            >
+              <motion.div variants={staggerItem} className="space-y-4 font-sans leading-relaxed text-pal-300">
+                <p className="font-mono text-xs text-pal-400">$ cat about.md</p>
+                <p>
+                  I&rsquo;m an AI engineer with hands-on experience building intelligent applications
+                  using machine learning and deep learning. My work spans end-to-end AI
+                  solutions — from research and model training through to production
+                  deployment on cloud infrastructure.
+                </p>
+                <p>
+                  Certified as an AWS AI Practitioner, I specialize in delivering scalable
+                  AI products across web and cloud environments. I&rsquo;ve built solutions
+                  using GANs, NLP pipelines, agentic AI systems, and RAG architectures that
+                  solve real business problems.
+                </p>
               </motion.div>
 
-              <motion.div
-                className="rounded-3xl glass p-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-xs font-medium uppercase tracking-widest text-pal-200 mb-4">Highlights</p>
-                <ul className="space-y-3 text-sm text-pal-100">
-                  {[
-                    "AI Engineer at Kawkab AI",
-                    "AWS AI Practitioner Certified",
-                    "Founder of MedGAN AI",
-                    "30+ professional certifications",
-                    "Active open-source contributor",
-                    "IEEE & GDG volunteer",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-pal-200" />
+              <motion.div variants={staggerItem}>
+                <p className="font-mono text-xs text-pal-400">$ ls ./highlights</p>
+                <ul className="mt-4 space-y-2.5 text-sm">
+                  {highlights.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-pal-200">
+                      <span className="mt-0.5 text-term-green">✓</span>
                       {item}
                     </li>
                   ))}
                 </ul>
               </motion.div>
-
-              {[
-                { icon: Briefcase, value: "15+", label: "Projects Built", color: "text-pal-200" },
-                { icon: GraduationCap, value: "30+", label: "Certifications", color: "text-blue-400" },
-                { icon: Github, value: "30+", label: "Open-Source PRs", color: "text-emerald-400" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  className="group rounded-3xl glass p-6 flex items-center gap-4 transition-all duration-500 hover:border-white/[0.14]"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.15 + i * 0.05 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/[0.05] border border-white/[0.08]">
-                    <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-white">{stat.value}</p>
-                    <p className="text-xs text-pal-300">{stat.label}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════
-            SKILLS — Categorized Glass Grid
-        ══════════════════════════════════════════════════════════ */}
-        <section id="skills" className="py-24">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 mb-12">
-            <SectionHeading title="Skills & Tools" subtitle="Tech stack" />
+        {/* ════════════════ SKILLS ════════════════ */}
+        <section id="skills" className="py-20">
+          <div className="mx-auto mb-10 max-w-7xl 2xl:max-w-[96rem] px-4 sm:px-6">
+            <SectionHeading title="Skills" subtitle="~/skills" />
           </div>
           <SkillsShowcase />
         </section>
 
-        {/* ══════════════════════════════════════════════════════════
-            PROJECTS
-        ══════════════════════════════════════════════════════════ */}
-        <section id="projects" className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-5xl">
-            <SectionHeading title="Projects" subtitle="Featured work" className="mb-12" />
-
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((p) => (
-                <ProjectCard key={p.title} {...p} />
-              ))}
-            </div>
+        {/* ════════════════ PROJECTS ════════════════ */}
+        <section id="projects" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
+            <SectionHeading title="Projects" subtitle="~/projects" className="mb-10" />
 
             <motion.div
-              className="mt-10 text-center"
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              variants={staggerContainer(0.07)}
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+            >
+              {projects.map((p, i) => (
+                <ProjectCard key={p.title} index={i} {...p} />
+              ))}
+            </motion.div>
+
+            <motion.div
+              className="mt-8 font-mono text-sm"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              viewport={viewportOnce}
             >
               <Link
                 href="https://github.com/MahmoudAbuAwd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-pal-200 transition-colors hover:text-white"
+                className="inline-flex items-center gap-2 text-pal-300 transition-colors hover:text-amber-300"
               >
-                View all projects on GitHub
+                <span className="text-amber-400">$</span> git remote -v
+                <span className="text-pal-400">→ view all on github</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </motion.div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════
-            EXPERIENCE
-        ══════════════════════════════════════════════════════════ */}
-        <section id="experience" className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-3xl">
-            <SectionHeading title="Experience" subtitle="Career" className="mb-12" />
+        {/* ════════════════ EXPERIENCE ════════════════ */}
+        <section id="experience" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-5xl">
+            <SectionHeading title="Experience" subtitle="~/experience" className="mb-10" />
             <Timeline />
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════
-            CERTIFICATIONS — Visual Glass Cards
-        ══════════════════════════════════════════════════════════ */}
-        <section id="certifications" className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-5xl">
-            <div className="flex items-end justify-between mb-12">
-              <SectionHeading title="Certifications" subtitle="Credentials" />
-              <span className="hidden sm:inline-block glass-pill rounded-full px-3 py-1 text-xs font-medium text-pal-200">
-                {certifications.length} total
+        {/* ════════════════ CERTIFICATIONS ════════════════ */}
+        <section id="certifications" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
+            <div className="mb-10 flex items-end justify-between">
+              <SectionHeading title="Certifications" subtitle="~/certs" className="flex-1" />
+              <span className="ml-4 hidden shrink-0 border border-white/[0.1] px-2.5 py-1 font-mono text-xs text-pal-300 sm:inline-block">
+                {certifications.length} files
               </span>
             </div>
             <CertificationsSection />
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════════
-            GITHUB ACTIVITY
-        ══════════════════════════════════════════════════════════ */}
-        <section id="activity" className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-5xl">
-            <SectionHeading title="GitHub Activity" subtitle="Open source" className="mb-12" />
+        {/* ════════════════ GITHUB ACTIVITY ════════════════ */}
+        <section id="activity" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
+            <SectionHeading title="Activity" subtitle="~/activity" className="mb-10" />
             <GitHubActivity />
           </div>
         </section>
 
-        {/* ── CTA Banner ─────────────────────────────────────────── */}
-        <section className="py-24 px-4 sm:px-6">
-          <div className="mx-auto max-w-3xl">
+        {/* ════════════════ CTA ════════════════ */}
+        <section className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              viewport={{ once: true }}
-              className="relative overflow-hidden rounded-3xl glass-strong p-10 text-center"
+              transition={{ duration: 0.5, ease: easeOutExpo }}
+              viewport={viewportOnce}
+              className="overflow-hidden rounded-md term-panel"
             >
-              {/* Background accent */}
-              <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-40 w-80 rounded-full bg-gradient-to-r from-pal-500/20 to-pal-200/15 blur-3xl" />
-
-              <div className="relative">
-                <h2 className="text-2xl font-bold text-white sm:text-3xl">
+              <WindowBar path="mahmoud@abuawd: ~/contact" />
+              <div className="p-8 text-center sm:p-10">
+                <p className="font-mono text-xs text-pal-400">$ ./start-project --with you</p>
+                <h2 className="mt-3 text-2xl font-bold tracking-tight text-pal-50 sm:text-3xl">
                   Let&rsquo;s build something together
                 </h2>
-                <p className="mt-3 text-pal-200 max-w-md mx-auto">
-                  I&rsquo;m always open to discussing new projects, ideas, or opportunities to create impactful AI solutions.
+                <p className="mx-auto mt-3 max-w-md font-sans text-pal-300">
+                  I&rsquo;m always open to discussing new projects, ideas, or opportunities to create
+                  impactful AI solutions.
                 </p>
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <Button
-                    className="rounded-xl bg-pal-500 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-pal-500/25 hover:bg-pal-400 transition-all duration-300"
-                    asChild
+                <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 rounded-sm border border-amber-400/50 bg-amber-400/10 px-5 py-2.5 text-sm text-amber-300 transition-colors hover:bg-amber-400/20 hover:text-amber-200"
                   >
-                    <Link href="/contact">
-                      <Mail className="mr-2 h-4 w-4" />
-                      Get in Touch
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="rounded-xl border-white/[0.1] bg-white/[0.04] backdrop-blur-sm px-6 py-2.5 text-sm font-medium text-pal-100 hover:bg-white/[0.08] hover:text-white transition-all duration-300"
+                    get in touch
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <button
                     onClick={handleDownloadResume}
+                    className="inline-flex items-center gap-2 rounded-sm border border-white/[0.12] px-5 py-2.5 text-sm text-pal-200 transition-colors hover:border-white/[0.25] hover:text-pal-50"
                   >
-                    <Download className="mr-2 h-4 w-4" />
-                    Resume
-                  </Button>
+                    <Download className="h-4 w-4" />
+                    ./resume.pdf
+                  </button>
                 </div>
               </div>
             </motion.div>

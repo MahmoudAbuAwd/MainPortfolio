@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageCircle, Send, X, ChevronDown, Bot, Sparkles, Trash2, Zap, CornerDownRight } from 'lucide-react';
+import { Send, X, ChevronDown, Trash2, CornerDownRight } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
@@ -68,7 +68,7 @@ function BotMarkdown({ content }: { content: string }) {
 
           return (
             <a href={href} target="_blank" rel="noopener noreferrer"
-              className="text-pal-100 underline underline-offset-2 hover:text-pal-50 text-[13px]">
+              className="text-amber-300 underline underline-offset-2 hover:text-amber-200 text-[13px]">
               {label}
             </a>
           );
@@ -113,7 +113,7 @@ function TypingDots() {
       {[0, 160, 320].map((d) => (
         <span
           key={d}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-pal-200/60"
+          className="h-1.5 w-1.5 animate-bounce rounded-full bg-amber-400/60"
           style={{ animationDelay: `${d}ms` }}
         />
       ))}
@@ -298,10 +298,11 @@ export function Chatbot() {
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open AI assistant"
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_32px_rgba(66,72,116,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
-        style={{ background: 'linear-gradient(135deg, #424874 0%, #A6B1E1 100%)' }}
+        className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-md border border-amber-400/40 bg-pal-900/90 px-4 font-mono text-sm text-amber-300 shadow-[0_8px_32px_rgba(0,0,0,0.55)] backdrop-blur transition-colors duration-200 hover:border-amber-400/70 hover:bg-pal-800/90 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
       >
-        <MessageCircle className="h-6 w-6 text-white" />
+        <span className="text-term-green">~$</span>
+        <span>ask-me</span>
+        <span className="cursor-blink" aria-hidden />
       </button>
     );
   }
@@ -312,70 +313,47 @@ export function Chatbot() {
   return (
     <div
       className={cn(
-        'fixed z-50 flex flex-col overflow-hidden rounded-2xl',
-        'border border-white/[0.07]',
-        'shadow-[0_30px_80px_-10px_rgba(30,32,69,0.5),0_0_0_1px_rgba(255,255,255,0.04)]',
+        'fixed z-50 flex flex-col overflow-hidden rounded-md font-mono',
+        'border border-white/[0.1] bg-pal-950',
+        'shadow-[0_30px_80px_-10px_rgba(0,0,0,0.7)]',
         'transition-[height] duration-300 ease-in-out',
         // Mobile: stretch edge-to-edge with small margins, above the FAB
         // Desktop: fixed size bottom-right corner
         'left-3 right-3 bottom-[5rem] sm:left-auto sm:bottom-6 sm:right-6 sm:w-[390px]',
-        isMinimized ? 'h-[64px]' : 'h-[min(78vh,560px)] sm:h-[min(500px,calc(100vh-5rem))]'
+        isMinimized ? 'h-[46px]' : 'h-[min(78vh,560px)] sm:h-[min(500px,calc(100vh-5rem))]'
       )}
-      style={{ background: 'linear-gradient(160deg, #0d0e1a 0%, #0f1025 40%, #080910 100%)' }}
     >
-      {/* ── Rainbow top line ── */}
-      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-pal-500 via-pal-200 to-pal-500" />
+      {/* ── Top accent line ── */}
+      <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-amber-500 via-amber-400 to-term-green" />
 
-      {/* ── Header ── */}
-      <div
-        className="flex shrink-0 items-center justify-between px-4 py-3"
-        style={{ background: 'linear-gradient(180deg, rgba(66,72,116,0.18) 0%, transparent 100%)' }}
-      >
-        {/* Left: avatar + name */}
-        <div className="flex items-center gap-3">
-          {/* Avatar with glowing ring */}
-          <div className="relative">
-            <div className="h-10 w-10 rounded-full p-[1.5px]"
-              style={{ background: 'linear-gradient(135deg, #424874, #A6B1E1)' }}>
-              <img
-                src="/ai-avatar.jpg"
-                alt="Mahmoud AI"
-                className="h-full w-full rounded-full object-cover"
-              />
-            </div>
-            {/* Glow behind avatar */}
-            <div className="absolute inset-0 -z-10 animate-pulse rounded-full blur-md"
-              style={{ background: 'radial-gradient(circle, rgba(66,72,116,0.4) 0%, transparent 70%)' }} />
-            {/* Online dot */}
-            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#0d0e1a] bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold leading-none"
-              style={{ background: 'linear-gradient(90deg, #F4EEFF 0%, #DCD6F7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Mahmoud AI
-            </p>
-            <p className="mt-0.5 text-[11px]">
-              {isStreaming
-                ? <span className="text-pal-200">Generating…</span>
-                : <span className="text-pal-300">Your AI Assistant</span>
-              }
-            </p>
-          </div>
+      {/* ── Titlebar ── */}
+      <div className="flex shrink-0 items-center justify-between border-b border-white/[0.08] bg-white/[0.02] px-3 py-2">
+        {/* Left: window dots + path */}
+        <div className="flex items-center gap-2.5">
+          <span className="flex items-center gap-1.5" aria-hidden>
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+          </span>
+          <span className="text-xs text-pal-400">
+            <span className="text-term-green">mahmoud-ai</span>
+            <span className="text-pal-500">:</span>~/assistant
+          </span>
+          {isStreaming && <span className="text-[10px] text-amber-400">…gen</span>}
         </div>
 
         {/* Right: action buttons */}
         <div className="flex items-center gap-0.5">
           <button onClick={handleClear} title="Clear chat" aria-label="Clear chat"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
+            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
             <Trash2 className="h-3.5 w-3.5" />
           </button>
           <button onClick={() => setIsMinimized((v) => !v)} aria-label="Minimize"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
+            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-white/5 hover:text-pal-100 focus:outline-none">
             <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', isMinimized && 'rotate-180')} />
           </button>
           <button onClick={handleClose} aria-label="Close"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-pal-300 transition-all hover:bg-white/5 hover:text-white focus:outline-none">
+            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-white/5 hover:text-pal-100 focus:outline-none">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -400,7 +378,7 @@ export function Chatbot() {
                   >
                     {/* Bot mini-avatar */}
                     {msg.role === 'assistant' && (
-                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-pal-400/20 overflow-hidden">
+                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-amber-400/20 overflow-hidden">
                         <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                       </div>
                     )}
@@ -408,41 +386,28 @@ export function Chatbot() {
                     <div className={cn('flex max-w-[85%] flex-col gap-1 sm:max-w-[78%]', msg.role === 'user' && 'items-end')}>
                       {/* User bubble */}
                       {msg.role === 'user' ? (
-                        <div
-                          className="rounded-2xl rounded-tr-sm px-3.5 py-2.5"
-                          style={{
-                            background: 'linear-gradient(135deg, #424874, #A6B1E1)',
-                            boxShadow: '0 4px 20px rgba(66,72,116,0.3)',
-                          }}
-                        >
-                          <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-white">
+                        <div className="rounded-md rounded-tr-sm border border-amber-400/30 bg-amber-400/10 px-3.5 py-2">
+                          <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-amber-50">
                             {msg.content}
                           </p>
                         </div>
                       ) : (
                         /* Bot bubble */
-                        <div
-                          className="rounded-2xl rounded-tl-sm px-3.5 py-2.5"
-                          style={{
-                            background: 'rgba(255,255,255,0.04)',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            backdropFilter: 'blur(12px)',
-                          }}
-                        >
+                        <div className="rounded-md rounded-tl-sm border border-white/[0.1] bg-pal-900/60 px-3.5 py-2.5">
                           {msg.content === '' ? (
                             <TypingDots />
                           ) : (
                             <>
                               <BotMarkdown content={msg.content} />
                               {showCursor && (
-                                <span className="ml-0.5 inline-block h-3.5 w-0.5 animate-pulse rounded-sm bg-pal-200 align-middle" />
+                                <span className="ml-0.5 inline-block h-3.5 w-[3px] animate-pulse rounded-sm bg-amber-400 align-middle" />
                               )}
                             </>
                           )}
                         </div>
                       )}
 
-                      <span className="px-1 text-[10px] text-pal-300">{formatTime(msg.timestamp)}</span>
+                      <span className="px-1 text-[10px] text-pal-400">{formatTime(msg.timestamp)}</span>
                     </div>
                   </div>
                 );
@@ -451,11 +416,10 @@ export function Chatbot() {
               {/* Thinking dots */}
               {isLoading && (
                 <div className="flex gap-2.5 animate-in fade-in-0 duration-200">
-                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-pal-400/20 overflow-hidden">
+                  <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-amber-400/20 overflow-hidden">
                     <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
                   </div>
-                  <div className="rounded-2xl rounded-tl-sm px-4 py-3"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="rounded-md rounded-tl-sm border border-white/[0.1] bg-pal-900/60 px-4 py-3">
                     <TypingDots />
                   </div>
                 </div>
@@ -466,35 +430,23 @@ export function Chatbot() {
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-400 ml-9">
                   {isLoadingFollowUps ? (
                     <div className="flex items-center gap-1.5 py-1">
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-pal-400/60" style={{ animationDelay: '300ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '0ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '150ms' }} />
+                      <span className="h-1 w-1 animate-bounce rounded-full bg-amber-400/60" style={{ animationDelay: '300ms' }} />
                     </div>
                   ) : (
                     <div className="space-y-1.5">
-                      <p className="flex items-center gap-1 text-[10px] text-pal-200">
-                        <CornerDownRight className="h-2.5 w-2.5 text-pal-200" />
-                        Follow-up questions
+                      <p className="flex items-center gap-1 text-[10px] text-pal-400">
+                        <CornerDownRight className="h-2.5 w-2.5 text-amber-400" />
+                        follow-up
                       </p>
                       {followUps.map((q) => (
                         <button
                           key={q}
                           onClick={() => sendMessage(q)}
-                          className="block w-full rounded-xl px-3 py-1.5 text-left text-[11px] text-pal-100 transition-all duration-150 hover:text-white focus:outline-none"
-                          style={{
-                            background: 'rgba(66,72,116,0.06)',
-                            border: '1px solid rgba(66,72,116,0.18)',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(66,72,116,0.13)';
-                            e.currentTarget.style.borderColor = 'rgba(66,72,116,0.38)';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(66,72,116,0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(66,72,116,0.18)';
-                          }}
+                          className="block w-full rounded-sm border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-amber-400/40 hover:bg-amber-400/[0.06] hover:text-amber-200 focus:outline-none"
                         >
-                          <span className="mr-1.5 text-pal-200/70">↗</span>
+                          <span className="mr-1.5 text-amber-400/70">&gt;</span>
                           {q}
                         </button>
                       ))}
@@ -506,28 +458,15 @@ export function Chatbot() {
               {/* ── Quick prompt chips ── */}
               {showPrompts && (
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500 pt-1">
-                  <p className="mb-2 flex items-center gap-1.5 text-[11px] text-pal-300">
-                    <Zap className="h-3 w-3 text-pal-200" />
-                    Quick questions
+                  <p className="mb-2 flex items-center gap-1.5 text-[11px] text-pal-400">
+                    <span className="text-amber-400">$</span> quick-questions
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
                     {QUICK_PROMPTS.map((q) => (
                       <button
                         key={q}
                         onClick={() => sendMessage(q)}
-                        className="rounded-xl px-2.5 py-2 text-left text-[11px] text-pal-100 transition-all duration-150 hover:text-white focus:outline-none"
-                        style={{
-                          background: 'rgba(66,72,116,0.06)',
-                          border: '1px solid rgba(66,72,116,0.2)',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(66,72,116,0.12)';
-                          e.currentTarget.style.borderColor = 'rgba(66,72,116,0.4)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(66,72,116,0.06)';
-                          e.currentTarget.style.borderColor = 'rgba(66,72,116,0.2)';
-                        }}
+                        className="rounded-sm border border-white/[0.1] bg-white/[0.02] px-2.5 py-2 text-left text-[11px] text-pal-200 transition-colors duration-150 hover:border-amber-400/40 hover:bg-amber-400/[0.06] hover:text-amber-200 focus:outline-none"
                       >
                         {q}
                       </button>
@@ -541,14 +480,9 @@ export function Chatbot() {
           </ScrollArea>
 
           {/* ── Input area ── */}
-          <div
-            className="shrink-0 px-3 pb-4 pt-2 sm:pb-3"
-            style={{
-              background: 'linear-gradient(0deg, rgba(10,10,20,0.95) 0%, transparent 100%)',
-              borderTop: '1px solid rgba(255,255,255,0.06)',
-            }}
-          >
+          <div className="shrink-0 border-t border-white/[0.08] bg-pal-950 px-3 pb-4 pt-2 sm:pb-3">
             <div className="flex items-end gap-2">
+              <span className="pb-3 pl-1 text-amber-400" aria-hidden>&gt;</span>
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -559,50 +493,26 @@ export function Chatbot() {
                 }}
                 onKeyDown={handleKeyDown}
                 disabled={isLoading || isStreaming}
-                placeholder="Ask me anything…"
+                placeholder="ask me anything…"
                 rows={1}
-                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-xl px-3.5 py-3 leading-relaxed text-white placeholder:text-pal-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.09)',
-                  // 16px prevents iOS Safari from auto-zooming on focus
-                  fontSize: '16px',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(66,72,116,0.5)';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(66,72,116,0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="min-h-[44px] max-h-[100px] flex-1 resize-none rounded-sm border border-white/[0.1] bg-white/[0.03] px-3 py-3 font-mono leading-relaxed text-pal-50 placeholder:text-pal-400 transition-colors duration-150 focus:border-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400/15 disabled:cursor-not-allowed disabled:opacity-50"
+                // 16px prevents iOS Safari from auto-zooming on focus
+                style={{ fontSize: '16px' }}
               />
 
               <button
                 onClick={() => sendMessage()}
                 disabled={isLoading || isStreaming || !input.trim()}
                 aria-label="Send"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white transition-all duration-150 hover:scale-105 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:scale-100"
-                style={{
-                  background: 'linear-gradient(135deg, #424874, #A6B1E1)',
-                  boxShadow: '0 4px 16px rgba(66,72,116,0.35)',
-                }}
-                onMouseEnter={(e) => {
-                  if (!e.currentTarget.disabled)
-                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(66,72,116,0.55)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(66,72,116,0.35)';
-                }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-amber-400/40 bg-amber-400/15 text-amber-300 transition-colors duration-150 hover:bg-amber-400/25 hover:text-amber-200 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <Send className="h-4 w-4" />
               </button>
             </div>
 
             {/* Footer — hide on mobile to save space */}
-            <p className="mt-2 hidden select-none text-center text-[10px] text-pal-200 sm:block">
-              <Sparkles className="mr-1 inline h-2.5 w-2.5 text-pal-200" />
-              Powered by Mahmoud · Enter to send
+            <p className="mt-2 hidden select-none text-center text-[10px] text-pal-400 sm:block">
+              <span className="text-pal-500"># </span>powered by mahmoud · enter to send
             </p>
           </div>
         </>

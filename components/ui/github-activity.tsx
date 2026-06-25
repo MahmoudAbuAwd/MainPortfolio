@@ -71,7 +71,7 @@ function eventMeta(event: GitHubEvent) {
   switch (event.type) {
     case 'PushEvent': {
       const n = event.payload?.size ?? event.payload?.commits?.length ?? 1
-      return { icon: GitCommit, iconColor: 'text-pal-200', accent: 'from-pal-500/15 to-pal-400/5', verb: `Pushed ${n} commit${n !== 1 ? 's' : ''} to`, repo, detail: event.payload?.commits?.[0]?.message ?? null, url: `https://github.com/${event.repo.name}/commits` }
+      return { icon: GitCommit, iconColor: 'text-pal-200', accent: 'from-amber-500/15 to-pal-400/5', verb: `Pushed ${n} commit${n !== 1 ? 's' : ''} to`, repo, detail: event.payload?.commits?.[0]?.message ?? null, url: `https://github.com/${event.repo.name}/commits` }
     }
     case 'CreateEvent':
       return { icon: GitBranch, iconColor: 'text-blue-400', accent: 'from-blue-500/15 to-blue-400/5', verb: event.payload?.ref_type === 'branch' ? `Created branch ${event.payload.ref} in` : `Created ${event.payload?.ref_type ?? 'repo'}`, repo, detail: null, url: `https://github.com/${event.repo.name}` }
@@ -80,7 +80,7 @@ function eventMeta(event: GitHubEvent) {
     case 'WatchEvent':
       return { icon: Star, iconColor: 'text-yellow-400', accent: 'from-yellow-500/15 to-yellow-400/5', verb: 'Starred', repo, detail: null, url: `https://github.com/${event.repo.name}` }
     default:
-      return { icon: Github, iconColor: 'text-pal-300', accent: 'from-pal-500/10 to-pal-400/5', verb: event.type.replace('Event', ''), repo, detail: null, url: `https://github.com/${event.repo.name}` }
+      return { icon: Github, iconColor: 'text-pal-300', accent: 'from-amber-500/10 to-pal-400/5', verb: event.type.replace('Event', ''), repo, detail: null, url: `https://github.com/${event.repo.name}` }
   }
 }
 
@@ -125,13 +125,13 @@ function StatsAndLanguages({ stats, sortedLanguages, totalLangRepos }: {
           <p className="text-[11px] font-medium text-pal-300 uppercase tracking-wider">Languages</p>
           <div className="flex h-2 overflow-hidden rounded-full bg-white/[0.04]">
             {sortedLanguages.map(([lang, count]) => (
-              <div key={lang} className={`${langColors[lang] ?? 'bg-pal-400'}`} style={{ width: `${(count / totalLangRepos) * 100}%` }} />
+              <div key={lang} className={`${langColors[lang] ?? 'bg-amber-400'}`} style={{ width: `${(count / totalLangRepos) * 100}%` }} />
             ))}
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {sortedLanguages.map(([lang, count]) => (
               <span key={lang} className="flex items-center gap-1.5 text-[11px] text-pal-200">
-                <span className={`inline-block h-1.5 w-1.5 rounded-full ${langColors[lang] ?? 'bg-pal-400'}`} />
+                <span className={`inline-block h-1.5 w-1.5 rounded-full ${langColors[lang] ?? 'bg-amber-400'}`} />
                 {lang} <span className="text-pal-300">{Math.round((count / totalLangRepos) * 100)}%</span>
               </span>
             ))}

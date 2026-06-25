@@ -60,8 +60,8 @@ export default async function BlogPage() {
       <FloatingNav />
 
       <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute -top-32 -right-20 h-72 w-72 rounded-full bg-pal-500/20 blur-3xl" />
-        <div className="absolute bottom-10 left-10 h-64 w-64 rounded-full bg-pal-400/20 blur-3xl" />
+        <div className="absolute -top-32 -right-20 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl" />
+        <div className="absolute bottom-10 left-10 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(66,72,116,0.12),_transparent_60%)]" />
       </div>
 
