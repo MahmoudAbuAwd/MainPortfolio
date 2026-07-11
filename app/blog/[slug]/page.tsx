@@ -6,7 +6,6 @@ import {
   ArrowUpRight,
   Calendar,
   Clock,
-  Quote,
 } from "lucide-react"
 
 import { FloatingNav } from "@/components/floating-nav"
@@ -59,9 +58,9 @@ function renderBodyNode(node: BlogBodyNode) {
     return (
       <div className="grid gap-4 sm:grid-cols-3">
         {node.items.map((item) => (
-          <div key={`${item.value}-${item.label}`} className="rounded-2xl bg-hair/[0.05] border border-hair/[0.08] p-5 text-center">
-            <p className="text-2xl font-semibold text-pal-50">{item.value}</p>
-            <p className="mt-1 text-xs uppercase tracking-wide text-pal-100">{item.label}</p>
+          <div key={`${item.value}-${item.label}`} className="rounded-md border border-hair/[0.08] bg-hair/[0.02] p-5 text-center">
+            <p className="text-2xl font-bold text-pal-50">{item.value}</p>
+            <p className="mt-1 text-[11px] uppercase tracking-wide text-pal-400">{item.label}</p>
             {item.sublabel && <p className="mt-1 text-xs text-pal-300">{item.sublabel}</p>}
           </div>
         ))}
@@ -78,20 +77,24 @@ function renderBodyNode(node: BlogBodyNode) {
   }
   if (node.type === "quote") {
     return (
-      <blockquote className="relative overflow-hidden rounded-2xl glass p-6">
-        <Quote className="absolute -left-3 -top-3 h-12 w-12 text-acc/20" />
-        <p className="text-lg leading-relaxed text-pal-100">{renderLinkedText(node.text)}</p>
-        {node.attribution && <footer className="mt-3 text-sm text-pal-300">{node.attribution}</footer>}
+      <blockquote className="border-l-2 border-acc/50 bg-hair/[0.02] py-4 pl-5 pr-4">
+        <p className="font-sans text-lg italic leading-relaxed text-pal-100">{renderLinkedText(node.text)}</p>
+        {node.attribution && (
+          <footer className="mt-3 text-sm text-pal-400">
+            <span className="text-pal-500">- </span>
+            {node.attribution}
+          </footer>
+        )}
       </blockquote>
     )
   }
   if (node.type === "image") {
     return (
       <figure className="space-y-3">
-        <div className="overflow-hidden rounded-2xl glass p-1">
-          <img src={node.src} alt={node.alt} className="w-full rounded-xl object-cover" loading="lazy" />
+        <div className="overflow-hidden rounded-md border border-hair/[0.08] bg-hair/[0.02] p-1">
+          <img src={node.src} alt={node.alt} className="w-full rounded-sm object-cover" loading="lazy" />
         </div>
-        {node.caption && <figcaption className="text-center text-sm text-pal-300 italic">{node.caption}</figcaption>}
+        {node.caption && <figcaption className="text-center font-sans text-sm text-pal-300 italic">{node.caption}</figcaption>}
       </figure>
     )
   }

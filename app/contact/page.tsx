@@ -6,6 +6,8 @@ import Link from "next/link"
 import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { ContactForm } from "@/components/contact-form"
+import { WindowBar } from "@/components/window-bar"
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal"
 
 const contactRows = [
   { icon: Mail, key: "email", value: "mahmoodabuawad08@gmail.com", href: "mailto:mahmoodabuawad08@gmail.com" },
@@ -20,7 +22,7 @@ const quickLinks = [
 
 function handleDownloadResume() {
   const link = document.createElement("a")
-  link.href = "/resume/Resume.pdf"
+  link.href = "/Resume.pdf"
   link.download = "Resume.pdf"
   document.body.appendChild(link)
   link.click()
@@ -43,21 +45,24 @@ export default function ContactPage() {
       <main id="contact-main" className="relative z-10 px-4 pb-24 pt-28 sm:px-6" role="main">
         {/* Hero */}
         <section className="mx-auto max-w-5xl">
-          <p className="text-sm text-pal-400">
-            <span className="text-term-green">~/contact</span> $ ./reach-out
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
-            Get in Touch
-          </h1>
-          <p className="mt-4 max-w-xl font-sans leading-relaxed text-pal-300">
-            Have a project in mind or want to collaborate? I&rsquo;d love to hear from you.
-          </p>
+          <Reveal>
+            <p className="text-sm text-pal-400">
+              <span className="text-term-green">~/contact</span> $ ./reach-out
+            </p>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+              Get in Touch
+            </h1>
+            <p className="mt-4 max-w-xl font-sans leading-relaxed text-pal-300">
+              Have a project in mind or want to collaborate? I&rsquo;d love to hear from you.
+            </p>
+          </Reveal>
         </section>
 
         {/* Info + form */}
-        <section className="mx-auto mt-14 grid max-w-5xl gap-6 lg:grid-cols-2">
+        <section className="mx-auto mt-14 max-w-5xl">
+          <RevealGroup className="grid gap-6 lg:grid-cols-2" stagger={0.12}>
           {/* Left column */}
-          <div className="space-y-6">
+          <RevealItem className="space-y-6">
             <div className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
               <p className="text-xs text-pal-400">
                 <span className="text-acc">$</span> cat contact.json
@@ -112,27 +117,21 @@ export default function ContactPage() {
                 </button>
               </div>
             </div>
-          </div>
+          </RevealItem>
 
           {/* Right column — form */}
-          <div className="overflow-hidden rounded-md term-panel">
-            <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
-              <span className="flex items-center gap-1.5" aria-hidden>
-                <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
-              </span>
-              <span className="ml-2 text-xs text-pal-400">new-message.txt</span>
-            </div>
+          <RevealItem className="overflow-hidden rounded-md term-panel">
+            <WindowBar path="new-message.txt" />
             <div className="p-6">
               <ContactForm />
             </div>
-          </div>
+          </RevealItem>
+          </RevealGroup>
         </section>
 
         {/* CTA */}
         <section className="mx-auto mt-16 max-w-5xl">
-          <div className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
+          <Reveal className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
             <div className="flex-1">
               <h2 className="text-xl font-semibold text-pal-50">Looking for my work?</h2>
               <p className="mt-2 font-sans text-sm text-pal-300">
@@ -146,7 +145,7 @@ export default function ContactPage() {
               view projects
               <ArrowUpRight className="h-4 w-4" />
             </Link>
-          </div>
+          </Reveal>
         </section>
       </main>
 

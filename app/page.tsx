@@ -17,6 +17,7 @@ import { Timeline } from "@/components/timeline"
 import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { SectionHeading } from "@/components/section-heading"
+import { WindowBar } from "@/components/window-bar"
 import { GitHubActivity } from "@/components/ui/github-activity"
 import { SkillsShowcase } from "@/components/skills-showcase"
 import { ScrollProgress } from "@/components/scroll-progress"
@@ -96,6 +97,7 @@ const projects = [
 
 const certifications = [
   { file: "Mahmoud Abu Awad - AWS Certified AI Practitioner.pdf", label: "AWS Certified AI Practitioner", issuer: "Amazon Web Services", date: "May 2025" },
+  { file: "Cert60094732260.pdf", label: "Azure Fundamentals", issuer: "Microsoft", date: "Jun 2026" },
   { file: "Deep-Learning-specialization.pdf", label: "Deep Learning Specialization", issuer: "DeepLearning.AI", date: "Sep 2024" },
   { file: "DeepLearning.AI-TensorFlow-Developer.pdf", label: "TensorFlow Developer Certificate", issuer: "DeepLearning.AI", date: "Feb 2025" },
   { file: "aws-cloud-practitioner-essentials.pdf", label: "Cloud Practitioner Essentials", issuer: "Amazon Web Services", date: "Jun 2025" },
@@ -142,23 +144,6 @@ function StatBar({ value, label, fill }: { value: string; label: string; fill: n
       <span className="ml-auto font-semibold text-pal-50">
         <CountUp value={value} />
       </span>
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Terminal window chrome                                             */
-/* ------------------------------------------------------------------ */
-
-function WindowBar({ path }: { path: string }) {
-  return (
-    <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
-      <span className="flex items-center gap-1.5" aria-hidden>
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
-      </span>
-      <span className="ml-2 text-xs text-pal-400">{path}</span>
     </div>
   )
 }
@@ -283,7 +268,7 @@ function CertificationsSection() {
 export default function Portfolio() {
   const handleDownloadResume = () => {
     const link = document.createElement("a")
-    link.href = "/resume/Resume.pdf"
+    link.href = "/Resume.pdf"
     link.download = "Resume.pdf"
     document.body.appendChild(link)
     link.click()
@@ -418,7 +403,9 @@ export default function Portfolio() {
                       </div>
                     ))}
                   </div>
-                  <p className="mt-4 text-sm text-pal-300 cursor-blink" aria-hidden />
+                  <p className="mt-4 text-sm text-pal-300" aria-hidden>
+                    <span className="text-acc">$</span> <span className="cursor-blink" />
+                  </p>
                 </motion.div>
               </div>
             </motion.div>

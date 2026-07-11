@@ -7,6 +7,7 @@ import { Send, CheckCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { WindowBar } from "@/components/window-bar"
 import { useToast } from "@/hooks/use-toast"
 
 const fieldClass =
@@ -118,7 +119,7 @@ export function ContactForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-pal-950/70 p-4 backdrop-blur-sm"
             role="dialog"
             aria-modal="true"
             aria-labelledby="contact-success-title"
@@ -133,22 +134,19 @@ export function ContactForm() {
               className="relative w-full max-w-md overflow-hidden rounded-md term-panel font-mono"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center gap-2 border-b border-hair/[0.08] bg-hair/[0.02] px-4 py-2.5">
-                <span className="flex items-center gap-1.5" aria-hidden>
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
-                </span>
-                <span className="ml-2 text-xs text-pal-400">status: 200 OK</span>
-                <button
-                  onClick={closeSuccessModal}
-                  className="ml-auto text-pal-400 transition-colors hover:text-acc"
-                  aria-label="Close"
-                  ref={successCloseButtonRef}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
+              <WindowBar
+                path="status: 200 OK"
+                actions={
+                  <button
+                    onClick={closeSuccessModal}
+                    className="text-pal-400 transition-colors hover:text-acc"
+                    aria-label="Close"
+                    ref={successCloseButtonRef}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                }
+              />
 
               <div className="p-8 text-center">
                 <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-term-green/40 bg-term-green/10">

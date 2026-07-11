@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { Metadata } from "next"
-import { BookOpen, FileText, Link2 } from "lucide-react"
+import { BookOpen, FileText, Link2, ArrowUpRight } from "lucide-react"
 
 import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal"
 
 export const metadata: Metadata = {
   title: "AI Resources Library | Mahmoud AbuAwd",
@@ -226,20 +227,22 @@ export default function ResourcesPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(resourcesStructuredData) }}
         />
         <section className="mx-auto max-w-5xl">
-          <p className="text-sm text-pal-400">
-            <span className="text-term-green">~/resources</span> $ find . -type f
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
-            Resources for Builders &amp; Learners
-          </h1>
-          <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
-            A living library of PDFs, guides, and must-read links to accelerate your AI and engineering journey.
-          </p>
+          <Reveal>
+            <p className="text-sm text-pal-400">
+              <span className="text-term-green">~/resources</span> $ find . -type f
+            </p>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+              Resources for Builders &amp; Learners
+            </h1>
+            <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
+              A living library of PDFs, guides, and must-read links to accelerate your AI and engineering journey.
+            </p>
+          </Reveal>
         </section>
 
         {hasResources && (
           <nav className="mx-auto mt-12 max-w-5xl" aria-label="Resource categories">
-            <div className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
+            <Reveal className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
               <p className="text-xs text-pal-400">
                 <span className="text-acc">$</span> cd ./&lt;track&gt;
               </p>
@@ -258,7 +261,7 @@ export default function ResourcesPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           </nav>
         )}
 
@@ -277,10 +280,10 @@ export default function ResourcesPage() {
                     </p>
                   </div>
 
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" stagger={0.05}>
                     {categoryResources.map((resource) => (
+                      <RevealItem key={resource.title} className="h-full">
                       <a
-                        key={resource.title}
                         href={resource.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -307,13 +310,12 @@ export default function ResourcesPage() {
 
                         <span className="mt-4 inline-flex items-center gap-1 border-t border-dashed border-hair/[0.1] pt-3 text-sm text-acc">
                           {resource.type === "pdf" ? "open" : "visit"}
-                          <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
+                          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </span>
                       </a>
+                      </RevealItem>
                     ))}
-                  </div>
+                  </RevealGroup>
                 </div>
               ))}
             </div>
@@ -329,7 +331,7 @@ export default function ResourcesPage() {
         </section>
 
         <section className="mx-auto mt-16 max-w-5xl">
-          <div className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
+          <Reveal className="flex flex-col gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-8 text-center md:flex-row md:items-center md:text-left">
             <div className="flex-1">
               <h2 className="text-xl font-semibold text-pal-50">Have a resource to recommend?</h2>
               <p className="mt-2 font-sans text-sm text-pal-300">
@@ -342,7 +344,7 @@ export default function ResourcesPage() {
             >
               submit a resource
             </a>
-          </div>
+          </Reveal>
         </section>
       </main>
 

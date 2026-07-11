@@ -4,6 +4,7 @@ import { Calendar, Clock, ArrowUpRight } from "lucide-react"
 
 import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal"
 import { getAllBlogPosts } from "@/lib/blog"
 
 export const metadata: Metadata = {
@@ -67,21 +68,24 @@ export default async function BlogPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(blogStructuredData) }}
         />
         <section className="mx-auto max-w-5xl">
-          <p className="text-sm text-pal-400">
-            <span className="text-term-green">~/blog</span> $ ls -1 --latest
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
-            Notes from an AI Engineer
-          </h1>
-          <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
-            Deep dives into production ML systems, generative AI, and the craft of building intelligent products.
-          </p>
+          <Reveal>
+            <p className="text-sm text-pal-400">
+              <span className="text-term-green">~/blog</span> $ ls -1 --latest
+            </p>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+              Notes from an AI Engineer
+            </h1>
+            <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
+              Deep dives into production ML systems, generative AI, and the craft of building intelligent products.
+            </p>
+          </Reveal>
         </section>
 
-        <section className="mx-auto mt-12 grid max-w-5xl gap-4 lg:grid-cols-2">
+        <section className="mx-auto mt-12 max-w-5xl">
+          <RevealGroup className="grid gap-4 lg:grid-cols-2" stagger={0.07}>
           {posts.map((post, i) => (
+            <RevealItem key={post.slug} className="h-full">
             <article
-              key={post.slug}
               className="group flex h-full flex-col justify-between border border-hair/[0.08] bg-pal-900/40 p-6 transition-colors duration-300 hover:border-acc/40 hover:bg-pal-900/70"
             >
               <div>
@@ -126,14 +130,16 @@ export default async function BlogPage() {
                 </span>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-1 text-sm text-acc transition-colors hover:text-acc"
+                  className="inline-flex items-center gap-1 text-sm text-acc"
                 >
                   read
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
             </article>
+            </RevealItem>
           ))}
+          </RevealGroup>
         </section>
       </main>
 

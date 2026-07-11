@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 import { cn } from '@/lib/utils';
+import { WindowBar } from '@/components/window-bar';
 
 /* ─────────────────────────────────────────────────
    Types & constants
@@ -68,23 +69,23 @@ function BotMarkdown({ content }: { content: string }) {
 
           return (
             <a href={href} target="_blank" rel="noopener noreferrer"
-              className="text-acc underline underline-offset-2 hover:text-acc text-[13px]">
+              className="text-acc underline underline-offset-2 hover:opacity-80 text-[13px]">
               {label}
             </a>
           );
         },
         code: ({ children, className }) =>
           className?.includes('language-') ? (
-            <code className="my-2 block overflow-x-auto rounded-lg border border-hair/10 bg-black/50 p-2.5 font-mono text-xs text-emerald-400">
+            <code className="my-2 block overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-2.5 font-mono text-xs text-term-green">
               {children}
             </code>
           ) : (
-            <code className="rounded-md bg-black/40 px-1.5 py-0.5 font-mono text-xs text-emerald-400">
+            <code className="rounded-sm bg-pal-900 px-1.5 py-0.5 font-mono text-xs text-term-green">
               {children}
             </code>
           ),
         pre: ({ children }) => (
-          <pre className="my-2 overflow-x-auto rounded-lg border border-hair/10 bg-black/50 p-3 text-xs">
+          <pre className="my-2 overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-3 text-xs">
             {children}
           </pre>
         ),
@@ -327,37 +328,35 @@ export function Chatbot() {
       <div className="h-[2px] w-full shrink-0 bg-gradient-to-r from-acc via-acc to-term-green" />
 
       {/* ── Titlebar ── */}
-      <div className="flex shrink-0 items-center justify-between border-b border-hair/[0.08] bg-hair/[0.02] px-3 py-2">
-        {/* Left: window dots + path */}
-        <div className="flex items-center gap-2.5">
-          <span className="flex items-center gap-1.5" aria-hidden>
-            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
+      <WindowBar
+        compact
+        className="shrink-0"
+        path={
+          <span className="inline-flex items-center gap-2">
+            <span>
+              <span className="text-term-green">mahmoud-ai</span>
+              <span className="text-pal-500">:</span>~/assistant
+            </span>
+            {isStreaming && <span className="text-[10px] text-acc">…gen</span>}
           </span>
-          <span className="text-xs text-pal-400">
-            <span className="text-term-green">mahmoud-ai</span>
-            <span className="text-pal-500">:</span>~/assistant
-          </span>
-          {isStreaming && <span className="text-[10px] text-acc">…gen</span>}
-        </div>
-
-        {/* Right: action buttons */}
-        <div className="flex items-center gap-0.5">
-          <button onClick={handleClear} title="Clear chat" aria-label="Clear chat"
-            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
-          <button onClick={() => setIsMinimized((v) => !v)} aria-label="Minimize"
-            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
-            <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', isMinimized && 'rotate-180')} />
-          </button>
-          <button onClick={handleClose} aria-label="Close"
-            className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
+        }
+        actions={
+          <>
+            <button onClick={handleClear} title="Clear chat" aria-label="Clear chat"
+              className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-red-500/10 hover:text-red-400 focus:outline-none">
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+            <button onClick={() => setIsMinimized((v) => !v)} aria-label="Minimize"
+              className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
+              <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', isMinimized && 'rotate-180')} />
+            </button>
+            <button onClick={handleClose} aria-label="Close"
+              className="flex h-7 w-7 items-center justify-center rounded-sm text-pal-400 transition-colors hover:bg-hair/5 hover:text-pal-100 focus:outline-none">
+              <X className="h-4 w-4" />
+            </button>
+          </>
+        }
+      />
 
       {!isMinimized && (
         <>
@@ -429,11 +428,7 @@ export function Chatbot() {
               {(followUps.length > 0 || isLoadingFollowUps) && !isLoading && !isStreaming && (
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-400 ml-9">
                   {isLoadingFollowUps ? (
-                    <div className="flex items-center gap-1.5 py-1">
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1 w-1 animate-bounce rounded-full bg-acc/60" style={{ animationDelay: '300ms' }} />
-                    </div>
+                    <TypingDots />
                   ) : (
                     <div className="space-y-1.5">
                       <p className="flex items-center gap-1 text-[10px] text-pal-400">
@@ -504,7 +499,7 @@ export function Chatbot() {
                 onClick={() => sendMessage()}
                 disabled={isLoading || isStreaming || !input.trim()}
                 aria-label="Send"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-acc/40 bg-acc/15 text-acc transition-colors duration-150 hover:bg-acc/25 hover:text-acc active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-acc/40 bg-acc/15 text-acc transition-colors duration-150 hover:bg-acc/25 active:scale-95 focus:outline-none disabled:cursor-not-allowed disabled:opacity-35"
               >
                 <Send className="h-4 w-4" />
               </button>

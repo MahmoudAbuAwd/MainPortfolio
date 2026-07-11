@@ -14,6 +14,7 @@ import {
   GitFork,
 } from 'lucide-react'
 import { Skeleton } from './skeleton'
+import { WindowBar } from '@/components/window-bar'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -66,29 +67,29 @@ function timeAgo(dateString: string): string {
   return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(new Date(dateString))
 }
 
+/* Two-tone terminal icon colors: amber `acc` for most actions,
+   phosphor `term-green` for commits (git success), dim gray otherwise. */
 function eventMeta(event: GitHubEvent) {
   const repo = event.repo.name.replace(`${GITHUB_USER}/`, '')
   switch (event.type) {
     case 'PushEvent': {
       const n = event.payload?.size ?? event.payload?.commits?.length ?? 1
-      return { icon: GitCommit, iconColor: 'text-pal-200', accent: 'from-acc/15 to-pal-400/5', verb: `Pushed ${n} commit${n !== 1 ? 's' : ''} to`, repo, detail: event.payload?.commits?.[0]?.message ?? null, url: `https://github.com/${event.repo.name}/commits` }
+      return { icon: GitCommit, iconColor: 'text-term-green', verb: `Pushed ${n} commit${n !== 1 ? 's' : ''} to`, repo, detail: event.payload?.commits?.[0]?.message ?? null, url: `https://github.com/${event.repo.name}/commits` }
     }
     case 'CreateEvent':
-      return { icon: GitBranch, iconColor: 'text-blue-400', accent: 'from-blue-500/15 to-blue-400/5', verb: event.payload?.ref_type === 'branch' ? `Created branch ${event.payload.ref} in` : `Created ${event.payload?.ref_type ?? 'repo'}`, repo, detail: null, url: `https://github.com/${event.repo.name}` }
+      return { icon: GitBranch, iconColor: 'text-acc', verb: event.payload?.ref_type === 'branch' ? `Created branch ${event.payload.ref} in` : `Created ${event.payload?.ref_type ?? 'repo'}`, repo, detail: null, url: `https://github.com/${event.repo.name}` }
     case 'PullRequestEvent':
-      return { icon: GitPullRequest, iconColor: 'text-green-400', accent: 'from-green-500/15 to-green-400/5', verb: `${event.payload?.action ?? 'Updated'} PR in`, repo, detail: event.payload?.pull_request?.title ?? null, url: event.payload?.pull_request?.html_url ?? `https://github.com/${event.repo.name}/pulls` }
+      return { icon: GitPullRequest, iconColor: 'text-acc', verb: `${event.payload?.action ?? 'Updated'} PR in`, repo, detail: event.payload?.pull_request?.title ?? null, url: event.payload?.pull_request?.html_url ?? `https://github.com/${event.repo.name}/pulls` }
     case 'WatchEvent':
-      return { icon: Star, iconColor: 'text-yellow-400', accent: 'from-yellow-500/15 to-yellow-400/5', verb: 'Starred', repo, detail: null, url: `https://github.com/${event.repo.name}` }
+      return { icon: Star, iconColor: 'text-acc', verb: 'Starred', repo, detail: null, url: `https://github.com/${event.repo.name}` }
     default:
-      return { icon: Github, iconColor: 'text-pal-300', accent: 'from-acc/10 to-pal-400/5', verb: event.type.replace('Event', ''), repo, detail: null, url: `https://github.com/${event.repo.name}` }
+      return { icon: Github, iconColor: 'text-pal-300', verb: event.type.replace('Event', ''), repo, detail: null, url: `https://github.com/${event.repo.name}` }
   }
 }
 
-const langColors: Record<string, string> = {
-  Python: 'bg-blue-500', JavaScript: 'bg-yellow-400', TypeScript: 'bg-blue-400',
-  Jupyter: 'bg-orange-400', 'Jupyter Notebook': 'bg-orange-400', HTML: 'bg-red-400',
-  CSS: 'bg-purple-400', Shell: 'bg-green-400', Dockerfile: 'bg-cyan-400',
-}
+/* Deterministic terminal ramp (amber + phosphor green + grays), indexed by
+   language rank, so the language bar stays two-tone instead of rainbow. */
+const LANG_RAMP = ['bg-acc', 'bg-term-green', 'bg-acc/60', 'bg-pal-300', 'bg-term-green/60', 'bg-pal-500']
 
 /* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
@@ -102,19 +103,19 @@ function StatsAndLanguages({ stats, sortedLanguages, totalLangRepos }: {
   return (
     <div className="space-y-5">
       {/* Stats grid — 2x2 on mobile, 4 cols on desktop */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {[
-          { icon: Code2, label: 'Repos', value: stats.totalRepos, color: 'text-blue-400' },
-          { icon: Star, label: 'Stars', value: stats.totalStars, color: 'text-yellow-400' },
-          { icon: GitFork, label: 'Forks', value: stats.totalForks, color: 'text-pal-200' },
-          { icon: Users, label: 'Followers', value: stats.followers, color: 'text-green-400' },
+          { icon: Code2, label: 'repos', value: stats.totalRepos },
+          { icon: Star, label: 'stars', value: stats.totalStars },
+          { icon: GitFork, label: 'forks', value: stats.totalForks },
+          { icon: Users, label: 'followers', value: stats.followers },
         ].map((s) => (
-          <div key={s.label} className="rounded-2xl bg-hair/[0.03] border border-hair/[0.06] p-3.5 sm:p-4">
+          <div key={s.label} className="rounded-sm border border-hair/[0.08] bg-hair/[0.02] p-3.5">
             <div className="flex items-center gap-2">
-              <s.icon className={`h-4 w-4 ${s.color}`} />
-              <span className="text-[11px] sm:text-xs text-pal-300">{s.label}</span>
+              <s.icon className="h-4 w-4 text-acc" />
+              <span className="text-[11px] text-pal-400 sm:text-xs">{s.label}</span>
             </div>
-            <p className="mt-1.5 text-xl font-bold text-pal-50">{s.value}</p>
+            <p className="mt-1.5 text-xl font-bold tabular-nums text-pal-50">{s.value}</p>
           </div>
         ))}
       </div>
@@ -122,17 +123,19 @@ function StatsAndLanguages({ stats, sortedLanguages, totalLangRepos }: {
       {/* Language bar */}
       {sortedLanguages.length > 0 && (
         <div className="space-y-2.5">
-          <p className="text-[11px] font-medium text-pal-300 uppercase tracking-wider">Languages</p>
-          <div className="flex h-2 overflow-hidden rounded-full bg-hair/[0.04]">
-            {sortedLanguages.map(([lang, count]) => (
-              <div key={lang} className={`${langColors[lang] ?? 'bg-acc'}`} style={{ width: `${(count / totalLangRepos) * 100}%` }} />
+          <p className="text-[11px] text-pal-400">
+            <span className="text-acc">$</span> lang --dist
+          </p>
+          <div className="flex h-2 overflow-hidden rounded-sm bg-hair/[0.05]">
+            {sortedLanguages.map(([lang, count], i) => (
+              <div key={lang} className={LANG_RAMP[i % LANG_RAMP.length]} style={{ width: `${(count / totalLangRepos) * 100}%` }} />
             ))}
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-1">
-            {sortedLanguages.map(([lang, count]) => (
+            {sortedLanguages.map(([lang, count], i) => (
               <span key={lang} className="flex items-center gap-1.5 text-[11px] text-pal-200">
-                <span className={`inline-block h-1.5 w-1.5 rounded-full ${langColors[lang] ?? 'bg-acc'}`} />
-                {lang} <span className="text-pal-300">{Math.round((count / totalLangRepos) * 100)}%</span>
+                <span className={`inline-block h-1.5 w-1.5 rounded-full ${LANG_RAMP[i % LANG_RAMP.length]}`} />
+                {lang} <span className="text-pal-400">{Math.round((count / totalLangRepos) * 100)}%</span>
               </span>
             ))}
           </div>
@@ -144,7 +147,7 @@ function StatsAndLanguages({ stats, sortedLanguages, totalLangRepos }: {
 
 function ActivityFeed({ events }: { events: GitHubEvent[] }) {
   if (events.length === 0) {
-    return <p className="text-center py-6 text-sm text-pal-300">No recent public activity.</p>
+    return <p className="py-6 text-center text-sm text-pal-400">No recent public activity.</p>
   }
 
   return (
@@ -161,23 +164,23 @@ function ActivityFeed({ events }: { events: GitHubEvent[] }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.04 }}
-            className="group flex items-start gap-3 rounded-xl bg-hair/[0.02] border border-hair/[0.05] px-3 sm:px-4 py-3 transition-all duration-300 hover:bg-hair/[0.05] hover:border-hair/[0.1] block"
+            className="group flex items-start gap-3 rounded-sm border border-hair/[0.06] bg-hair/[0.02] px-3 py-3 transition-colors duration-300 hover:border-acc/30 hover:bg-hair/[0.05] sm:px-4"
           >
-            <div className={`mt-0.5 flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${meta.accent} border border-hair/[0.06]`}>
+            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-hair/[0.08] bg-hair/[0.03] sm:h-8 sm:w-8">
               <Icon className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${meta.iconColor}`} />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[13px] sm:text-sm text-pal-100 leading-snug">
+            <div className="min-w-0 flex-1">
+              <p className="text-[13px] leading-snug text-pal-100 sm:text-sm">
                 {meta.verb}{' '}
                 <span className="font-semibold text-pal-50">{meta.repo}</span>
               </p>
               {meta.detail && (
-                <p className="mt-0.5 text-[11px] sm:text-xs text-pal-300 truncate">
+                <p className="mt-0.5 truncate text-[11px] text-pal-400 sm:text-xs">
                   {meta.detail.length > 50 ? meta.detail.slice(0, 50) + '...' : meta.detail}
                 </p>
               )}
             </div>
-            <span className="shrink-0 text-[10px] sm:text-[11px] text-pal-300 mt-0.5">{timeAgo(event.created_at)}</span>
+            <span className="mt-0.5 shrink-0 text-[10px] text-pal-400 tabular-nums sm:text-[11px]">{timeAgo(event.created_at)}</span>
           </motion.a>
         )
       })}
@@ -185,8 +188,19 @@ function ActivityFeed({ events }: { events: GitHubEvent[] }) {
   )
 }
 
+/* Shared terminal-window shell so every state (loading/error/loaded) reads
+   as the same "gh" panel. */
+function ActivityWindow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-md term-panel">
+      <WindowBar path={`~/activity $ gh api users/${GITHUB_USER}`} />
+      <div className="p-5 sm:p-6">{children}</div>
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------------ */
-/*  Main — exports two components for separate rendering               */
+/*  Main                                                               */
 /* ------------------------------------------------------------------ */
 
 function GitHubActivity() {
@@ -234,76 +248,83 @@ function GitHubActivity() {
 
   if (error) {
     return (
-      <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-5 text-sm text-red-300">
-        <p className="font-medium">Could not load GitHub data</p>
-        <p className="mt-1 text-red-400/80 text-xs">GitHub API rate limit may have been reached. Try refreshing later.</p>
-      </div>
+      <ActivityWindow>
+        <p className="text-sm text-pal-100">
+          <span className="text-red-400">! error</span> could not load GitHub data
+        </p>
+        <p className="mt-1 text-xs text-pal-400">
+          GitHub API rate limit may have been reached. Try refreshing later.
+        </p>
+      </ActivityWindow>
     )
   }
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl bg-hair/[0.04]" />)}
+      <ActivityWindow>
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-sm bg-hair/[0.05]" />)}
+          </div>
+          <Skeleton className="h-32 w-full rounded-sm bg-hair/[0.05]" />
         </div>
-        <Skeleton className="h-32 w-full rounded-2xl bg-hair/[0.04]" />
-      </div>
+      </ActivityWindow>
     )
   }
 
   return (
-    <div className="space-y-8">
-      {/* ── Profile header ── */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-hair/[0.06] border border-hair/[0.08]">
-            <Github className="h-5 w-5 text-pal-200" />
+    <ActivityWindow>
+      <div className="space-y-6">
+        {/* Live status + profile link */}
+        <div className="flex items-center justify-between text-sm">
+          <span className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-term-green animate-pulse" />
+            <span className="text-term-green">live</span>
+            <span className="text-pal-500">·</span>
+            <span className="text-pal-400">public activity</span>
+          </span>
+          <a
+            href={`https://github.com/${GITHUB_USER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1 text-pal-300 transition-colors hover:text-acc"
+          >
+            @{GITHUB_USER}
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+
+        {/* Two columns: stats/languages | recent activity */}
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          <div className="space-y-4">
+            <p className="text-xs text-pal-400">
+              <span className="text-acc">$</span> gh stats
+            </p>
+            {stats && <StatsAndLanguages stats={stats} sortedLanguages={sortedLanguages} totalLangRepos={totalLangRepos} />}
           </div>
-          <div>
-            <h3 className="font-semibold text-pal-50">GitHub Profile</h3>
-            <p className="text-xs text-pal-300">Live data</p>
+
+          <div className="space-y-4 lg:border-l lg:border-hair/[0.06] lg:pl-8">
+            <p className="text-xs text-pal-400">
+              <span className="text-acc">$</span> gh events --recent
+            </p>
+            <ActivityFeed events={events} />
           </div>
         </div>
-        <a
-          href={`https://github.com/${GITHUB_USER}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 text-xs font-medium text-pal-200 transition-colors hover:text-pal-50 group"
-        >
-          @{GITHUB_USER}
-          <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </a>
-      </div>
 
-      {/* ── Two-panel layout ── */}
-      <div className="grid gap-4 lg:grid-cols-2">
-        {/* Left: Stats & Languages */}
-        <div className="rounded-2xl glass p-5">
-          <p className="text-xs font-semibold text-pal-50 uppercase tracking-wider mb-4">Statistics</p>
-          {stats && <StatsAndLanguages stats={stats} sortedLanguages={sortedLanguages} totalLangRepos={totalLangRepos} />}
-        </div>
-
-        {/* Right: Recent Activity */}
-        <div className="rounded-2xl glass p-5">
-          <p className="text-xs font-semibold text-pal-50 uppercase tracking-wider mb-4">Recent Activity</p>
-          <ActivityFeed events={events} />
+        {/* Footer link */}
+        <div className="border-t border-dashed border-hair/[0.1] pt-4 text-center">
+          <a
+            href={`https://github.com/${GITHUB_USER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 text-sm text-pal-300 transition-colors hover:text-acc"
+          >
+            view full profile
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
         </div>
       </div>
-
-      {/* ── Footer ── */}
-      <div className="text-center">
-        <a
-          href={`https://github.com/${GITHUB_USER}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-pal-200 hover:text-pal-50 transition-colors group"
-        >
-          View full profile
-          <ArrowUpRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </a>
-      </div>
-    </div>
+    </ActivityWindow>
   )
 }
 
