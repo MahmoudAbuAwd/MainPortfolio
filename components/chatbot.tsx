@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
+import type { Components } from 'react-markdown';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, X, ChevronDown, Trash2, CornerDownRight } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -37,73 +38,82 @@ const formatTime = (d: Date) =>
   d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
 /* ─────────────────────────────────────────────────
-   Markdown — all colours hardcoded, zero bleed
+   Markdown — all colours hardcoded, zero bleed.
+   Component map + plugin arrays are hoisted to module scope so they
+   keep a stable identity across renders (never recreated per token).
 ───────────────────────────────────────────────── */
-function BotMarkdown({ content }: { content: string }) {
+const REMARK_PLUGINS = [remarkGfm];
+const REHYPE_PLUGINS = [rehypeSanitize];
+
+const MARKDOWN_COMPONENTS: Components = {
+  p: ({ children }) => (
+    <p className="mb-2 last:mb-0 text-[13px] leading-relaxed text-pal-50">{children}</p>
+  ),
+  ul: ({ children }) => (
+    <ul className="mb-2 list-disc space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="mb-2 list-decimal space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ol>
+  ),
+  li: ({ children }) => <li className="text-[13px] text-pal-50">{children}</li>,
+  strong: ({ children }) => <strong className="font-semibold text-pal-50">{children}</strong>,
+  em: ({ children }) => <em className="italic text-pal-100">{children}</em>,
+  a: ({ children, href }) => {
+    const raw = typeof children === 'string' ? children : String(children ?? '');
+    let label: string = raw;
+
+    if (href?.startsWith('mailto:')) {
+      label = 'Email';
+    } else if (href && (raw === href || raw.startsWith('http'))) {
+      try { label = new URL(href).hostname.replace(/^www\./, ''); } catch { label = raw; }
+    }
+
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer"
+        className="text-acc underline underline-offset-2 hover:opacity-80 text-[13px]">
+        {label}
+      </a>
+    );
+  },
+  code: ({ children, className }) =>
+    className?.includes('language-') ? (
+      <code className="my-2 block overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-2.5 font-mono text-xs text-term-green">
+        {children}
+      </code>
+    ) : (
+      <code className="rounded-sm bg-pal-900 px-1.5 py-0.5 font-mono text-xs text-term-green">
+        {children}
+      </code>
+    ),
+  pre: ({ children }) => (
+    <pre className="my-2 overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-3 text-xs">
+      {children}
+    </pre>
+  ),
+  h1: ({ children }) => <h1 className="mb-1.5 mt-3 text-sm font-bold text-pal-50">{children}</h1>,
+  h2: ({ children }) => <h2 className="mb-1 mt-2.5 text-sm font-bold text-pal-50">{children}</h2>,
+  h3: ({ children }) => <h3 className="mb-1 mt-2 text-xs font-semibold text-pal-50">{children}</h3>,
+  blockquote: ({ children }) => (
+    <blockquote className="my-2 border-l-2 border-pal-200/60 pl-3 text-[13px] italic text-pal-100">
+      {children}
+    </blockquote>
+  ),
+  hr: () => <hr className="my-3 border-hair/10" />,
+};
+
+// memo: re-parses markdown only when `content` actually changes, so streaming
+// one message never re-renders the markdown of every earlier message.
+const BotMarkdown = memo(function BotMarkdown({ content }: { content: string }) {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeSanitize]}
-      components={{
-        p: ({ children }) => (
-          <p className="mb-2 last:mb-0 text-[13px] leading-relaxed text-pal-50">{children}</p>
-        ),
-        ul: ({ children }) => (
-          <ul className="mb-2 list-disc space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ul>
-        ),
-        ol: ({ children }) => (
-          <ol className="mb-2 list-decimal space-y-0.5 pl-4 text-[13px] text-pal-50">{children}</ol>
-        ),
-        li: ({ children }) => <li className="text-[13px] text-pal-50">{children}</li>,
-        strong: ({ children }) => <strong className="font-semibold text-pal-50">{children}</strong>,
-        em: ({ children }) => <em className="italic text-pal-100">{children}</em>,
-        a: ({ children, href }) => {
-          const raw = typeof children === 'string' ? children : String(children ?? '');
-          let label: string = raw;
-
-          if (href?.startsWith('mailto:')) {
-            label = 'Email';
-          } else if (href && (raw === href || raw.startsWith('http'))) {
-            try { label = new URL(href).hostname.replace(/^www\./, ''); } catch { label = raw; }
-          }
-
-          return (
-            <a href={href} target="_blank" rel="noopener noreferrer"
-              className="text-acc underline underline-offset-2 hover:opacity-80 text-[13px]">
-              {label}
-            </a>
-          );
-        },
-        code: ({ children, className }) =>
-          className?.includes('language-') ? (
-            <code className="my-2 block overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-2.5 font-mono text-xs text-term-green">
-              {children}
-            </code>
-          ) : (
-            <code className="rounded-sm bg-pal-900 px-1.5 py-0.5 font-mono text-xs text-term-green">
-              {children}
-            </code>
-          ),
-        pre: ({ children }) => (
-          <pre className="my-2 overflow-x-auto rounded-md border border-hair/10 bg-pal-950 p-3 text-xs">
-            {children}
-          </pre>
-        ),
-        h1: ({ children }) => <h1 className="mb-1.5 mt-3 text-sm font-bold text-pal-50">{children}</h1>,
-        h2: ({ children }) => <h2 className="mb-1 mt-2.5 text-sm font-bold text-pal-50">{children}</h2>,
-        h3: ({ children }) => <h3 className="mb-1 mt-2 text-xs font-semibold text-pal-50">{children}</h3>,
-        blockquote: ({ children }) => (
-          <blockquote className="my-2 border-l-2 border-pal-200/60 pl-3 text-[13px] italic text-pal-100">
-            {children}
-          </blockquote>
-        ),
-        hr: () => <hr className="my-3 border-hair/10" />,
-      }}
+      remarkPlugins={REMARK_PLUGINS}
+      rehypePlugins={REHYPE_PLUGINS}
+      components={MARKDOWN_COMPONENTS}
     >
       {content}
     </ReactMarkdown>
   );
-}
+});
 
 /* ─────────────────────────────────────────────────
    Animated typing dots
@@ -123,6 +133,62 @@ function TypingDots() {
 }
 
 /* ─────────────────────────────────────────────────
+   Single message row — memoized.
+   Only the row whose `msg` object changed (the streaming one) re-renders;
+   earlier rows keep their identity and skip re-rendering on every token.
+───────────────────────────────────────────────── */
+const MessageRow = memo(function MessageRow({
+  msg,
+  showCursor,
+}: {
+  msg: Message;
+  showCursor: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        'flex gap-2.5 animate-in fade-in-0 slide-in-from-bottom-3 duration-300',
+        msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+      )}
+    >
+      {/* Bot mini-avatar */}
+      {msg.role === 'assistant' && (
+        <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-acc/20 overflow-hidden">
+          <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
+        </div>
+      )}
+
+      <div className={cn('flex max-w-[85%] flex-col gap-1 sm:max-w-[78%]', msg.role === 'user' && 'items-end')}>
+        {/* User bubble */}
+        {msg.role === 'user' ? (
+          <div className="rounded-md rounded-tr-sm border border-acc/30 bg-acc/10 px-3.5 py-2">
+            <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-pal-50">
+              {msg.content}
+            </p>
+          </div>
+        ) : (
+          /* Bot bubble */
+          <div className="rounded-md rounded-tl-sm border border-hair/[0.1] bg-pal-900/60 px-3.5 py-2.5">
+            {msg.content === '' ? (
+              <TypingDots />
+            ) : (
+              <>
+                <BotMarkdown content={msg.content} />
+                {showCursor && (
+                  <span className="ml-0.5 inline-block h-3.5 w-[3px] animate-pulse rounded-sm bg-acc align-middle" />
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        <span className="px-1 text-[10px] text-pal-400">{formatTime(msg.timestamp)}</span>
+      </div>
+    </div>
+  );
+});
+
+/* ─────────────────────────────────────────────────
    Main component
 ───────────────────────────────────────────────── */
 export function Chatbot() {
@@ -140,16 +206,61 @@ export function Chatbot() {
   const abortRef = useRef<AbortController | null>(null);
   const streamingIdRef = useRef<string | null>(null);
 
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  // Streaming perf: coalesce token updates into a single React commit per
+  // animation frame (~60fps) instead of one commit per token.
+  const rafRef = useRef<number | null>(null);
+  const pendingContentRef = useRef<string>('');
 
-  useEffect(() => { scrollToBottom(); }, [messages, scrollToBottom]);
-  useEffect(() => { scrollToBottom(); }, [followUps, isLoadingFollowUps, scrollToBottom]);
+  // Auto-scroll only while the user is parked at the bottom. If they scroll up
+  // to re-read, we stop yanking the viewport down on every token.
+  const stickToBottomRef = useRef(true);
+
+  const getViewport = useCallback(
+    () =>
+      (messagesEndRef.current?.closest(
+        '[data-radix-scroll-area-viewport]'
+      ) as HTMLElement | null) ?? null,
+    []
+  );
+
+  const scrollToBottom = useCallback(
+    (smooth: boolean) => {
+      const v = getViewport();
+      if (v) v.scrollTo({ top: v.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+      else messagesEndRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+    },
+    [getViewport]
+  );
+
+  // Keep the "is the user at the bottom?" flag up to date.
+  useEffect(() => {
+    if (!isOpen || isMinimized) return;
+    const v = getViewport();
+    if (!v) return;
+    const onScroll = () => {
+      stickToBottomRef.current = v.scrollHeight - v.scrollTop - v.clientHeight < 80;
+    };
+    v.addEventListener('scroll', onScroll, { passive: true });
+    return () => v.removeEventListener('scroll', onScroll);
+  }, [isOpen, isMinimized, getViewport]);
+
+  // Follow content growth: instant during streaming (no per-token easing jank),
+  // smooth for discrete new messages / follow-ups — but only if parked.
+  useEffect(() => {
+    if (stickToBottomRef.current) scrollToBottom(!isStreaming);
+  }, [messages, followUps, isLoadingFollowUps, isStreaming, scrollToBottom]);
+
   useEffect(() => {
     if (isOpen && !isMinimized) setTimeout(() => textareaRef.current?.focus(), 150);
   }, [isOpen, isMinimized]);
-  useEffect(() => () => { abortRef.current?.abort(); }, []);
+
+  useEffect(
+    () => () => {
+      abortRef.current?.abort();
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    },
+    []
+  );
 
   /* ── Follow-up fetch (non-blocking, non-critical) ── */
   const fetchFollowUps = async (question: string, answer: string) => {
@@ -176,6 +287,8 @@ export function Chatbot() {
 
     // Clear previous follow-ups immediately
     setFollowUps([]);
+    // Sending always re-anchors to the bottom, even if the user had scrolled up.
+    stickToBottomRef.current = true;
 
     const userMsg: Message = { id: `u-${Date.now()}`, role: 'user', content: text, timestamp: new Date() };
     const historyForAPI = messages.slice(1);
@@ -190,6 +303,21 @@ export function Chatbot() {
     const aId = `a-${Date.now()}`;
     streamingIdRef.current = aId;
     abortRef.current = new AbortController();
+    pendingContentRef.current = '';
+
+    // Commit whatever tokens have accumulated so far — scheduled once per frame.
+    const flushPending = () => {
+      rafRef.current = null;
+      const content = pendingContentRef.current;
+      setMessages((p) => {
+        const upd = [...p];
+        const last = upd[upd.length - 1];
+        if (last?.id === aId && last.content !== content) {
+          upd[upd.length - 1] = { ...last, content };
+        }
+        return upd;
+      });
+    };
 
     let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
 
@@ -238,12 +366,12 @@ export function Chatbot() {
           if (parsed.error) throw new Error(parsed.error); // reaches outer catch
           if (parsed.text) {
             accumulated += parsed.text;
-            setMessages((p) => {
-              const upd = [...p];
-              const last = upd[upd.length - 1];
-              if (last?.id === aId) upd[upd.length - 1] = { ...last, content: last.content + parsed.text };
-              return upd;
-            });
+            pendingContentRef.current = accumulated;
+            // Schedule at most one commit per frame; extra tokens just update
+            // the ref and ride the already-scheduled frame.
+            if (rafRef.current == null) {
+              rafRef.current = requestAnimationFrame(flushPending);
+            }
           }
         }
       }
@@ -251,11 +379,24 @@ export function Chatbot() {
       // Release the reader regardless of how the loop ended
       reader.cancel();
 
+      // Final flush: cancel any pending frame and commit the complete text so
+      // the last tokens are never left buffered.
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      pendingContentRef.current = accumulated;
+      flushPending();
+
       // Fetch follow-up suggestions after response completes
       if (accumulated.trim()) {
         fetchFollowUps(text, accumulated);
       }
     } catch (err: any) {
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       if (err.name === 'AbortError') { reader?.cancel(); return; }
       setMessages((p) => {
         const last = p[p.length - 1];
@@ -366,50 +507,7 @@ export function Chatbot() {
               {messages.map((msg, i) => {
                 const isLast = i === messages.length - 1;
                 const showCursor = isStreaming && isLast && msg.role === 'assistant' && msg.content !== '';
-
-                return (
-                  <div
-                    key={msg.id}
-                    className={cn(
-                      'flex gap-2.5 animate-in fade-in-0 slide-in-from-bottom-3 duration-300',
-                      msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-                    )}
-                  >
-                    {/* Bot mini-avatar */}
-                    {msg.role === 'assistant' && (
-                      <div className="mt-1 h-7 w-7 shrink-0 rounded-full border border-acc/20 overflow-hidden">
-                        <img src="/ai-avatar.jpg" alt="AI" className="h-full w-full object-cover" />
-                      </div>
-                    )}
-
-                    <div className={cn('flex max-w-[85%] flex-col gap-1 sm:max-w-[78%]', msg.role === 'user' && 'items-end')}>
-                      {/* User bubble */}
-                      {msg.role === 'user' ? (
-                        <div className="rounded-md rounded-tr-sm border border-acc/30 bg-acc/10 px-3.5 py-2">
-                          <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-pal-50">
-                            {msg.content}
-                          </p>
-                        </div>
-                      ) : (
-                        /* Bot bubble */
-                        <div className="rounded-md rounded-tl-sm border border-hair/[0.1] bg-pal-900/60 px-3.5 py-2.5">
-                          {msg.content === '' ? (
-                            <TypingDots />
-                          ) : (
-                            <>
-                              <BotMarkdown content={msg.content} />
-                              {showCursor && (
-                                <span className="ml-0.5 inline-block h-3.5 w-[3px] animate-pulse rounded-sm bg-acc align-middle" />
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )}
-
-                      <span className="px-1 text-[10px] text-pal-400">{formatTime(msg.timestamp)}</span>
-                    </div>
-                  </div>
-                );
+                return <MessageRow key={msg.id} msg={msg} showCursor={showCursor} />;
               })}
 
               {/* Thinking dots */}

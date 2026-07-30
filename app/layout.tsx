@@ -91,11 +91,9 @@ export const metadata: Metadata = {
         alt: 'Preview of Mahmoud AbuAwd AI Engineer Portfolio',
       },
     ],
-    profile: {
-      firstName: 'Mahmoud',
-      lastName: 'AbuAwd',
-      username: 'MahmoudAbuAwd',
-    },
+    firstName: 'Mahmoud',
+    lastName: 'AbuAwd',
+    username: 'MahmoudAbuAwd',
   },
   twitter: {
     card: 'summary_large_image',
