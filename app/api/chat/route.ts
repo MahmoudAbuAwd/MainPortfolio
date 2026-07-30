@@ -169,6 +169,11 @@ export async function POST(req: NextRequest) {
 
     const stream = new ReadableStream({
       async start(controller) {
+        // Flush a comment frame immediately so the browser opens the SSE
+        // connection and paints the "typing" state without waiting for the
+        // model's first token. Trims perceived time-to-first-token.
+        controller.enqueue(encoder.encode(': open\n\n'));
+
         try {
           // NOTE: must await chatStream before iterating — it returns Promise<AsyncIterable>
           const chatStream = await cohere.chatStream({

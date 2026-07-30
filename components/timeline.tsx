@@ -13,13 +13,6 @@ const experiences = [
       "Designing and developing intelligent, scalable solutions including chatbots, agentic AI systems, and RAG-based applications using LangChain and LLM frameworks.",
   },
   {
-    title: "Founder",
-    company: "MedGAN AI",
-    period: "Feb 2025 — Present",
-    description:
-      "Founded an AI startup specializing in generative models and intelligent solutions for the healthcare industry.",
-  },
-  {
     title: "Intern",
     company: "Coach You",
     period: "Jun 2025 — Present",
