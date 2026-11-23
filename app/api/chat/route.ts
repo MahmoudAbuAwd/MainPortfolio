@@ -16,7 +16,7 @@ CONTACT INFORMATION:
 - Email: Mahmoodabuawad08@gmail.com
 - LinkedIn : https://www.linkedin.com/in/abuawd
 -  GitHub : https://github.com/mahmoudabuawd
-- Portfolio : https://abuawd.online
+- Portfolio : https://abuawd.com
 
 PROFESSIONAL SUMMARY:
 AI/ML Engineer specializing in Machine Learning, Generative AI, LLM-based systems, and deep learning. Experienced in building and deploying intelligent AI systems including RAG pipelines, multi-agent architectures, and production-ready models using PyTorch, Scikit Learn, and TensorFlow. AWS Certified with 20+ end-to-end AI solutions delivered from data preprocessing to cloud deployment.

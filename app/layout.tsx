@@ -6,7 +6,7 @@ import { JetBrains_Mono, IBM_Plex_Sans, VT323 } from 'next/font/google'
 import { TVFrame } from '@/components/tv-frame'
 import { ThemeProvider } from '@/components/theme-provider'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.com'
 
 // Monospace is the primary voice of the interface (terminal aesthetic).
 const fontMono = JetBrains_Mono({

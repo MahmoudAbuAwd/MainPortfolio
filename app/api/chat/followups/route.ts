@@ -11,7 +11,7 @@ const MAHMOUD_PROFILE = `
 ABOUT MAHMOUD IBRAHIM ABUAWD:
 - AI/ML Engineer based in Amman, Jordan
 - Bachelor of AI and Robotics, Al-Balqa' Applied University (2021-2025), GPA 3.34
-- Email: Mahmoodabuawad08@gmail.com | LinkedIn: linkedin.com/in/abuawd | GitHub: github.com/mahmoudabuawd | Portfolio: abuawd.online
+- Email: Mahmoodabuawad08@gmail.com | LinkedIn: linkedin.com/in/abuawd | GitHub: github.com/mahmoudabuawd | Portfolio: abuawd.com
 
 WORK EXPERIENCE:
 1. Working with the Ministry of Interior of Jordan (MOI) (Aug 2026 – Present)

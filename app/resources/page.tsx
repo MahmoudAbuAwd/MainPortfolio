@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: "AI Resources Library | Mahmoud AbuAwd",
     description:
       "Curated PDFs, frameworks, and external links covering LLM orchestration, MLOps, and prompt engineering.",
-    url: "https://abuawd.online/resources",
+    url: "https://abuawd.com/resources",
     type: "website",
   },
   alternates: {
-    canonical: "https://abuawd.online/resources",
+    canonical: "https://abuawd.com/resources",
   },
   twitter: {
     card: "summary_large_image",
@@ -65,7 +65,7 @@ export default function ResourcesPage() {
     name: "AI Engineering Resources by Mahmoud AbuAwd",
     description:
       "Curated PDFs, frameworks, and external links covering LLM orchestration, MLOps, and prompt engineering.",
-    url: "https://abuawd.online/resources",
+    url: "https://abuawd.com/resources",
     mainEntity: {
       "@type": "ItemList",
       name: "Featured AI resources",

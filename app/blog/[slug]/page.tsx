@@ -124,7 +124,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: "article",
-      url: `https://abuawd.online/blog/${post.slug}`,
+      url: `https://abuawd.com/blog/${post.slug}`,
       tags: post.tags,
     },
   }

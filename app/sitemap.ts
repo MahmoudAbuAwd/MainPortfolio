@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 
 import { getAllBlogPosts } from '@/lib/blog'
 
-const FALLBACK_SITE_URL = 'https://abuawd.online'
+const FALLBACK_SITE_URL = 'https://abuawd.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL

@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: "AI Engineering Blog | Mahmoud AbuAwd",
     description:
       "Long-form essays on machine learning, deep learning systems, large language models, and prompt engineering from an AI engineer.",
-    url: "https://abuawd.online/blog",
+    url: "https://abuawd.com/blog",
     type: "article",
   },
   alternates: {
-    canonical: "https://abuawd.online/blog",
+    canonical: "https://abuawd.com/blog",
   },
   twitter: {
     card: "summary_large_image",
@@ -44,12 +44,12 @@ export default async function BlogPage() {
     name: "Mahmoud AbuAwd Blog",
     description:
       "Long-form essays on machine learning, deep learning systems, large language models, and prompt engineering from an AI engineer.",
-    url: "https://abuawd.online/blog",
+    url: "https://abuawd.com/blog",
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.description,
-      url: `https://abuawd.online/blog/${post.slug}`,
+      url: `https://abuawd.com/blog/${post.slug}`,
       datePublished: post.publishedAt,
       keywords: post.tags.join(", "),
     })),
