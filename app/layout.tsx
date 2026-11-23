@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
-import { JetBrains_Mono, IBM_Plex_Sans } from 'next/font/google'
-import { Chatbot } from '@/components/chatbot'
+import './tv.css'
+import { JetBrains_Mono, IBM_Plex_Sans, VT323 } from 'next/font/google'
+import { TVFrame } from '@/components/tv-frame'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abuawd.online'
@@ -20,6 +21,14 @@ const fontSans = IBM_Plex_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-sans',
+  display: 'swap',
+})
+
+// Pixel-grid CRT face for headlines and on-screen-display text.
+const fontDisplay = VT323({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-display',
   display: 'swap',
 })
 
@@ -129,8 +138,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0d0e1a',
+  themeColor: '#1a1008',
   colorScheme: 'dark',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({
@@ -163,12 +175,11 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${fontMono.variable} ${fontSans.variable} font-mono bg-pal-950 text-pal-100 antialiased`}
+        className={`${fontMono.variable} ${fontSans.variable} ${fontDisplay.variable} font-mono bg-pal-950 text-pal-100 antialiased`}
         suppressHydrationWarning
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          {children}
-          <Chatbot />
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <TVFrame>{children}</TVFrame>
         </ThemeProvider>
       </body>
       </html>

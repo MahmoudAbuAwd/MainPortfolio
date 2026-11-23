@@ -193,7 +193,7 @@ function ActivityFeed({ events }: { events: GitHubEvent[] }) {
 function ActivityWindow({ children }: { children: React.ReactNode }) {
   return (
     <div className="overflow-hidden rounded-md term-panel">
-      <WindowBar path={`~/activity $ gh api users/${GITHUB_USER}`} />
+      <WindowBar path={`GitHub activity: ${GITHUB_USER}`} />
       <div className="p-5 sm:p-6">{children}</div>
     </div>
   )

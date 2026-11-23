@@ -14,13 +14,11 @@ import React from "react"
 
 import { ProjectCard } from "@/components/project-card"
 import { Timeline } from "@/components/timeline"
-import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { SectionHeading } from "@/components/section-heading"
 import { WindowBar } from "@/components/window-bar"
 import { GitHubActivity } from "@/components/ui/github-activity"
 import { SkillsShowcase } from "@/components/skills-showcase"
-import { ScrollProgress } from "@/components/scroll-progress"
 import { CountUp } from "@/components/count-up"
 import { fadeUp, staggerContainer, staggerItem, viewportOnce, easeOutExpo } from "@/lib/animations"
 
@@ -36,12 +34,13 @@ const socialLinks = [
 ]
 
 const stats = [
-  { value: "15+", label: "projects", fill: 0.6 },
-  { value: "30+", label: "certs", fill: 1 },
-  { value: "30+", label: "os_prs", fill: 0.85 },
+  { value: "15+", label: "Projects", fill: 0.6 },
+  { value: "30+", label: "Certifications", fill: 1 },
+  { value: "30+", label: "Open-source PRs", fill: 0.85 },
 ]
 
 const highlights = [
+  "Working with the Ministry of Interior of Jordan",
   "AI Engineer at Kawkab AI",
   "AWS AI Practitioner Certified",
   "Founder of MedGAN AI",
@@ -132,18 +131,24 @@ const certifications = [
 /* ------------------------------------------------------------------ */
 
 function StatBar({ value, label, fill }: { value: string; label: string; fill: number }) {
-  const cells = 14
-  const filled = Math.round(fill * cells)
   return (
-    <div className="flex items-center gap-3 text-sm">
-      <span className="w-20 shrink-0 text-pal-300">{label}</span>
-      <span className="tracking-tighter" aria-hidden>
-        <span className="text-acc">{"█".repeat(filled)}</span>
-        <span className="text-pal-700">{"░".repeat(cells - filled)}</span>
-      </span>
-      <span className="ml-auto font-semibold text-pal-50">
-        <CountUp value={value} />
-      </span>
+    <div className="text-sm">
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-pal-300">{label}</span>
+        <span className="font-semibold text-pal-50">
+          <CountUp value={value} />
+        </span>
+      </div>
+      <div className="mt-1.5 h-3 w-full bg-pal-700/40" aria-hidden>
+        <div
+          className="h-full bg-acc"
+          style={{
+            width: `${Math.round(fill * 100)}%`,
+            backgroundImage:
+              "repeating-linear-gradient(90deg, transparent 0 6px, rgba(0,0,0,0.5) 6px 8px)",
+          }}
+        />
+      </div>
     </div>
   )
 }
@@ -177,15 +182,15 @@ function CertificationsSection() {
           <FileText className="h-3.5 w-3.5" />
           {c.issuer}
         </span>
-        <span className="text-pal-400">.pdf</span>
+        <span className="text-pal-400">PDF</span>
       </div>
-      <h3 className="mt-3 flex min-h-[2.75rem] items-center text-sm font-semibold leading-snug text-pal-50">
+      <h3 className="mt-3 flex min-h-[2.75rem] items-center font-display text-2xl leading-[1.05] text-pal-50">
         {c.label}
       </h3>
       <div className="mt-3 flex items-center justify-between border-t border-dashed border-hair/[0.1] pt-3 text-xs">
         <span className="text-pal-400">{c.date}</span>
         <span className="flex items-center gap-1 text-acc">
-          open <ExternalLink className="h-3 w-3" />
+          Open <ExternalLink className="h-3 w-3" />
         </span>
       </div>
     </>
@@ -208,11 +213,7 @@ function CertificationsSection() {
               animate={{ opacity: isCenter ? 1 : 0.45, x: 0 }}
               whileHover={isCenter ? { y: -5 } : undefined}
               transition={{ duration: 0.4, ease: easeOutExpo }}
-              className={`flex h-[170px] flex-col justify-between border p-5 transition-colors duration-300 ${
-                isCenter
-                  ? "border-acc/40 bg-pal-900/70"
-                  : "border-hair/[0.07] bg-pal-900/30"
-              }`}
+              className={`tv-card flex h-[170px] flex-col justify-between p-5 ${isCenter ? "!border-acc/50" : ""}`}
             >
               {cardContent(c)}
             </motion.a>
@@ -230,7 +231,7 @@ function CertificationsSection() {
           initial={{ opacity: 0, x: direction * 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.35, ease: easeOutExpo }}
-          className="flex h-[170px] flex-col justify-between border border-acc/40 bg-pal-900/70 p-5"
+          className="tv-card flex h-[170px] flex-col justify-between !border-acc/50 p-5"
         >
           {cardContent(certifications[current])}
         </motion.a>
@@ -241,7 +242,7 @@ function CertificationsSection() {
         <button
           onClick={() => go(-1)}
           aria-label="Previous certification"
-          className="flex h-9 w-9 items-center justify-center border border-hair/[0.1] text-pal-200 transition-colors hover:border-acc/40 hover:text-acc active:scale-90"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-hair/[0.18] text-pal-200 transition-colors hover:border-acc/50 hover:text-acc active:scale-90"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -252,7 +253,7 @@ function CertificationsSection() {
         <button
           onClick={() => go(1)}
           aria-label="Next certification"
-          className="flex h-9 w-9 items-center justify-center border border-hair/[0.1] text-pal-200 transition-colors hover:border-acc/40 hover:text-acc active:scale-90"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-hair/[0.18] text-pal-200 transition-colors hover:border-acc/50 hover:text-acc active:scale-90"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -276,8 +277,7 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-pal-950 text-pal-100">
-      <ScrollProgress />
+    <div className="relative min-h-[100cqh] overflow-hidden bg-transparent text-pal-100">
       <div className="terminal-atmosphere" aria-hidden />
 
       <a
@@ -287,145 +287,132 @@ export default function Portfolio() {
         Skip to main content
       </a>
 
-      <FloatingNav />
 
       <main id="main-content" className="relative z-10">
         {/* ════════════════ HERO ════════════════ */}
-        <header className="relative flex min-h-[100svh] items-center px-4 pt-16 sm:px-6">
-          <div className="mx-auto w-full max-w-7xl 2xl:max-w-[96rem] py-16">
-            <motion.div
-              className="overflow-hidden rounded-md term-panel"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: easeOutExpo }}
-            >
-              <WindowBar path="mahmoud@abuawd: ~/portfolio" />
-
-              <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr]">
-                {/* Left — prompt block */}
-                <motion.div
-                  className="space-y-5 text-sm sm:text-base"
-                  variants={staggerContainer(0.12, 0.2)}
-                  initial="hidden"
-                  animate="show"
+        <header
+          id="home"
+          data-channel="Home"
+          className="relative flex min-h-[100cqh] items-center pb-16 pt-20 sm:pt-24"
+        >
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
+              <motion.div variants={staggerContainer(0.12, 0.7)} initial="hidden" animate="show">
+                <motion.p
+                  variants={staggerItem}
+                  className="flex items-center gap-2.5 font-display text-2xl text-term-green"
                 >
-                  <motion.div variants={staggerItem}>
-                    <p className="text-pal-400">
-                      <span className="text-acc">$</span> whoami
-                    </p>
-                    <h1 className="mt-1 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl 2xl:text-6xl">
-                      Mahmoud AbuAwd
-                    </h1>
-                    <p className="mt-1 text-pal-200">
-                      <span className="text-pal-500">&gt; </span>
-                      AI / ML Engineer
-                      <span className="text-pal-400"> · Amman, Jordan</span>
-                    </p>
-                  </motion.div>
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-term-green" />
+                  Available for work
+                </motion.p>
 
-                  <motion.div variants={staggerItem}>
-                    <p className="text-pal-400">
-                      <span className="text-acc">$</span> cat bio.txt
-                    </p>
-                    <p className="mt-1 max-w-md font-sans leading-relaxed text-pal-300">
-                      I design and ship AI products with measurable impact — from model
-                      development to production deployment and monitoring.
-                    </p>
-                  </motion.div>
+                <motion.h1
+                  variants={staggerItem}
+                  className="crt-aberration mt-3 font-display text-[clamp(4rem,7.6vw,7.25rem)] leading-[0.86] text-pal-50"
+                >
+                  Mahmoud
+                  <br />
+                  AbuAwd
+                </motion.h1>
 
-                  <motion.div variants={staggerItem}>
-                    <p className="text-pal-400">
-                      <span className="text-acc">$</span> status
-                    </p>
-                    <p className="mt-1 flex items-center gap-2 text-pal-200">
-                      <span className="h-1.5 w-1.5 rounded-full bg-term-green animate-pulse" />
-                      <span className="text-term-green">available for work</span>
-                    </p>
-                  </motion.div>
+                <motion.p
+                  variants={staggerItem}
+                  className="crt-glow mt-6 font-display text-3xl text-acc sm:text-4xl"
+                >
+                  AI / ML Engineer
+                  <span className="text-pal-400"> in Amman, Jordan</span>
+                </motion.p>
 
-                  <motion.div variants={staggerItem} className="flex flex-wrap gap-3 pt-1">
-                    <button
-                      onClick={handleDownloadResume}
-                      className="inline-flex items-center gap-2 rounded-sm border border-acc/50 bg-acc/10 px-4 py-2 text-sm text-acc transition-colors hover:bg-acc/20 hover:text-acc"
-                    >
-                      <Download className="h-4 w-4" />
-                      ./resume.pdf
-                    </button>
+                <motion.p
+                  variants={staggerItem}
+                  className="mt-5 max-w-md font-sans text-base leading-relaxed text-pal-300 sm:text-lg"
+                >
+                  I design and ship AI products with measurable impact, from model development
+                  to production deployment and monitoring.
+                </motion.p>
+
+                <motion.div variants={staggerItem} className="mt-8 flex flex-wrap gap-3">
+                  <button onClick={handleDownloadResume} className="osd-btn !px-5 !py-1.5 !text-2xl">
+                    <Download className="h-4 w-4" aria-hidden />
+                    Download résumé
+                  </button>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 border border-hair/[0.18] px-5 py-1.5 font-display text-2xl leading-[1.2] text-pal-100 transition-colors hover:border-acc/60 hover:text-acc"
+                  >
+                    Get in touch
+                    <ArrowUpRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                </motion.div>
+
+                <motion.div
+                  variants={staggerItem}
+                  className="mt-6 flex flex-wrap gap-x-6 gap-y-1 font-display text-2xl"
+                >
+                  {socialLinks.map((s) => (
                     <Link
-                      href="/contact"
-                      className="inline-flex items-center gap-1.5 rounded-sm border border-hair/[0.12] px-4 py-2 text-sm text-pal-200 transition-colors hover:border-hair/[0.25] hover:text-pal-50"
+                      key={s.label}
+                      href={s.href}
+                      target={s.href.startsWith("mailto") ? "_self" : "_blank"}
+                      rel="noopener noreferrer"
+                      className="text-pal-400 transition-colors hover:text-acc"
                     >
-                      ./contact
-                      <ArrowUpRight className="h-3.5 w-3.5" />
+                      {s.label}
                     </Link>
-                  </motion.div>
-
-                  <motion.div variants={staggerItem} className="flex flex-wrap gap-x-5 gap-y-1 pt-1 text-sm">
-                    {socialLinks.map((s) => (
-                      <Link
-                        key={s.label}
-                        href={s.href}
-                        target={s.href.startsWith("mailto") ? "_self" : "_blank"}
-                        rel="noopener noreferrer"
-                        className="text-pal-400 transition-colors hover:text-acc"
-                      >
-                        {s.label}
-                      </Link>
-                    ))}
-                  </motion.div>
+                  ))}
                 </motion.div>
+              </motion.div>
 
-                {/* Right — stats panel */}
-                <motion.div
-                  className="self-start border border-hair/[0.08] bg-pal-950/40 p-5"
-                  variants={fadeUp}
-                  initial="hidden"
-                  animate="show"
-                >
-                  <p className="mb-4 text-xs text-pal-400">
-                    <span className="text-term-green">~/stats</span> $ cat summary
-                  </p>
-                  <div className="space-y-3">
-                    {stats.map((s) => (
-                      <StatBar key={s.label} {...s} />
-                    ))}
-                  </div>
+              <motion.aside
+                className="border-2 border-acc/35 bg-pal-950/60 p-5 shadow-[0_0_30px_rgb(var(--acc)/0.08)]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+                aria-label="At a glance"
+              >
+                <p className="font-display text-2xl text-acc crt-glow">At a glance</p>
+                <div className="mt-4 space-y-3">
+                  {stats.map((s) => (
+                    <StatBar key={s.label} {...s} />
+                  ))}
+                </div>
+                <dl className="mt-5 space-y-2 border-t border-dashed border-hair/[0.15] pt-4 text-sm">
+                  {[
+                    ["Location", "Amman, JO"],
+                    ["Focus", "AI, ML, Cloud"],
+                    ["Languages", "Arabic, English"],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex justify-between gap-4">
+                      <dt className="text-pal-400">{k}</dt>
+                      <dd className="text-pal-100">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </motion.aside>
+            </div>
 
-                  <div className="mt-5 space-y-2 border-t border-dashed border-hair/[0.1] pt-4 text-xs">
-                    {[
-                      ["location", "Amman, JO"],
-                      ["focus", "AI · ML · Cloud"],
-                      ["langs", "Arabic, English"],
-                    ].map(([k, v]) => (
-                      <div key={k} className="flex justify-between">
-                        <span className="text-pal-400">{k}</span>
-                        <span className="text-pal-200">{v}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-4 text-sm text-pal-300" aria-hidden>
-                    <span className="text-acc">$</span> <span className="cursor-blink" />
-                  </p>
-                </motion.div>
-              </div>
-            </motion.div>
+            <div className="smpte mt-10" aria-hidden>
+              {["#c0c0c0", "#c0c000", "#00c0c0", "#00c000", "#c000c0", "#c00000", "#0000c0"].map((c) => (
+                <i key={c} style={{ background: c }} />
+              ))}
+            </div>
           </div>
         </header>
 
         {/* ════════════════ ABOUT ════════════════ */}
-        <section id="about" className="px-4 py-20 sm:px-6">
+        <section id="about" data-channel="About" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
-            <SectionHeading title="About" subtitle="~/about" className="mb-10" />
+            <SectionHeading title="About" subtitle="CH 02" className="mb-10" />
 
             <motion.div
-              className="grid gap-8 lg:grid-cols-[1.4fr_1fr]"
+              className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]"
               variants={staggerContainer(0.12)}
               initial="hidden"
               whileInView="show"
               viewport={viewportOnce}
             >
               <motion.div variants={staggerItem} className="space-y-4 font-sans leading-relaxed text-pal-300">
-                <p className="font-mono text-xs text-pal-400">$ cat about.md</p>
+                
                 <p>
                   I&rsquo;m an AI engineer with hands-on experience building intelligent applications
                   using machine learning and deep learning. My work spans end-to-end AI
@@ -441,7 +428,7 @@ export default function Portfolio() {
               </motion.div>
 
               <motion.div variants={staggerItem}>
-                <p className="font-mono text-xs text-pal-400">$ ls ./highlights</p>
+                <p className="font-display text-2xl text-acc">Highlights</p>
                 <ul className="mt-4 space-y-2.5 text-sm">
                   {highlights.map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-pal-200">
@@ -456,20 +443,20 @@ export default function Portfolio() {
         </section>
 
         {/* ════════════════ SKILLS ════════════════ */}
-        <section id="skills" className="py-20">
+        <section id="skills" data-channel="Skills" className="py-20">
           <div className="mx-auto mb-10 max-w-7xl 2xl:max-w-[96rem] px-4 sm:px-6">
-            <SectionHeading title="Skills" subtitle="~/skills" />
+            <SectionHeading title="Skills" subtitle="CH 03" />
           </div>
           <SkillsShowcase />
         </section>
 
         {/* ════════════════ PROJECTS ════════════════ */}
-        <section id="projects" className="px-4 py-20 sm:px-6">
+        <section id="projects" data-channel="Projects" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
-            <SectionHeading title="Projects" subtitle="~/projects" className="mb-10" />
+            <SectionHeading title="Projects" subtitle="CH 04" className="mb-10" />
 
             <motion.div
-              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
               variants={staggerContainer(0.07)}
               initial="hidden"
               whileInView="show"
@@ -493,8 +480,7 @@ export default function Portfolio() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-pal-300 transition-colors hover:text-acc"
               >
-                <span className="text-acc">$</span> git remote -v
-                <span className="text-pal-400">→ view all on github</span>
+                <span className="font-display text-2xl">View all on GitHub</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </motion.div>
@@ -502,20 +488,20 @@ export default function Portfolio() {
         </section>
 
         {/* ════════════════ EXPERIENCE ════════════════ */}
-        <section id="experience" className="px-4 py-20 sm:px-6">
+        <section id="experience" data-channel="Experience" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-5xl">
-            <SectionHeading title="Experience" subtitle="~/experience" className="mb-10" />
+            <SectionHeading title="Experience" subtitle="CH 05" className="mb-10" />
             <Timeline />
           </div>
         </section>
 
         {/* ════════════════ CERTIFICATIONS ════════════════ */}
-        <section id="certifications" className="px-4 py-20 sm:px-6">
+        <section id="certifications" data-channel="Certifications" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
             <div className="mb-10 flex items-end justify-between">
-              <SectionHeading title="Certifications" subtitle="~/certs" className="flex-1" />
-              <span className="ml-4 hidden shrink-0 border border-hair/[0.1] px-2.5 py-1 font-mono text-xs text-pal-300 sm:inline-block">
-                {certifications.length} files
+              <SectionHeading title="Certifications" subtitle="CH 06" className="flex-1" />
+              <span className="tv-chip ml-4 shrink-0 max-sm:!hidden">
+                {certifications.length} certificates
               </span>
             </div>
             <CertificationsSection />
@@ -523,15 +509,15 @@ export default function Portfolio() {
         </section>
 
         {/* ════════════════ GITHUB ACTIVITY ════════════════ */}
-        <section id="activity" className="px-4 py-20 sm:px-6">
+        <section id="activity" data-channel="Activity" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-7xl 2xl:max-w-[96rem]">
-            <SectionHeading title="Activity" subtitle="~/activity" className="mb-10" />
+            <SectionHeading title="Activity" subtitle="CH 07" className="mb-10" />
             <GitHubActivity />
           </div>
         </section>
 
         {/* ════════════════ CTA ════════════════ */}
-        <section className="px-4 py-20 sm:px-6">
+        <section id="contact-cta" data-channel="Say hello" className="px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -540,10 +526,10 @@ export default function Portfolio() {
               viewport={viewportOnce}
               className="overflow-hidden rounded-md term-panel"
             >
-              <WindowBar path="mahmoud@abuawd: ~/contact" />
+              <WindowBar path="Contact" />
               <div className="p-8 text-center sm:p-10">
-                <p className="font-mono text-xs text-pal-400">$ ./start-project --with you</p>
-                <h2 className="mt-3 text-2xl font-bold tracking-tight text-pal-50 sm:text-3xl">
+                
+                <h2 className="font-display text-4xl text-pal-50 sm:text-5xl">
                   Let&rsquo;s build something together
                 </h2>
                 <p className="mx-auto mt-3 max-w-md font-sans text-pal-300">
@@ -563,7 +549,7 @@ export default function Portfolio() {
                     className="inline-flex items-center gap-2 rounded-sm border border-hair/[0.12] px-5 py-2.5 text-sm text-pal-200 transition-colors hover:border-hair/[0.25] hover:text-pal-50"
                   >
                     <Download className="h-4 w-4" />
-                    ./resume.pdf
+                    Download résumé
                   </button>
                 </div>
               </div>

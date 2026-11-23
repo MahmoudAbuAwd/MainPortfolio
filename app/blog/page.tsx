@@ -2,7 +2,6 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { Calendar, Clock, ArrowUpRight } from "lucide-react"
 
-import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal"
 import { getAllBlogPosts } from "@/lib/blog"
@@ -57,9 +56,8 @@ export default async function BlogPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-pal-950 font-mono text-pal-100">
+    <div className="relative min-h-[100cqh] overflow-hidden bg-transparent font-mono text-pal-100">
       <div className="terminal-atmosphere" aria-hidden />
-      <FloatingNav />
 
       <main className="relative z-10 px-4 pb-24 pt-28 sm:px-6">
         <script
@@ -69,10 +67,7 @@ export default async function BlogPage() {
         />
         <section className="mx-auto max-w-5xl">
           <Reveal>
-            <p className="text-sm text-pal-400">
-              <span className="text-term-green">~/blog</span> $ ls -1 --latest
-            </p>
-            <h1 className="mt-3 text-3xl font-bold tracking-tight text-pal-50 sm:text-4xl lg:text-5xl">
+            <h1 className="tv-page-title crt-aberration">
               Notes from an AI Engineer
             </h1>
             <p className="mt-4 max-w-2xl font-sans leading-relaxed text-pal-300">
@@ -82,15 +77,15 @@ export default async function BlogPage() {
         </section>
 
         <section className="mx-auto mt-12 max-w-5xl">
-          <RevealGroup className="grid gap-4 lg:grid-cols-2" stagger={0.07}>
+          <RevealGroup className="grid grid-cols-1 gap-4 lg:grid-cols-2" stagger={0.07}>
           {posts.map((post, i) => (
             <RevealItem key={post.slug} className="h-full">
             <article
-              className="group flex h-full flex-col justify-between border border-hair/[0.08] bg-pal-900/40 p-6 transition-colors duration-300 hover:border-acc/40 hover:bg-pal-900/70"
+              className="tv-card group flex h-full flex-col justify-between p-6"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-pal-400">
-                  <span className="text-acc">[{String(i + 1).padStart(2, "0")}]</span>
+                  <span className="tv-num">{String(i + 1).padStart(2, "0")}</span>
                   <span className="flex items-center gap-3">
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" />
@@ -107,7 +102,7 @@ export default async function BlogPage() {
                   </span>
                 </div>
 
-                <h2 className="mt-3 text-xl font-semibold leading-snug text-pal-50">
+                <h2 className="mt-3 font-display text-3xl leading-[1.05] text-pal-50">
                   <Link href={`/blog/${post.slug}`} className="transition-colors hover:text-acc">
                     {post.title}
                   </Link>
@@ -115,10 +110,10 @@ export default async function BlogPage() {
 
                 <p className="mt-2 font-sans text-sm leading-relaxed text-pal-300">{post.excerpt}</p>
 
-                <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-pal-400">
+                <div className="mt-4 flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="transition-colors group-hover:text-pal-200">
-                      #{tag.toLowerCase().replace(/\s+/g, "-")}
+                    <span key={tag} className="tv-chip">
+                      {tag}
                     </span>
                   ))}
                 </div>
@@ -130,9 +125,9 @@ export default async function BlogPage() {
                 </span>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-1 text-sm text-acc"
+                  className="inline-flex items-center gap-1 font-display text-2xl text-acc"
                 >
-                  read
+                  Read article
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>

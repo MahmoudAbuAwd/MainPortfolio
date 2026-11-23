@@ -1,0 +1,1217 @@
+/* ════════════════════════════════════════════════════════════════════
+   CRT TELEVISION
+   The whole site plays inside a set. The window never scrolls; the glass
+   (.tv-scroll) does. Fixed UI (nav, chatbot, progress) lives in
+   .tv-screen so it stays pinned to the glass.
+   ════════════════════════════════════════════════════════════════════ */
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: #120c07;
+}
+
+/* Phosphor tint — ice is the default; the TINT knob sets data-tint on <html>. */
+html.dark {
+  --acc: 130 208 255;
+  --ok: 110 231 190;
+}
+:root[data-tint="amber"] {
+  --acc: 245 166 35;
+  --ok: 63 185 80;
+}
+:root[data-tint="green"] {
+  --acc: 110 231 150;
+  --ok: 110 231 150;
+}
+:root[data-tint="ice"] {
+  --acc: 130 208 255;
+  --ok: 110 231 190;
+}
+
+.terminal-atmosphere {
+  display: none;
+}
+
+/* ── Room + cabinet ────────────────────────────────────────────────── */
+.tv-room {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, #3a2514 0%, rgba(58, 37, 20, 0) 70%),
+    #120c07;
+}
+.tv-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  /* respects notches / the home indicator on phones */
+  padding: max(env(safe-area-inset-top), clamp(0px, 1vw, 18px)) max(env(safe-area-inset-right), clamp(0px, 1vw, 18px))
+    max(env(safe-area-inset-bottom), clamp(0px, 1vw, 18px)) max(env(safe-area-inset-left), clamp(0px, 1vw, 18px));
+}
+.tv-cabinet {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: clamp(8px, 1.4vw, 24px);
+  padding: clamp(6px, 1.5vw, 26px);
+  border-radius: clamp(10px, 2vw, 34px);
+  /* walnut veneer */
+  background:
+    repeating-linear-gradient(91deg, rgba(0, 0, 0, 0.13) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(89deg, rgba(255, 190, 120, 0.06) 0 1px, transparent 1px 13px),
+    linear-gradient(180deg, #7a4a2a 0%, #583319 55%, #3f2412 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 220, 170, 0.18),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 28px 80px rgba(0, 0, 0, 0.7);
+}
+
+.tv-bezel {
+  flex: 1;
+  min-width: 0;
+  container-type: inline-size;
+  padding: clamp(12px, 1.7vw, 30px);
+  border-radius: clamp(16px, 2.6vw, 46px);
+  background: linear-gradient(150deg, #2b2824 0%, #14120f 60%, #0c0b09 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(255, 255, 255, 0.08),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.7),
+    0 0 0 2px #060504,
+    0 1px 0 2px rgba(255, 220, 170, 0.12);
+}
+
+/* The glass. translateZ makes it the containing block for position:fixed
+   children (nav, chatbot) so they pin to the screen, not the window. */
+.tv-screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  border-radius: clamp(22px, 5.2cqw, 96px) / clamp(22px, 4.4cqw, 84px);
+  background: radial-gradient(ellipse at 50% 42%, #121a15 0%, #090c0b 70%);
+  /* inner: glass falloff. outer: the rubber/plastic lip that traces the curve */
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.9),
+    inset 0 0 36px 4px rgba(0, 0, 0, 0.7),
+    inset 0 0 150px rgba(0, 0, 0, 0.6),
+    0 0 0 3px #030302,
+    0 0 0 8px #1d1a16,
+    0 0 0 10px #090807,
+    0 10px 22px 10px rgba(0, 0, 0, 0.55);
+}
+
+.tv-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  container-type: size; /* lets pages size to the glass with 100cqh */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--acc) / 0.55) transparent;
+  /* horizontal gutter shared by every page; keeps text clear of the curved corners */
+  --edge: clamp(18px, 5.5vw, 110px);
+}
+.tv-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.tv-scroll::-webkit-scrollbar-thumb {
+  background: rgb(var(--acc) / 0.5);
+  border-radius: 4px;
+}
+
+/* ── Glass effects (never interactive) ─────────────────────────────── */
+.tv-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+.tv-scanlines {
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.17) 0 1px, transparent 1px 3px);
+}
+.tv-scanlines::after {
+  /* slow rolling refresh band */
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 22%;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.035), transparent);
+  animation: tv-roll 9s linear infinite;
+}
+.tv-vignette {
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 78% 72% at 50% 48%, transparent 52%, rgba(0, 0, 0, 0.42) 82%, rgba(0, 0, 0, 0.82) 100%),
+    radial-gradient(ellipse 90% 85% at 50% 50%, rgba(255, 255, 255, 0.035), transparent 65%);
+}
+.tv-glare {
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 42% 20% at 22% 6%, rgba(255, 255, 255, 0.11), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 12%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.04) 0%, transparent 28%);
+}
+.tv-static {
+  opacity: 0;
+  transition: opacity 0.12s;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.1 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: screen;
+}
+.tv-static.is-on {
+  opacity: 0.4;
+  animation: tv-static 0.32s steps(4) both;
+}
+
+/* Power-on: a bright line opens into the picture. Pure CSS, runs once per load. */
+.tv-poweron {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: #000;
+  animation: tv-on-bg 1.15s ease-out 0.1s both;
+}
+.tv-poweron::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f4f1e6;
+  transform-origin: center;
+  animation: tv-on-line 1.15s cubic-bezier(0.7, 0, 0.3, 1) 0.1s both;
+}
+@keyframes tv-on-bg {
+  0%,
+  52% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes tv-on-line {
+  0% {
+    transform: scale(0, 0.004);
+    opacity: 1;
+  }
+  34% {
+    transform: scale(1, 0.004);
+    opacity: 1;
+  }
+  56% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 0;
+  }
+}
+@keyframes tv-roll {
+  from {
+    transform: translateY(-120%);
+  }
+  to {
+    transform: translateY(560%);
+  }
+}
+@keyframes tv-static {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -60px 40px;
+  }
+  50% {
+    background-position: 30px -70px;
+  }
+  75% {
+    background-position: -20px 20px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* ── Side control panel ────────────────────────────────────────────── */
+.tv-panel {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .tv-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: clamp(150px, 12vw, 200px);
+    padding: 4px 2px 2px;
+  }
+}
+.tv-plate {
+  position: relative;
+  width: 100%;
+  padding: 10px 18px 9px;
+  text-align: center;
+  border-radius: 5px;
+  color: #3b2a0b;
+  /* screws, brushed grain, brass */
+  background:
+    radial-gradient(circle at 9px 50%, #6b5424 0 1.5px, #c9ab62 2px 3.5px, transparent 4px),
+    radial-gradient(circle at calc(100% - 9px) 50%, #6b5424 0 1.5px, #c9ab62 2px 3.5px, transparent 4px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.05) 1px 3px),
+    linear-gradient(160deg, #ead59b 0%, #b8954a 45%, #9b7a35 60%, #d9bb72 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(90, 62, 14, 0.6),
+    inset 0 0 0 1px rgba(110, 80, 24, 0.55),
+    0 2px 5px rgba(0, 0, 0, 0.55);
+}
+.tv-plate-name {
+  display: block;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  /* engraved: light edge below, dark edge above */
+  text-shadow: 0 1px 0 rgba(255, 242, 200, 0.7), 0 -1px 0 rgba(70, 48, 10, 0.35);
+}
+.tv-plate-sub {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  text-shadow: 0 1px 0 rgba(255, 242, 200, 0.6);
+}
+.tv-display {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  width: 100%;
+  padding: 6px 10px 8px;
+  border-radius: 6px;
+  background: #070908;
+  color: rgb(var(--acc));
+  font-family: var(--font-display), monospace;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 0 2px #1d1a16,
+    0 1px 0 2px rgba(255, 220, 170, 0.12);
+  text-shadow: 0 0 10px rgb(var(--acc) / 0.7);
+}
+.tv-display-ch {
+  font-size: 18px;
+  opacity: 0.7;
+}
+.tv-display-num {
+  font-size: 46px;
+  line-height: 0.9;
+}
+.tv-display-label {
+  flex-basis: 100%;
+  font-size: 19px;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tv-knob-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.tv-knob-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* A knob sits on a printed dial scale */
+.tv-dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.tv-dial-scale {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.tv-tick {
+  stroke: rgba(244, 232, 205, 0.45);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  transition: stroke 0.15s;
+}
+.tv-tick.is-lit {
+  stroke: rgb(var(--acc));
+  filter: drop-shadow(0 0 2px rgb(var(--acc) / 0.9));
+}
+
+.tv-knob {
+  position: relative;
+  border: 0;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, #d6cdb4, #8a826c, #ece4cb, #7d765f, #d9d0b6, #8a826c, #d6cdb4);
+  box-shadow:
+    0 8px 14px rgba(0, 0, 0, 0.55),
+    0 0 0 4px #1b1814,
+    inset 0 2px 2px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3),
+    box-shadow 0.15s,
+    filter 0.15s;
+}
+.tv-knob:hover {
+  filter: brightness(1.08);
+}
+.tv-knob.is-grabbed {
+  cursor: grabbing;
+  transition: box-shadow 0.15s, filter 0.15s;
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.6),
+    0 0 0 4px #1b1814,
+    inset 0 2px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.5);
+}
+.tv-knob[aria-disabled="true"] {
+  cursor: not-allowed;
+  filter: brightness(0.6);
+}
+.tv-knob::before {
+  /* knurled edge */
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(0, 0, 0, 0.2) 0 3deg, transparent 3deg 10deg);
+}
+.tv-knob::after {
+  /* cap */
+  content: "";
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #efe8d2, #9b9279 70%);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.35);
+}
+.tv-knob-mark {
+  position: absolute;
+  z-index: 1;
+  top: 7%;
+  left: 50%;
+  width: 4px;
+  height: 20%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: #2a2216;
+}
+.tv-knob:focus-visible,
+.tv-rocker button:focus-visible,
+.tv-power:focus-visible {
+  outline: 2px solid rgb(var(--acc));
+  outline-offset: 5px;
+}
+.tv-knob-label {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(244, 232, 205, 0.7);
+}
+.tv-rocker {
+  display: flex;
+  gap: 6px;
+}
+.tv-rocker button {
+  width: 34px;
+  height: 20px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 9px;
+  color: #e9dfc4;
+  background: linear-gradient(180deg, #2b2722, #15130f);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 3px rgba(0, 0, 0, 0.5);
+  transition: transform 0.06s, box-shadow 0.06s, color 0.15s;
+}
+.tv-rocker button:hover:not(:disabled) {
+  color: rgb(var(--acc));
+}
+.tv-rocker button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+.tv-rocker button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.tv-grille {
+  flex: 1;
+  min-height: 56px;
+  width: 100%;
+  border-radius: 6px;
+  background: repeating-linear-gradient(0deg, #060504 0 3px, #2d2923 3px 7px);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.8),
+    0 0 0 2px #1b1814,
+    0 1px 0 2px rgba(255, 220, 170, 0.1);
+}
+.tv-grille.is-pulse {
+  animation: tv-speaker 0.28s ease-out;
+}
+@keyframes tv-speaker {
+  0% {
+    filter: brightness(1.9);
+    transform: scale(1.012, 1.02);
+  }
+  100% {
+    filter: none;
+    transform: none;
+  }
+}
+.tv-power {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #e9dfc4;
+  background: linear-gradient(180deg, #2f2a24, #14120f);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 3px 0 #070605,
+    0 5px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.07s, box-shadow 0.07s;
+}
+.tv-power:hover .tv-power-cap {
+  color: rgb(var(--acc));
+}
+.tv-power:active {
+  transform: translateY(3px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 #070605, 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.tv-power-cap {
+  font-size: 15px;
+  line-height: 1;
+}
+.tv-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(var(--acc));
+  box-shadow: 0 0 8px 1px rgb(var(--acc) / 0.8);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.tv-panel.is-off .tv-led {
+  /* standby: dull red, like the real thing */
+  background: #ff5a3c;
+  box-shadow: 0 0 5px 1px rgba(255, 90, 60, 0.55);
+}
+.tv-panel.is-off .tv-display {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 0 2px #1d1a16;
+}
+.tv-display-standby {
+  opacity: 0.35;
+  font-size: 22px;
+  padding: 12px 0 6px;
+}
+.tv-display-num {
+  animation: tv-flick 0.4s steps(2, end);
+}
+@keyframes tv-flick {
+  0%,
+  40% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Screen off: the picture collapses to a line, then a dot, then nothing. */
+.tv-off {
+  position: absolute;
+  inset: 0;
+  z-index: 95;
+  background: #000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.tv-off::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f4f1e6;
+  opacity: 0;
+}
+.tv-screen.is-off .tv-off {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.tv-screen.is-off .tv-off::after {
+  animation: tv-off-line 0.6s cubic-bezier(0.6, 0, 0.4, 1) both;
+}
+.tv-screen.is-off .tv-poweron {
+  display: none;
+}
+@keyframes tv-off-line {
+  0% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  38% {
+    transform: scale(1, 0.006);
+    opacity: 1;
+  }
+  74% {
+    transform: scale(0.012, 0.006);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+}
+
+/* Brightness knob */
+.tv-scroll,
+.tv-osd {
+  filter: brightness(var(--tv-bright, 1));
+}
+
+/* ── On-screen display (nav) ───────────────────────────────────────── */
+.tv-osd {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  padding: clamp(16px, 3.2vw, 48px) var(--edge, 24px) 12px;
+  background: linear-gradient(rgba(5, 8, 7, 0.92), rgba(5, 8, 7, 0));
+  transition: background 0.25s;
+}
+.tv-osd.is-scrolled {
+  background: rgba(5, 8, 7, 0.82);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 rgb(var(--acc) / 0.22);
+}
+.osd-channel {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  font-family: var(--font-display), monospace;
+  font-size: 28px;
+  line-height: 1;
+  color: rgb(var(--acc));
+  text-shadow: 0 0 12px rgb(var(--acc) / 0.55);
+}
+.osd-channel svg {
+  align-self: center;
+}
+.osd-ch {
+  opacity: 0.6;
+  font-size: 20px;
+}
+.osd-name {
+  color: rgb(var(--pal-50));
+  text-shadow: none;
+}
+.osd-link {
+  padding: 2px 12px;
+  font-family: var(--font-display), monospace;
+  font-size: 23px;
+  line-height: 1.2;
+  color: rgb(var(--pal-300));
+  transition: color 0.15s;
+}
+.osd-link:hover,
+.osd-link.is-active {
+  color: rgb(var(--acc));
+}
+.osd-link.is-active {
+  box-shadow: inset 0 -2px 0 rgb(var(--acc));
+}
+.osd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  font-family: var(--font-display), monospace;
+  font-size: 21px;
+  line-height: 1.2;
+  color: rgb(var(--acc));
+  border: 1px solid rgb(var(--acc) / 0.5);
+  background: rgb(var(--acc) / 0.08);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.osd-btn:hover {
+  background: rgb(var(--acc) / 0.18);
+}
+.osd-guide {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 5;
+  min-width: 250px;
+  max-height: 70cqh;
+  overflow-y: auto;
+  padding: 8px 10px 10px;
+  background: rgba(6, 9, 8, 0.97);
+  border: 1px solid rgb(var(--acc) / 0.35);
+  box-shadow:
+    0 0 24px rgb(var(--acc) / 0.12),
+    0 12px 30px rgba(0, 0, 0, 0.6);
+}
+.osd-guide-title {
+  margin: 8px 6px 4px;
+  font-size: 11px;
+  color: rgb(var(--pal-400));
+}
+.osd-guide-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 2px 8px;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  background: transparent;
+  font-family: var(--font-display), monospace;
+  font-size: 23px;
+  line-height: 1.25;
+  color: rgb(var(--pal-200));
+}
+.osd-guide-row:hover {
+  background: rgb(var(--acc) / 0.1);
+  color: rgb(var(--acc));
+}
+.osd-guide-row.is-active {
+  color: rgb(var(--acc));
+}
+.osd-guide-num {
+  color: rgb(var(--pal-500));
+}
+
+/* Tracking bar along the bottom of the glass. */
+.tv-track {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 60;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.tv-track-fill {
+  height: 100%;
+  transform-origin: left;
+  background: rgb(var(--acc));
+  box-shadow: 0 0 10px rgb(var(--acc) / 0.8);
+}
+
+/* ── Type + broadcast helpers ──────────────────────────────────────── */
+.crt-aberration {
+  text-shadow:
+    2px 0 0 rgba(255, 70, 70, 0.55),
+    -2px 0 0 rgba(70, 210, 255, 0.5),
+    0 0 26px rgb(var(--acc) / 0.3);
+}
+.crt-glow {
+  text-shadow: 0 0 14px rgb(var(--acc) / 0.45);
+}
+/* SMPTE test-card bars. */
+.smpte {
+  display: flex;
+  height: 14px;
+  opacity: 0.8;
+}
+.smpte > i {
+  flex: 1;
+}
+
+@media (max-width: 639px) {
+  .osd-channel {
+    font-size: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tv-scroll {
+    scroll-behavior: auto;
+  }
+  .tv-poweron,
+  .tv-screen.is-off .tv-off::after,
+  .tv-display-num,
+  .tv-grille.is-pulse,
+  .tv-scanlines::after,
+  .tv-static.is-on {
+    animation: none !important;
+  }
+  .tv-poweron {
+    display: none;
+  }
+}
+
+/* Keep the chatbot launcher clear of the curved corners + tracking bar. */
+.tv-screen .fixed.bottom-5 {
+  bottom: clamp(22px, 3vw, 46px);
+  right: clamp(22px, 4vw, 64px);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   PAGE UI KIT — shared by every page so they read as one set.
+   ════════════════════════════════════════════════════════════════════ */
+html.dark {
+  --radius: 0.6rem;
+}
+/* Keep page content clear of the curved corners. */
+.tv-scroll main[class*="px-4"] {
+  padding-left: var(--edge) !important;
+  padding-right: var(--edge) !important;
+}
+.tv-scroll section[data-channel],
+.tv-scroll header[data-channel] {
+  padding-left: var(--edge);
+  padding-right: var(--edge);
+}
+.tv-scroll footer > div {
+  padding-left: var(--edge) !important;
+  padding-right: var(--edge) !important;
+}
+
+.tv-card {
+  position: relative;
+  border: 1px solid rgb(var(--hair) / 0.12);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgb(var(--pal-900) / 0.7), rgb(var(--pal-950) / 0.55));
+  box-shadow:
+    inset 0 1px 0 rgb(var(--hair) / 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.tv-card:hover,
+a.tv-card:focus-visible {
+  border-color: rgb(var(--acc) / 0.55);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--hair) / 0.06),
+    0 0 26px rgb(var(--acc) / 0.14),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+a.tv-card:focus-visible {
+  outline: 2px solid rgb(var(--acc));
+  outline-offset: 3px;
+}
+.tv-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgb(var(--pal-300));
+  border: 1px solid rgb(var(--hair) / 0.16);
+  border-radius: 999px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tv-chip-lg {
+  padding: 4px 14px;
+  font-size: 14px;
+  color: rgb(var(--pal-100));
+}
+a.tv-chip:hover,
+.tv-card:hover .tv-chip {
+  color: rgb(var(--acc));
+  border-color: rgb(var(--acc) / 0.45);
+}
+.tv-num,
+.tv-label {
+  font-family: var(--font-display), monospace;
+  line-height: 1;
+  color: rgb(var(--acc));
+  text-shadow: 0 0 12px rgb(var(--acc) / 0.5);
+}
+.tv-num {
+  font-size: 32px;
+}
+.tv-label {
+  font-size: 26px;
+}
+.tv-page-title {
+  font-family: var(--font-display), monospace;
+  font-size: clamp(3rem, 6.4vw, 5.75rem);
+  line-height: 0.9;
+  color: rgb(var(--pal-50));
+}
+.tv-h2 {
+  font-family: var(--font-display), monospace;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1;
+  color: rgb(var(--pal-50));
+  text-shadow: 0 0 14px rgb(var(--acc) / 0.35);
+}
+.tv-onair {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: var(--font-display), monospace;
+  font-size: 20px;
+  line-height: 1;
+  color: #ff6b5e;
+}
+.tv-onair i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff6b5e;
+  box-shadow: 0 0 8px #ff6b5e;
+  animation: tv-blink 1.4s steps(1) infinite;
+}
+@keyframes tv-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tv-onair i {
+    animation: none;
+  }
+}
+
+/* Section jumps: leave room so the heading clears the on-screen nav. */
+.tv-scroll [data-channel]:not(#home) {
+  scroll-margin-top: 3rem;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   desktop ≥1024  : cabinet + side control panel
+   tablet  640-1023: no panel, thin cabinet, OSD menu does the tuning
+   phone   <640   : near edge-to-edge glass, compact OSD
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Phones */
+@media (max-width: 639px) {
+  .tv-cabinet {
+    padding: 5px;
+    border-radius: 14px;
+  }
+  .tv-bezel {
+    padding: 9px;
+    border-radius: 11px;
+  }
+  .tv-screen {
+    box-shadow:
+      inset 0 0 0 2px rgba(0, 0, 0, 0.9),
+      inset 0 0 22px 2px rgba(0, 0, 0, 0.7),
+      inset 0 0 70px rgba(0, 0, 0, 0.5),
+      0 0 0 2px #030302,
+      0 0 0 5px #1d1a16,
+      0 0 0 6px #090807;
+  }
+  .tv-osd {
+    padding-top: 18px;
+  }
+  .osd-channel {
+    font-size: 24px;
+  }
+  .osd-ch {
+    font-size: 17px;
+  }
+  .osd-guide {
+    min-width: min(250px, calc(100cqw - 2 * var(--edge, 18px)));
+  }
+  .tv-scroll {
+    --edge: 20px;
+  }
+}
+
+/* Tablets (portrait) and small laptops: still no side panel, a bit more air */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .tv-scroll {
+    --edge: clamp(28px, 6vw, 64px);
+  }
+}
+
+/* Short windows (landscape phones, small laptops): reclaim vertical space */
+@media (max-height: 560px) {
+  .tv-osd {
+    padding-top: 12px;
+    padding-bottom: 6px;
+  }
+  .osd-channel {
+    font-size: 22px;
+  }
+  .osd-link {
+    font-size: 20px;
+  }
+  .tv-scroll header[data-channel] {
+    padding-top: 4.5rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* Touch screens: no hover-only affordances, bigger tap targets, lighter paint */
+@media (pointer: coarse) {
+  .osd-btn,
+  .osd-channel,
+  .osd-guide-row,
+  .osd-link {
+    min-height: 40px;
+  }
+  .tv-card:hover {
+    border-color: rgb(var(--hair) / 0.12);
+    box-shadow:
+      inset 0 1px 0 rgb(var(--hair) / 0.06),
+      0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Cheaper glass on small / touch devices: no blur, no rolling band */
+@media (max-width: 1023px), (pointer: coarse) {
+  .tv-osd.is-scrolled {
+    backdrop-filter: none;
+    background: rgba(5, 8, 7, 0.94);
+  }
+  .tv-scanlines::after {
+    display: none;
+  }
+}
+
+/* Very large monitors / 4K: let the set breathe instead of stretching */
+@media (min-width: 2400px) {
+  .tv-stage {
+    max-width: 2600px;
+  }
+}
+
+/* Compact chat launcher on phones so it does not cover content. */
+@media (max-width: 639px) {
+  .tv-screen .fixed.bottom-5 {
+    height: 40px;
+    padding-inline: 12px;
+    bottom: 16px;
+    right: 16px;
+  }
+  .tv-screen .fixed.bottom-5 .font-display {
+    font-size: 20px;
+  }
+}
+
+/* Short viewports: scale the hero to the height, not just the width. */
+@media (max-height: 560px) {
+  .tv-scroll header[data-channel] h1 {
+    font-size: clamp(2.5rem, 14vh, 4.5rem);
+  }
+  .tv-scroll header[data-channel] h1 + p {
+    font-size: 1.6rem;
+    margin-top: 0.75rem;
+  }
+}
+@media (max-height: 820px) and (min-width: 1024px) {
+  .tv-scroll header[data-channel] {
+    padding-top: 5.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* Phones: tighter vertical rhythm between sections */
+@media (max-width: 639px) {
+  .tv-scroll section[data-channel] {
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
+  }
+}
+
+/* Large monitors: scale the set's own controls + base text with the glass */
+@media (min-width: 1800px) {
+  .tv-panel,
+  .tv-osd {
+    zoom: 1.15;
+  }
+}
+@media (min-width: 2200px) {
+  html {
+    font-size: 20px;
+  }
+  .tv-panel,
+  .tv-osd {
+    zoom: 1.35;
+  }
+}
+@media (min-width: 2800px) {
+  html {
+    font-size: 24px;
+  }
+  .tv-panel,
+  .tv-osd {
+    zoom: 1.7;
+  }
+}
+
+/* ── Boot / loading screen: a test card while the page warms up ─────── */
+.tv-boot {
+  position: absolute;
+  inset: 0;
+  z-index: 97;
+  display: flex;
+  flex-direction: column;
+  background: #05080a;
+  transition: opacity 0.35s ease-out, visibility 0.35s;
+}
+.tv-boot.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.tv-boot-bars {
+  flex: 0 0 62%;
+  background:
+    linear-gradient(90deg, #c8c8c8 0 14.28%, #c8c800 0 28.57%, #00c8c8 0 42.85%, #00c800 0 57.14%, #c800c8 0 71.42%, #c80000 0 85.71%, #0000c8 0);
+  animation: tv-boot-flicker 2.6s steps(1) infinite;
+}
+.tv-boot-bars::after {
+  content: "";
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px);
+}
+.tv-boot-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 var(--edge, 24px);
+  text-align: center;
+  color: rgb(var(--acc));
+  font-family: var(--font-display), monospace;
+  text-shadow: 0 0 12px rgb(var(--acc) / 0.7);
+}
+.tv-boot-name {
+  font-size: clamp(30px, 5.5cqw, 64px);
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
+.tv-boot-msg {
+  font-size: clamp(18px, 2.2cqw, 28px);
+  line-height: 1;
+  opacity: 0.85;
+}
+.tv-boot-dots::after {
+  content: "";
+  animation: tv-boot-dots 1.2s steps(1) infinite;
+}
+.tv-boot-meter {
+  width: min(360px, 70%);
+  height: 12px;
+  padding: 2px;
+  border: 1px solid rgb(var(--acc) / 0.6);
+}
+.tv-boot-meter i {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, rgb(var(--acc)) 0 6px, transparent 6px 8px);
+  box-shadow: 0 0 8px rgb(var(--acc) / 0.6);
+  animation: tv-boot-fill 7s linear both;
+}
+.tv-boot-sub {
+  font-size: clamp(14px, 1.6cqw, 20px);
+  line-height: 1;
+  opacity: 0.55;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+}
+@keyframes tv-boot-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes tv-boot-dots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+}
+@keyframes tv-boot-flicker {
+  0%,
+  92% {
+    filter: none;
+  }
+  94% {
+    filter: brightness(1.35);
+  }
+  96% {
+    filter: brightness(0.8) hue-rotate(8deg);
+  }
+}
+@media (max-height: 560px) {
+  .tv-boot-bars {
+    flex-basis: 40%;
+  }
+  .tv-boot-panel {
+    gap: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tv-boot-bars,
+  .tv-boot-dots::after {
+    animation: none;
+  }
+  .tv-boot-meter i {
+    animation-duration: 0.5s;
+  }
+}

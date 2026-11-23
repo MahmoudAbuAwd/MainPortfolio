@@ -2,19 +2,20 @@
 
 import { motion, useScroll, useSpring } from "framer-motion"
 
+import { useTV } from "@/components/tv-frame"
+
 /**
- * Thin progress bar pinned to the very top of the viewport that fills as the
- * page scrolls. Visible on all breakpoints, styled with the site palette.
+ * Thin tracking bar along the bottom of the glass. Fills as the screen's
+ * own scroll container moves (not the window, which never scrolls here).
  */
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll()
+  const { scrollRef } = useTV()
+  const { scrollYProgress } = useScroll({ container: scrollRef })
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 })
 
   return (
-    <motion.div
-      className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gradient-to-r from-acc via-acc to-term-green"
-      style={{ scaleX }}
-      aria-hidden
-    />
+    <div className="tv-track" aria-hidden>
+      <motion.div className="tv-track-fill" style={{ scaleX }} />
+    </div>
   )
 }

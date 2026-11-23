@@ -4,22 +4,18 @@ import { motion } from "framer-motion"
 
 import { staggerContainer, staggerItem, viewportOnce } from "@/lib/animations"
 
-/* Skills grouped like directories in a project tree. */
+/* Skills grouped by area. */
 const groups: { dir: string; items: string[] }[] = [
-  { dir: "ml", items: ["python", "pytorch", "tensorflow", "deep-learning", "computer-vision", "scikit-learn"] },
-  { dir: "nlp", items: ["transformers", "rag", "llms", "prompt-engineering", "agentic-ai", "generative-ai"] },
-  { dir: "infra", items: ["aws", "docker", "mlops", "git", "fastapi", "flask"] },
-  { dir: "data", items: ["pandas", "numpy", "power-bi", "jupyter", "data-analysis"] },
-  { dir: "web", items: ["react", "next.js", "rest-apis", "seo"] },
+  { dir: "Machine learning", items: ["Python", "PyTorch", "TensorFlow", "Deep learning", "Computer vision", "Scikit-learn"] },
+  { dir: "Language models", items: ["Transformers", "RAG", "LLMs", "Prompt engineering", "Agentic AI", "Generative AI"] },
+  { dir: "Infrastructure", items: ["AWS", "Docker", "MLOps", "Git", "FastAPI", "Flask"] },
+  { dir: "Data", items: ["Pandas", "NumPy", "Power BI", "Jupyter", "Data analysis"] },
+  { dir: "Web", items: ["React", "Next.js", "REST APIs", "SEO"] },
 ]
 
 export function SkillsShowcase() {
   return (
-    <div className="mx-auto max-w-7xl 2xl:max-w-[96rem] px-4 font-mono sm:px-6">
-      <p className="mb-6 text-xs text-pal-400">
-        <span className="text-term-green">~/skills</span> $ ls -1 --group
-      </p>
-
+    <div className="mx-auto max-w-7xl 2xl:max-w-[96rem] px-4 sm:px-6">
       <motion.div
         className="divide-y divide-hair/[0.06] border-y border-hair/[0.06]"
         variants={staggerContainer(0.08)}
@@ -31,15 +27,12 @@ export function SkillsShowcase() {
           <motion.div
             key={g.dir}
             variants={staggerItem}
-            className="grid grid-cols-1 gap-x-6 gap-y-2 py-4 sm:grid-cols-[7rem_1fr]"
+            className="grid grid-cols-1 items-center gap-x-6 gap-y-3 py-5 sm:grid-cols-[13rem_1fr]"
           >
-            <div className="text-sm text-acc">{g.dir}/</div>
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <div className="font-display text-3xl leading-none text-acc crt-glow">{g.dir}</div>
+            <div className="flex flex-wrap gap-2">
               {g.items.map((item) => (
-                <span
-                  key={item}
-                  className="text-pal-300 transition-colors duration-200 hover:text-pal-50"
-                >
+                <span key={item} className="tv-chip tv-chip-lg">
                   {item}
                 </span>
               ))}

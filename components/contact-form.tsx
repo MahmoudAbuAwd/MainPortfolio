@@ -11,7 +11,7 @@ import { WindowBar } from "@/components/window-bar"
 import { useToast } from "@/hooks/use-toast"
 
 const fieldClass =
-  "rounded-sm border-hair/[0.1] bg-pal-950/50 font-mono text-pal-50 placeholder:text-pal-400 focus-visible:border-acc/50 focus-visible:ring-2 focus-visible:ring-acc/15"
+  "rounded-lg border-hair/[0.14] bg-pal-950/60 font-sans text-pal-50 placeholder:text-pal-400 focus-visible:border-acc/50 focus-visible:ring-2 focus-visible:ring-acc/15"
 
 export function ContactForm() {
   const { toast } = useToast()
@@ -66,31 +66,31 @@ export function ContactForm() {
         <input type="hidden" name="_subject" value="New Contact Form Submission from Portfolio" />
 
         <div className="space-y-1.5">
-          <label htmlFor="contact-name" className="block text-xs text-pal-400">
-            <span className="text-acc">$</span> name
+          <label htmlFor="contact-name" className="block font-display text-2xl leading-none text-acc">
+            Name
           </label>
-          <Input id="contact-name" name="name" placeholder="your full name" required className={fieldClass} />
+          <Input id="contact-name" name="name" placeholder="Your full name" required className={fieldClass} />
         </div>
         <div className="space-y-1.5">
-          <label htmlFor="contact-email" className="block text-xs text-pal-400">
-            <span className="text-acc">$</span> email
+          <label htmlFor="contact-email" className="block font-display text-2xl leading-none text-acc">
+            Email
           </label>
           <Input id="contact-email" name="email" type="email" placeholder="name@example.com" required className={fieldClass} />
         </div>
         <div className="space-y-1.5">
-          <label htmlFor="contact-subject" className="block text-xs text-pal-400">
-            <span className="text-acc">$</span> subject
+          <label htmlFor="contact-subject" className="block font-display text-2xl leading-none text-acc">
+            Subject
           </label>
-          <Input id="contact-subject" name="subject" placeholder="what would you like to discuss?" required className={fieldClass} />
+          <Input id="contact-subject" name="subject" placeholder="What would you like to discuss?" required className={fieldClass} />
         </div>
         <div className="space-y-1.5">
-          <label htmlFor="contact-message" className="block text-xs text-pal-400">
-            <span className="text-acc">$</span> message
+          <label htmlFor="contact-message" className="block font-display text-2xl leading-none text-acc">
+            Message
           </label>
           <Textarea
             id="contact-message"
             name="message"
-            placeholder="share the details of your project or question"
+            placeholder="Share the details of your project or question"
             rows={5}
             required
             className={fieldClass}
@@ -99,13 +99,13 @@ export function ContactForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-sm border border-acc/50 bg-acc/15 font-mono text-acc transition-colors hover:bg-acc/25 disabled:opacity-50"
+          className="osd-btn h-auto w-full justify-center !py-1.5 !text-2xl disabled:opacity-50"
         >
           {isSubmitting ? (
-            "sending…"
+            "Sending…"
           ) : (
             <>
-              ./send <Send className="ml-2 h-4 w-4" />
+              Send message <Send className="ml-2 h-4 w-4" />
             </>
           )}
         </Button>
@@ -135,7 +135,7 @@ export function ContactForm() {
               onClick={(e) => e.stopPropagation()}
             >
               <WindowBar
-                path="status: 200 OK"
+                path="Message sent"
                 actions={
                   <button
                     onClick={closeSuccessModal}
@@ -152,17 +152,17 @@ export function ContactForm() {
                 <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-term-green/40 bg-term-green/10">
                   <CheckCircle className="h-7 w-7 text-term-green" />
                 </div>
-                <h3 id="contact-success-title" className="text-lg font-semibold text-pal-50">
-                  message sent ✓
+                <h3 id="contact-success-title" className="font-display text-4xl text-pal-50">
+                  Message sent
                 </h3>
                 <p id="contact-success-description" className="mt-2 font-sans text-sm text-pal-300">
                   Thanks for reaching out! I&rsquo;ll get back to you as soon as possible.
                 </p>
                 <Button
                   onClick={closeSuccessModal}
-                  className="mt-6 rounded-sm border border-acc/50 bg-acc/15 px-6 font-mono text-acc transition-colors hover:bg-acc/25"
+                  className="osd-btn mt-6 h-auto !px-6 !py-1 !text-2xl"
                 >
-                  got it
+                  Done
                 </Button>
               </div>
             </motion.div>

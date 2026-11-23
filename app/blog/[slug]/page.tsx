@@ -8,7 +8,6 @@ import {
   Clock,
 } from "lucide-react"
 
-import { FloatingNav } from "@/components/floating-nav"
 import { SiteFooter } from "@/components/site-footer"
 import {
   type BlogBodyNode,
@@ -144,9 +143,8 @@ export default async function BlogArticlePage({
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-pal-950 font-mono text-pal-100">
+    <div className="relative min-h-[100cqh] overflow-hidden bg-transparent font-mono text-pal-100">
       <div className="terminal-atmosphere" aria-hidden />
-      <FloatingNav />
 
       <main className="relative z-10 px-4 pb-24 pt-28 sm:px-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-10">
@@ -154,7 +152,7 @@ export default async function BlogArticlePage({
             href="/blog"
             className="inline-flex items-center text-sm text-pal-400 transition-colors hover:text-acc"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> cd ../blog
+            <ArrowLeft className="mr-2 h-4 w-4" /> All articles
           </Link>
 
           <header className="space-y-5">
@@ -173,24 +171,22 @@ export default async function BlogArticlePage({
               </span>
             </div>
 
-            <h1 className="text-3xl font-bold leading-tight tracking-tight text-pal-50 sm:text-4xl">
+            <h1 className="tv-page-title crt-aberration !text-[clamp(2.6rem,5vw,4.5rem)] !leading-[0.95]">
               {post.title}
             </h1>
 
             <p className="max-w-2xl font-sans text-lg leading-relaxed text-pal-300">{post.description}</p>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-pal-400">
+            <div className="flex flex-wrap items-center gap-2">
               {post.tags.map((tag) => (
-                <span key={tag}>#{tag.toLowerCase().replace(/\s+/g, "-")}</span>
+                <span key={tag} className="tv-chip">{tag}</span>
               ))}
             </div>
           </header>
 
-          <section className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
-            <p className="text-xs text-pal-400">
-              <span className="text-acc">$</span> echo $HEADLINE_STAT
-            </p>
-            <p className="mt-3 text-4xl font-bold text-acc">{post.heroStat.value}</p>
+          <section className="tv-card p-6">
+            <p className="tv-label">Headline stat</p>
+            <p className="crt-glow mt-3 font-display text-6xl leading-none text-acc">{post.heroStat.value}</p>
             <p className="mt-1 text-sm font-semibold text-pal-100">{post.heroStat.label}</p>
             <p className="mt-1 font-sans text-sm text-pal-300">{post.heroStat.sublabel}</p>
           </section>
@@ -198,8 +194,7 @@ export default async function BlogArticlePage({
           <div className="space-y-14">
             {post.sections.map((section) => (
               <section key={section.slug} className="space-y-5">
-                <h2 className="text-2xl font-semibold tracking-tight text-pal-50">
-                  <span className="text-acc">## </span>
+                <h2 className="tv-h2">
                   {section.title}
                 </h2>
                 <div className="space-y-5">
@@ -211,10 +206,8 @@ export default async function BlogArticlePage({
             ))}
           </div>
 
-          <aside className="rounded-md border border-hair/[0.08] bg-pal-900/40 p-6">
-            <h3 className="text-sm font-semibold text-pal-50">
-              <span className="text-acc">$</span> cat takeaways.md
-            </h3>
+          <aside className="tv-card p-6">
+            <h3 className="tv-label">Key takeaways</h3>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {post.keyTakeaways.map((takeaway) => (
                 <li key={takeaway} className="flex items-start gap-2.5 font-sans text-sm text-pal-300">
@@ -226,13 +219,13 @@ export default async function BlogArticlePage({
           </aside>
 
           {post.cta && (
-            <div className="flex flex-col items-center justify-between gap-4 rounded-md border border-hair/[0.08] bg-pal-900/40 p-6 sm:flex-row">
+            <div className="tv-card flex flex-col items-center justify-between gap-4 p-6 sm:flex-row">
               <div className="font-sans text-sm text-pal-300">
                 Ready to go further? Explore the tools and checklists I trust in production.
               </div>
               <Link
                 href={post.cta.href}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-sm border border-acc/40 bg-acc/10 px-5 py-2.5 text-sm text-acc transition-colors hover:bg-acc/20"
+                className="osd-btn shrink-0 !px-5 !py-1.5 !text-2xl"
               >
                 {post.cta.label}
                 <ArrowUpRight className="h-3.5 w-3.5" />

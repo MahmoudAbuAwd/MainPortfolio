@@ -14,8 +14,9 @@ ABOUT MAHMOUD IBRAHIM ABUAWD:
 - Email: Mahmoodabuawad08@gmail.com | LinkedIn: linkedin.com/in/abuawd | GitHub: github.com/mahmoudabuawd | Portfolio: abuawd.online
 
 WORK EXPERIENCE:
-1. AI Engineer at Kawkab AI (Sep 2025 – Present): LLM agents, RAG pipelines, classical ML, cross-functional teams
-2. AI Engineer at Future Advance Internet Solutions (Oct 2024 – Mar 2025): AI/Deep Learning training, data preprocessing, ML model preparation
+1. Working with the Ministry of Interior of Jordan (MOI) (Aug 2026 – Present)
+2. AI Engineer at Kawkab AI (Sep 2025 – Present): LLM agents, RAG pipelines, classical ML, cross-functional teams
+3. AI Engineer at Future Advance Internet Solutions (Oct 2024 – Mar 2025): AI/Deep Learning training, data preprocessing, ML model preparation
 
 TECHNICAL SKILLS:
 - Languages: Python (TensorFlow, PyTorch, scikit-learn, OpenCV, NLTK, pandas, NumPy), C++, Git

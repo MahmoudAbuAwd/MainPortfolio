@@ -28,13 +28,15 @@ EDUCATION:
 
 WORK EXPERIENCE:
 
-1. AI Engineer at Kawkab AI (September 2025 – Present)
+1. Working with the Ministry of Interior of Jordan (MOI) (August 2026 – Present)
+
+2. AI Engineer at Kawkab AI (September 2025 – Present)
    - Collaborates with cross-functional teams to design and develop AI solutions
    - Works on LLM-powered agents, RAG pipelines, and classical ML models
    - Practical experience in machine learning, deep learning, and AI model deployment
    - Contributes to solving technical challenges and developing intelligent, data-driven solutions
 
-2. AI Engineer at Future Advance Internet Solutions (October 2024 – March 2025)
+3. AI Engineer at Future Advance Internet Solutions (October 2024 – March 2025)
    - Completed hands-on training in AI, Deep Learning, and Data Preprocessing
    - Gained experience in data cleaning, transformation, and ML model preparation
    - Built intelligent systems to improve decision-making and drive business outcomes

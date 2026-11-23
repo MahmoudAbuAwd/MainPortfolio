@@ -442,9 +442,8 @@ export function Chatbot() {
         aria-label="Open AI assistant"
         className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-md border border-acc/40 bg-pal-900/90 px-4 font-mono text-sm text-acc shadow-[0_8px_32px_rgba(0,0,0,0.55)] backdrop-blur transition-colors duration-200 hover:border-acc/70 hover:bg-pal-800/90 active:scale-95 focus:outline-none sm:bottom-6 sm:right-6"
       >
-        <span className="text-term-green">~$</span>
-        <span>ask-me</span>
-        <span className="cursor-blink" aria-hidden />
+        <span className="h-2 w-2 rounded-full bg-acc shadow-[0_0_8px_rgb(var(--acc)/0.8)]" aria-hidden />
+        <span className="font-display text-2xl leading-none">Ask my AI</span>
       </button>
     );
   }
@@ -475,8 +474,7 @@ export function Chatbot() {
         path={
           <span className="inline-flex items-center gap-2">
             <span>
-              <span className="text-term-green">mahmoud-ai</span>
-              <span className="text-pal-500">:</span>~/assistant
+              Ask my AI
             </span>
             {isStreaming && <span className="text-[10px] text-acc">…gen</span>}
           </span>
@@ -552,7 +550,7 @@ export function Chatbot() {
               {showPrompts && (
                 <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500 pt-1">
                   <p className="mb-2 flex items-center gap-1.5 text-[11px] text-pal-400">
-                    <span className="text-acc">$</span> quick-questions
+                    Quick questions
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
                     {QUICK_PROMPTS.map((q) => (

@@ -22,14 +22,13 @@ export function SectionHeading({ title, subtitle, className }: SectionHeadingPro
       <div className="flex items-baseline justify-between gap-4">
         <motion.h2
           variants={staggerItem}
-          className="text-2xl font-bold tracking-tight text-pal-50 sm:text-3xl 2xl:text-4xl"
+          className="crt-glow font-display text-4xl leading-none text-pal-50 sm:text-5xl 2xl:text-6xl"
         >
-          <span className="text-acc">## </span>
-          {title.toLowerCase()}
+          {title}
         </motion.h2>
         <motion.span
           variants={staggerItem}
-          className="shrink-0 text-xs uppercase tracking-[0.2em] text-pal-400"
+          className="shrink-0 font-display text-xl text-acc/80"
         >
           {subtitle}
         </motion.span>

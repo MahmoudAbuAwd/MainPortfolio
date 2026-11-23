@@ -26,12 +26,8 @@ export function WindowBar({ path, actions, compact = false, className }: WindowB
         className,
       )}
     >
-      <span className="flex items-center gap-1.5" aria-hidden>
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-acc/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-term-green/80" />
-      </span>
-      {path != null && <span className="ml-2 text-xs text-pal-400">{path}</span>}
+      <span className="h-2 w-2 rounded-full bg-acc shadow-[0_0_8px_rgb(var(--acc)/0.8)]" aria-hidden />
+      {path != null && <span className="ml-1 font-display text-xl leading-none text-pal-200">{path}</span>}
       {actions != null && <div className="ml-auto flex items-center gap-0.5">{actions}</div>}
     </div>
   )
