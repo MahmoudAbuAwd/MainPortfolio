@@ -9,6 +9,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Short, shareable résumé links: abuawd.com/resume and abuawd.com/cv
+  async redirects() {
+    return [
+      { source: "/resume", destination: "/Resume.pdf", permanent: false },
+      { source: "/cv", destination: "/Resume.pdf", permanent: false },
+    ]
+  },
 }
 
 export default nextConfig
