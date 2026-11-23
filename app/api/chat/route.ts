@@ -28,7 +28,7 @@ EDUCATION:
 
 WORK EXPERIENCE:
 
-1. Working with the Ministry of Interior of Jordan (MOI) (August 2026 – Present)
+1. AI Developer Associate at the Ministry of Interior of Jordan (MOI) (August 2026 – Present)
 
 2. AI Engineer at Kawkab AI (September 2025 – Present)
    - Collaborates with cross-functional teams to design and develop AI solutions
@@ -105,6 +105,7 @@ KEY PROJECTS:
    - Includes data cleaning, exploratory analysis, and comprehensive evaluation
 
 CERTIFICATIONS:
+- AWS Certified Cloud Practitioner (September 2026)
 - AWS Certified AI Practitioner (May 2025)
 - Preparing Data for Analysis with Microsoft Excel - Microsoft (March 2025)
 - Harnessing the Power of Data with Power BI - Microsoft (March 2025)

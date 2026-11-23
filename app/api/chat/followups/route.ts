@@ -14,7 +14,7 @@ ABOUT MAHMOUD IBRAHIM ABUAWD:
 - Email: Mahmoodabuawad08@gmail.com | LinkedIn: linkedin.com/in/abuawd | GitHub: github.com/mahmoudabuawd | Portfolio: abuawd.com
 
 WORK EXPERIENCE:
-1. Working with the Ministry of Interior of Jordan (MOI) (Aug 2026 – Present)
+1. AI Developer Associate at the Ministry of Interior of Jordan (MOI) (Aug 2026 – Present)
 2. AI Engineer at Kawkab AI (Sep 2025 – Present): LLM agents, RAG pipelines, classical ML, cross-functional teams
 3. AI Engineer at Future Advance Internet Solutions (Oct 2024 – Mar 2025): AI/Deep Learning training, data preprocessing, ML model preparation
 
@@ -32,7 +32,7 @@ KEY PROJECTS:
 4. DevInsight Agent: Autonomous GitHub repo analysis — code quality, architecture, LLM improvement reports
 5. PhishGuard: ML phishing detection comparing Logistic Regression, KNN, SVC
 
-CERTIFICATIONS: AWS AI Practitioner (May 2025), Microsoft Excel & Power BI (Mar 2025), DeepLearning.AI TensorFlow (Jan 2025), Deep Learning Specialization (Sep 2024), Embedded Systems INJO (May 2024)
+CERTIFICATIONS: AWS Cloud Practitioner (Sep 2026), AWS AI Practitioner (May 2025), Microsoft Excel & Power BI (Mar 2025), DeepLearning.AI TensorFlow (Jan 2025), Deep Learning Specialization (Sep 2024), Embedded Systems INJO (May 2024)
 
 VOLUNTEERING: Google Developer Group (Oct 2024–present), IEEE (May–Dec 2024)
 

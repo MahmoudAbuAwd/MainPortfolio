@@ -6,9 +6,10 @@ import { staggerContainer, staggerItem, viewportOnce } from "@/lib/animations"
 
 const experiences: { title?: string; company: string; period: string; description: string }[] = [
   {
+    title: "AI Developer Associate",
     company: "Ministry of Interior of Jordan (MOI)",
     period: "Aug 2026 — Present",
-    description: "Working with the Ministry of Interior of Jordan.",
+    description: "Working as an AI Developer Associate with the Ministry of Interior of Jordan.",
   },
   {
     title: "AI Engineer",
@@ -20,7 +21,7 @@ const experiences: { title?: string; company: string; period: string; descriptio
   {
     title: "Intern",
     company: "Coach You",
-    period: "Jun 2025 — Aug 2026",
+    period: "Jun 2025 — May 2026",
     description:
       "Developing entrepreneurial skills through practical training in startup building — idea validation, product development, market research, and team leadership.",
   },

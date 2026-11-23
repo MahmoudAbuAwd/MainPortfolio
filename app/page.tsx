@@ -40,9 +40,9 @@ const stats = [
 ]
 
 const highlights = [
-  "Working with the Ministry of Interior of Jordan",
+  "AI Developer Associate at the Ministry of Interior of Jordan",
   "AI Engineer at Kawkab AI",
-  "AWS AI Practitioner Certified",
+  "AWS AI & Cloud Practitioner Certified",
   "Founder of MedGAN AI",
   "30+ professional certifications",
   "Active open-source contributor",
@@ -96,6 +96,7 @@ const projects = [
 
 const certifications = [
   { file: "Mahmoud Abu Awad - AWS Certified AI Practitioner.pdf", label: "AWS Certified AI Practitioner", issuer: "Amazon Web Services", date: "May 2025" },
+  { file: "AWS-Certified-Cloud-Practitioner.pdf", label: "AWS Certified Cloud Practitioner", issuer: "Amazon Web Services", date: "Sep 2026" },
   { file: "Cert60094732260.pdf", label: "Azure Fundamentals", issuer: "Microsoft", date: "Jun 2026" },
   { file: "Deep-Learning-specialization.pdf", label: "Deep Learning Specialization", issuer: "DeepLearning.AI", date: "Sep 2024" },
   { file: "DeepLearning.AI-TensorFlow-Developer.pdf", label: "TensorFlow Developer Certificate", issuer: "DeepLearning.AI", date: "Feb 2025" },
